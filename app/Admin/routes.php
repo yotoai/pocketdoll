@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 
-//Admin::registerAuthRoutes();
+Admin::registerAuthRoutes();
 
 Route::group([
     'prefix'        => config('admin.route.prefix'),
