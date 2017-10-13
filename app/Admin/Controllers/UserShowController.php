@@ -85,7 +85,7 @@ class UserShowController extends Controller
 
             $grid->actions(function ($actions){
                 $id = $actions->getKey();
-                $actions->append('<a class"btn" href="">通过</a>');
+                $actions->append('<a class"btn" style="float:left;margin-right:5px;" href=""><i class="fa fa-check"></i>通过</a>');
             });
 
             $grid->created_at('上传时间');
