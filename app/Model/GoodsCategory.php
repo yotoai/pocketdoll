@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class GoodsCategory extends Model
+{
+    // 指定表
+    protected $table = 'goods_category';
+
+    // 指定可修改类型
+    protected $fillable = ['cate_name','win_rate','pic','tag_id','spec','coin'];
+}
