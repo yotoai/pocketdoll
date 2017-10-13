@@ -2,9 +2,9 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\Goods;
-
 use App\Model\GoodsCategory;
+
+use App\Model\Tags;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -12,7 +12,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class GoodsController extends Controller
+class CategoryController extends Controller
 {
     use ModelForm;
 
@@ -25,8 +25,8 @@ class GoodsController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('列表');
-            $content->description('所有商品的列表');
+            $content->header('娃娃机');
+            $content->description('娃娃机列表');
 
             $content->body($this->grid());
         });
@@ -42,8 +42,8 @@ class GoodsController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('编辑');
+            $content->description('编辑娃娃机');
 
             $content->body($this->form()->edit($id));
         });
@@ -59,7 +59,7 @@ class GoodsController extends Controller
         return Admin::content(function (Content $content) {
 
             $content->header('添加');
-            $content->description('添加一个娃娃');
+            $content->description('添加娃娃');
 
             $content->body($this->form());
         });
@@ -72,20 +72,21 @@ class GoodsController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Goods::class, function (Grid $grid) {
-            $grid->id('ID')->sortable();
-            $grid->name('商品名称');
-            $grid->pic('图片')->image('/uploads/',36,36);
-            $grid->goods_cate_id('所属娃娃机')->display(function($category){
-                return GoodsCategory::find($category)->cate_name;
-            });
-            $grid->created_at('创建时间');
-            $grid->updated_at('更新时间');
+        return Admin::grid(GoodsCategory::class, function (Grid $grid) {
 
-            // 搜索
-            $grid->filter(function($filter){
-                $filter->between('created_at','创建时间：')->datetime();
+            $grid->id('ID')->sortable();
+
+            $grid->cate_name('娃娃机名称');
+            $grid->pic('图片')->image('/uploads/',36,36);
+            $grid->spec('规格/cm');
+            $grid->coin('金币');
+            $grid->tag_id('标签')->display(function ($tag_id){
+                return Tags::find($tag_id)->tag_name;
             });
+            $grid->win_rate('概率');
+
+            $grid->created_at('添加时间');
+            $grid->updated_at('更新时间');
         });
     }
 
@@ -96,20 +97,21 @@ class GoodsController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Goods::class, function (Form $form) {
+        return Admin::form(GoodsCategory::class, function (Form $form) {
+
             $form->display('id', 'ID');
-            $form->text('name','商品名称：');
-            $cate = GoodsCategory::all(['id','cate_name'])->pluck('cate_name','id')->toArray();
-            $form->select('goods_cate_id','娃娃机：')->options($cate);
-            $form->image('pic','娃娃图片：');
+
+            $form->text('cate_name','娃娃机名称：')->rules('required');
+            $form->number('spec','规格：')->rules('required');
+            $form->number('coin','金币：')->rules('required');
+            $form->select('tag_id','标签：')->options(function(){
+                return Tags::all()->pluck('tag_name','id')->toArray();
+            })->rules('required');
+            $form->number('win_rate','概率：')->rules('required');
+            $form->image('pic','图片：')->rules('required');
+
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
-            $form->saving(function (Form $form){
-                //保存之前的操作
-            });
-            $form->saved(function (Form $form){
-                //保存之前的操作
-            });
         });
     }
 }

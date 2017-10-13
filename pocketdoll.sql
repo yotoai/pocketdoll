@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS `admin_menu` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.admin_menu 的数据：9 rows
+-- 正在导出表  pocketdoll.admin_menu 的数据：14 rows
 /*!40000 ALTER TABLE `admin_menu` DISABLE KEYS */;
 INSERT INTO `admin_menu` (`id`, `parent_id`, `order`, `title`, `icon`, `uri`, `created_at`, `updated_at`) VALUES
 	(1, 0, 1, '控制台', 'fa-bar-chart', '/', NULL, '2017-10-12 15:47:40'),
@@ -40,7 +40,12 @@ INSERT INTO `admin_menu` (`id`, `parent_id`, `order`, `title`, `icon`, `uri`, `c
 	(6, 2, 6, '菜单', 'fa-bars', 'auth/menu', NULL, '2017-10-12 15:06:30'),
 	(7, 2, 7, '操作日志', 'fa-history', 'auth/logs', NULL, '2017-10-12 15:06:45'),
 	(8, 0, 0, '商品管理', 'fa-shopping-bag', NULL, '2017-10-12 16:14:04', '2017-10-12 16:14:04'),
-	(9, 8, 0, '娃娃管理', 'fa-female', 'goods/index', '2017-10-12 16:17:11', '2017-10-12 16:32:44');
+	(9, 8, 0, '娃娃管理', 'fa-shopping-basket', 'goods/', '2017-10-12 16:17:11', '2017-10-13 14:40:09'),
+	(10, 8, 0, '娃娃机管理', 'fa-simplybuilt', 'machine', '2017-10-13 14:12:45', '2017-10-13 14:37:36'),
+	(11, 8, 0, '标签', 'fa-tags', 'tags', '2017-10-13 15:14:10', '2017-10-13 15:14:10'),
+	(12, 0, 0, '公告/活动', 'fa-bullhorn', NULL, '2017-10-13 17:20:24', '2017-10-13 17:20:24'),
+	(13, 12, 0, '公告管理', 'fa-copy', 'notice', '2017-10-13 17:21:29', '2017-10-13 17:21:29'),
+	(14, 12, 0, '玩家秀', 'fa-star-o', 'usershow', '2017-10-13 17:41:04', '2017-10-13 17:41:04');
 /*!40000 ALTER TABLE `admin_menu` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.admin_operation_log 结构
@@ -55,9 +60,9 @@ CREATE TABLE IF NOT EXISTS `admin_operation_log` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `admin_operation_log_user_id_index` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=316 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=588 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.admin_operation_log 的数据：262 rows
+-- 正在导出表  pocketdoll.admin_operation_log 的数据：587 rows
 /*!40000 ALTER TABLE `admin_operation_log` DISABLE KEYS */;
 INSERT INTO `admin_operation_log` (`id`, `user_id`, `path`, `method`, `ip`, `input`, `created_at`, `updated_at`) VALUES
 	(1, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-12 10:59:15', '2017-10-12 10:59:15'),
@@ -374,7 +379,279 @@ INSERT INTO `admin_operation_log` (`id`, `user_id`, `path`, `method`, `ip`, `inp
 	(312, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index","create_at":{"start":"2017-10-13 00:00:00"},"_pjax":"#pjax-container"}', '2017-10-13 11:38:21', '2017-10-13 11:38:21'),
 	(313, 1, 'admin/goods/index/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index\\/create","_pjax":"#pjax-container"}', '2017-10-13 11:39:20', '2017-10-13 11:39:20'),
 	(314, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index","_pjax":"#pjax-container"}', '2017-10-13 11:40:53', '2017-10-13 11:40:53'),
-	(315, 1, 'admin/goods/index/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index\\/create","_pjax":"#pjax-container"}', '2017-10-13 11:40:55', '2017-10-13 11:40:55');
+	(315, 1, 'admin/goods/index/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index\\/create","_pjax":"#pjax-container"}', '2017-10-13 11:40:55', '2017-10-13 11:40:55'),
+	(316, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index"}', '2017-10-13 12:51:03', '2017-10-13 12:51:03'),
+	(317, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 12:51:06', '2017-10-13 12:51:06'),
+	(318, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index"}', '2017-10-13 12:51:07', '2017-10-13 12:51:07'),
+	(319, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 12:51:12', '2017-10-13 12:51:12'),
+	(320, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index","_pjax":"#pjax-container"}', '2017-10-13 12:51:15', '2017-10-13 12:51:15'),
+	(321, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 12:51:16', '2017-10-13 12:51:16'),
+	(322, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 13:09:33', '2017-10-13 13:09:33'),
+	(323, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index","_pjax":"#pjax-container"}', '2017-10-13 13:09:37', '2017-10-13 13:09:37'),
+	(324, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 13:09:38', '2017-10-13 13:09:38'),
+	(325, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 13:09:45', '2017-10-13 13:09:45'),
+	(326, 1, 'admin/auth/menu/9/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu\\/9\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:09:50', '2017-10-13 13:09:50'),
+	(327, 1, 'admin/auth/menu/9', 'PUT', '127.0.0.1', '{"parent_id":"8","title":"\\u5a03\\u5a03\\u7ba1\\u7406","icon":"fa-female","uri":"goods","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/auth\\/menu","_url":"\\/admin\\/auth\\/menu\\/9"}', '2017-10-13 13:09:57', '2017-10-13 13:09:57'),
+	(328, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 13:09:58', '2017-10-13 13:09:58'),
+	(329, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index","_pjax":"#pjax-container"}', '2017-10-13 13:10:03', '2017-10-13 13:10:03'),
+	(330, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 13:10:04', '2017-10-13 13:10:04'),
+	(331, 1, 'admin/goods/index', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/index","_pjax":"#pjax-container"}', '2017-10-13 13:10:13', '2017-10-13 13:10:13'),
+	(332, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 13:10:13', '2017-10-13 13:10:13'),
+	(333, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 13:10:22', '2017-10-13 13:10:22'),
+	(334, 1, 'admin/auth/menu/9/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu\\/9\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:10:25', '2017-10-13 13:10:25'),
+	(335, 1, 'admin/auth/menu/9', 'PUT', '127.0.0.1', '{"parent_id":"8","title":"\\u5a03\\u5a03\\u7ba1\\u7406","icon":"fa-female","uri":"goods\\/","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/auth\\/menu","_url":"\\/admin\\/auth\\/menu\\/9"}', '2017-10-13 13:10:32', '2017-10-13 13:10:32'),
+	(336, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 13:10:33', '2017-10-13 13:10:33'),
+	(337, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 13:10:42', '2017-10-13 13:10:42'),
+	(338, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:10:47', '2017-10-13 13:10:47'),
+	(339, 1, 'admin/goods/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/create","_pjax":"#pjax-container"}', '2017-10-13 13:10:54', '2017-10-13 13:10:54'),
+	(340, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:11:35', '2017-10-13 13:11:35'),
+	(341, 1, 'admin/goods/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/create","_pjax":"#pjax-container"}', '2017-10-13 13:11:38', '2017-10-13 13:11:38'),
+	(342, 1, 'admin/goods', 'POST', '127.0.0.1', '{"name":"\\u661f\\u661f\\u5305","coin":"10","goods_cate_id":"1","tag_id":"1","status":"1","spec":"1","addtime":"2017-10-13 13:11:38","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/goods","_url":"\\/admin\\/goods"}', '2017-10-13 13:14:55', '2017-10-13 13:14:55'),
+	(343, 1, 'admin/goods/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/create"}', '2017-10-13 13:14:58', '2017-10-13 13:14:58'),
+	(344, 1, 'admin/goods', 'POST', '127.0.0.1', '{"name":"\\u661f\\u661f\\u5305","coin":"10","goods_cate_id":"1","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/goods"}', '2017-10-13 13:19:48', '2017-10-13 13:19:48'),
+	(345, 1, 'admin/goods/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/create"}', '2017-10-13 13:19:50', '2017-10-13 13:19:50'),
+	(346, 1, 'admin/goods', 'POST', '127.0.0.1', '{"name":"\\u661f\\u661f\\u5305","coin":"10","goods_cate_id":"1","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/goods"}', '2017-10-13 13:20:14', '2017-10-13 13:20:14'),
+	(347, 1, 'admin/goods/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/create"}', '2017-10-13 13:20:17', '2017-10-13 13:20:17'),
+	(348, 1, 'admin/goods', 'POST', '127.0.0.1', '{"name":"\\u661f\\u661f\\u5305","goods_cate_id":"1","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/goods"}', '2017-10-13 13:20:29', '2017-10-13 13:20:29'),
+	(349, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods"}', '2017-10-13 13:20:29', '2017-10-13 13:20:29'),
+	(350, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:21:16', '2017-10-13 13:21:16'),
+	(351, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:21:19', '2017-10-13 13:21:19'),
+	(352, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:21:22', '2017-10-13 13:21:22'),
+	(353, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:22:50', '2017-10-13 13:22:50'),
+	(354, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:23:05', '2017-10-13 13:23:05'),
+	(355, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:23:08', '2017-10-13 13:23:08'),
+	(356, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:23:35', '2017-10-13 13:23:35'),
+	(357, 1, 'admin/goods/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:23:41', '2017-10-13 13:23:41'),
+	(358, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:29:48', '2017-10-13 13:29:48'),
+	(359, 1, 'admin/goods/1/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/1\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:29:52', '2017-10-13 13:29:52'),
+	(360, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:29:56', '2017-10-13 13:29:56'),
+	(361, 1, 'admin/goods/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:29:59', '2017-10-13 13:29:59'),
+	(362, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:31:35', '2017-10-13 13:31:35'),
+	(363, 1, 'admin/goods/5/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/5\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:31:38', '2017-10-13 13:31:38'),
+	(364, 1, 'admin/goods/5/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/5\\/edit"}', '2017-10-13 13:32:19', '2017-10-13 13:32:19'),
+	(365, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:32:24', '2017-10-13 13:32:24'),
+	(366, 1, 'admin/goods/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:32:29', '2017-10-13 13:32:29'),
+	(367, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:41:21', '2017-10-13 13:41:21'),
+	(368, 1, 'admin/goods/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods\\/create","_pjax":"#pjax-container"}', '2017-10-13 13:41:24', '2017-10-13 13:41:24'),
+	(369, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 13:41:34', '2017-10-13 13:41:34'),
+	(370, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 13:55:50', '2017-10-13 13:55:50'),
+	(371, 1, 'admin/auth/menu/9/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu\\/9\\/edit","_pjax":"#pjax-container"}', '2017-10-13 13:55:56', '2017-10-13 13:55:56'),
+	(372, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 14:12:14', '2017-10-13 14:12:14'),
+	(373, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"8","title":"\\u5a03\\u5a03\\u673a\\u7ba1\\u7406","icon":"fa-bars","uri":"machine","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 14:12:45', '2017-10-13 14:12:45'),
+	(374, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 14:12:46', '2017-10-13 14:12:46'),
+	(375, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 14:14:15', '2017-10-13 14:14:15'),
+	(376, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:14:21', '2017-10-13 14:14:21'),
+	(377, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:18:00', '2017-10-13 14:18:00'),
+	(378, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:18:31', '2017-10-13 14:18:31'),
+	(379, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:19:58', '2017-10-13 14:19:58'),
+	(380, 1, 'admin/machine/1/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/1\\/edit","_pjax":"#pjax-container"}', '2017-10-13 14:20:56', '2017-10-13 14:20:56'),
+	(381, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:26:24', '2017-10-13 14:26:24'),
+	(382, 1, 'admin/machine/1/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/1\\/edit","_pjax":"#pjax-container"}', '2017-10-13 14:26:34', '2017-10-13 14:26:34'),
+	(383, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:34:44', '2017-10-13 14:34:44'),
+	(384, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 14:34:51', '2017-10-13 14:34:51'),
+	(385, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 14:34:55', '2017-10-13 14:34:55'),
+	(386, 1, 'admin/auth/menu/10/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu\\/10\\/edit","_pjax":"#pjax-container"}', '2017-10-13 14:34:58', '2017-10-13 14:34:58'),
+	(387, 1, 'admin/auth/menu/10', 'PUT', '127.0.0.1', '{"parent_id":"8","title":"\\u5a03\\u5a03\\u673a\\u7ba1\\u7406","icon":"fa-simplybuilt","uri":"machine","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/auth\\/menu","_url":"\\/admin\\/auth\\/menu\\/10"}', '2017-10-13 14:37:36', '2017-10-13 14:37:36'),
+	(388, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 14:37:37', '2017-10-13 14:37:37'),
+	(389, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 14:38:01', '2017-10-13 14:38:01'),
+	(390, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:38:06', '2017-10-13 14:38:06'),
+	(391, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:38:12', '2017-10-13 14:38:12'),
+	(392, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 14:39:14', '2017-10-13 14:39:14'),
+	(393, 1, 'admin/auth/menu/9/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu\\/9\\/edit","_pjax":"#pjax-container"}', '2017-10-13 14:39:20', '2017-10-13 14:39:20'),
+	(394, 1, 'admin/auth/menu/9', 'PUT', '127.0.0.1', '{"parent_id":"8","title":"\\u5a03\\u5a03\\u7ba1\\u7406","icon":"fa-shopping-basket","uri":"goods\\/","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/auth\\/menu","_url":"\\/admin\\/auth\\/menu\\/9"}', '2017-10-13 14:40:09', '2017-10-13 14:40:09'),
+	(395, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 14:40:10', '2017-10-13 14:40:10'),
+	(396, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 14:40:16', '2017-10-13 14:40:16'),
+	(397, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:50:24', '2017-10-13 14:50:24'),
+	(398, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:53:46', '2017-10-13 14:53:46'),
+	(399, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:55:24', '2017-10-13 14:55:24'),
+	(400, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:57:02', '2017-10-13 14:57:02'),
+	(401, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:58:15', '2017-10-13 14:58:15'),
+	(402, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:58:50', '2017-10-13 14:58:50'),
+	(403, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 14:59:15', '2017-10-13 14:59:15'),
+	(404, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine"}', '2017-10-13 14:59:20', '2017-10-13 14:59:20'),
+	(405, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:00:30', '2017-10-13 15:00:30'),
+	(406, 1, 'admin/machine/6/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/6\\/edit","_pjax":"#pjax-container"}', '2017-10-13 15:02:12', '2017-10-13 15:02:12'),
+	(407, 1, 'admin/machine/6', 'PUT', '127.0.0.1', '{"cate_name":"\\u6d77\\u7ef5\\u661f","spec":"30","coin":"20","tag_id":"1","win_rate":"7","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/machine","_url":"\\/admin\\/machine\\/6"}', '2017-10-13 15:02:22', '2017-10-13 15:02:22'),
+	(408, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine"}', '2017-10-13 15:02:22', '2017-10-13 15:02:22'),
+	(409, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:02:50', '2017-10-13 15:02:50'),
+	(410, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 15:04:24', '2017-10-13 15:04:24'),
+	(411, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:04:35', '2017-10-13 15:04:35'),
+	(412, 1, 'admin/auth/roles', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/roles","_pjax":"#pjax-container"}', '2017-10-13 15:04:47', '2017-10-13 15:04:47'),
+	(413, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 15:04:50', '2017-10-13 15:04:50'),
+	(414, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/","_pjax":"#pjax-container"}', '2017-10-13 15:05:22', '2017-10-13 15:05:22'),
+	(415, 1, 'admin/auth/users', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/users","_pjax":"#pjax-container"}', '2017-10-13 15:05:24', '2017-10-13 15:05:24'),
+	(416, 1, 'admin/auth/roles', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/roles","_pjax":"#pjax-container"}', '2017-10-13 15:05:25', '2017-10-13 15:05:25'),
+	(417, 1, 'admin/auth/users', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/users","_pjax":"#pjax-container"}', '2017-10-13 15:05:27', '2017-10-13 15:05:27'),
+	(418, 1, 'admin/auth/roles', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/roles","_pjax":"#pjax-container"}', '2017-10-13 15:05:29', '2017-10-13 15:05:29'),
+	(419, 1, 'admin/auth/permissions', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/permissions","_pjax":"#pjax-container"}', '2017-10-13 15:05:32', '2017-10-13 15:05:32'),
+	(420, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 15:05:33', '2017-10-13 15:05:33'),
+	(421, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:05:47', '2017-10-13 15:05:47'),
+	(422, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 15:07:43', '2017-10-13 15:07:43'),
+	(423, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:07:54', '2017-10-13 15:07:54'),
+	(424, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 15:08:04', '2017-10-13 15:08:04'),
+	(425, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:08:45', '2017-10-13 15:08:45'),
+	(426, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 15:08:51', '2017-10-13 15:08:51'),
+	(427, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:09:47', '2017-10-13 15:09:47'),
+	(428, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 15:09:50', '2017-10-13 15:09:50'),
+	(429, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:10:10', '2017-10-13 15:10:10'),
+	(430, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 15:10:13', '2017-10-13 15:10:13'),
+	(431, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:10:25', '2017-10-13 15:10:25'),
+	(432, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 15:10:28', '2017-10-13 15:10:28'),
+	(433, 1, 'admin/machine', 'POST', '127.0.0.1', '{"cate_name":"\\u9cc4\\u9c7c\\u5b9d\\u5b9d","spec":"30","coin":"20","tag_id":"1","win_rate":"10","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/machine","_url":"\\/admin\\/machine"}', '2017-10-13 15:11:00', '2017-10-13 15:11:00'),
+	(434, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create"}', '2017-10-13 15:11:02', '2017-10-13 15:11:02'),
+	(435, 1, 'admin/machine', 'POST', '127.0.0.1', '{"cate_name":"\\u9cc4\\u9c7c\\u5b9d\\u5b9d","spec":"30","coin":"20","tag_id":"1","win_rate":"9","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/machine"}', '2017-10-13 15:11:26', '2017-10-13 15:11:26'),
+	(436, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create"}', '2017-10-13 15:11:28', '2017-10-13 15:11:28'),
+	(437, 1, 'admin/machine', 'POST', '127.0.0.1', '{"cate_name":"\\u9cc4\\u9c7c\\u5b9d\\u5b9d","spec":"30","coin":"20","tag_id":"1","win_rate":"9","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/machine"}', '2017-10-13 15:11:59', '2017-10-13 15:11:59'),
+	(438, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine"}', '2017-10-13 15:12:00', '2017-10-13 15:12:00'),
+	(439, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 15:12:09', '2017-10-13 15:12:09'),
+	(440, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container","_sort":{"column":"id","type":"desc"}}', '2017-10-13 15:12:36', '2017-10-13 15:12:36'),
+	(441, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container","_sort":{"column":"id","type":"asc"}}', '2017-10-13 15:12:39', '2017-10-13 15:12:39'),
+	(442, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/","_pjax":"#pjax-container"}', '2017-10-13 15:13:06', '2017-10-13 15:13:06'),
+	(443, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 15:13:19', '2017-10-13 15:13:19'),
+	(444, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"8","title":"\\u6807\\u7b7e","icon":"fa-tags","uri":"tags","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:14:10', '2017-10-13 15:14:10'),
+	(445, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:14:10', '2017-10-13 15:14:10'),
+	(446, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:22:06', '2017-10-13 15:22:06'),
+	(447, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:23:06', '2017-10-13 15:23:06'),
+	(448, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:23:08', '2017-10-13 15:23:08'),
+	(449, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:24:31', '2017-10-13 15:24:31'),
+	(450, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:24:35', '2017-10-13 15:24:35'),
+	(451, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:24:36', '2017-10-13 15:24:36'),
+	(452, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:26:51', '2017-10-13 15:26:51'),
+	(453, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:28:12', '2017-10-13 15:28:12'),
+	(454, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:28:13', '2017-10-13 15:28:13'),
+	(455, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:29:15', '2017-10-13 15:29:15'),
+	(456, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:29:18', '2017-10-13 15:29:18'),
+	(457, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:29:20', '2017-10-13 15:29:20'),
+	(458, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:31:03', '2017-10-13 15:31:03'),
+	(459, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:31:20', '2017-10-13 15:31:20'),
+	(460, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:31:22', '2017-10-13 15:31:22'),
+	(461, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:31:52', '2017-10-13 15:31:52'),
+	(462, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:31:54', '2017-10-13 15:31:54'),
+	(463, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:39:05', '2017-10-13 15:39:05'),
+	(464, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:39:10', '2017-10-13 15:39:10'),
+	(465, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:39:11', '2017-10-13 15:39:11'),
+	(466, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:39:41', '2017-10-13 15:39:41'),
+	(467, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:39:45', '2017-10-13 15:39:45'),
+	(468, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:39:47', '2017-10-13 15:39:47'),
+	(469, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:40:05', '2017-10-13 15:40:05'),
+	(470, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:40:06', '2017-10-13 15:40:06'),
+	(471, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:40:18', '2017-10-13 15:40:18'),
+	(472, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:40:19', '2017-10-13 15:40:19'),
+	(473, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:40:56', '2017-10-13 15:40:56'),
+	(474, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 15:40:57', '2017-10-13 15:40:57'),
+	(475, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:41:33', '2017-10-13 15:41:33'),
+	(476, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:43:51', '2017-10-13 15:43:51'),
+	(477, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:47:35', '2017-10-13 15:47:35'),
+	(478, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:48:27', '2017-10-13 15:48:27'),
+	(479, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:49:24', '2017-10-13 15:49:24'),
+	(480, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:54:52', '2017-10-13 15:54:52'),
+	(481, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:55:20', '2017-10-13 15:55:20'),
+	(482, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:55:38', '2017-10-13 15:55:38'),
+	(483, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:55:50', '2017-10-13 15:55:50'),
+	(484, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:56:34', '2017-10-13 15:56:34'),
+	(485, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:56:44', '2017-10-13 15:56:44'),
+	(486, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:57:07', '2017-10-13 15:57:07'),
+	(487, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 15:57:17', '2017-10-13 15:57:17'),
+	(488, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 15:59:00', '2017-10-13 15:59:00'),
+	(489, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 15:59:48', '2017-10-13 15:59:48'),
+	(490, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:02:44', '2017-10-13 16:02:44'),
+	(491, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create"}', '2017-10-13 16:04:40', '2017-10-13 16:04:40'),
+	(492, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:04:46', '2017-10-13 16:04:46'),
+	(493, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 16:09:56', '2017-10-13 16:09:56'),
+	(494, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:10:00', '2017-10-13 16:10:00'),
+	(495, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 16:10:02', '2017-10-13 16:10:02'),
+	(496, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 16:10:54', '2017-10-13 16:10:54'),
+	(497, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:10:57', '2017-10-13 16:10:57'),
+	(498, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 16:10:59', '2017-10-13 16:10:59'),
+	(499, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:11:31', '2017-10-13 16:11:31'),
+	(500, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 16:11:33', '2017-10-13 16:11:33'),
+	(501, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:12:44', '2017-10-13 16:12:44'),
+	(502, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:13:09', '2017-10-13 16:13:09'),
+	(503, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:13:55', '2017-10-13 16:13:55'),
+	(504, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/"}', '2017-10-13 16:15:16', '2017-10-13 16:15:16'),
+	(505, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:15:20', '2017-10-13 16:15:20'),
+	(506, 1, 'admin/tags', 'POST', '127.0.0.1', '{"name":null,"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/tags"}', '2017-10-13 16:15:24', '2017-10-13 16:15:24'),
+	(507, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:15:26', '2017-10-13 16:15:26'),
+	(508, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:24:06', '2017-10-13 16:24:06'),
+	(509, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:27:37', '2017-10-13 16:27:37'),
+	(510, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:32:01', '2017-10-13 16:32:01'),
+	(511, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-13 16:33:34', '2017-10-13 16:33:34'),
+	(512, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:33:38', '2017-10-13 16:33:38'),
+	(513, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 16:38:26', '2017-10-13 16:38:26'),
+	(514, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"0","title":null,"icon":"fa-bars","uri":null,"roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 16:38:29', '2017-10-13 16:38:29'),
+	(515, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 16:38:30', '2017-10-13 16:38:30'),
+	(516, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"0","title":null,"icon":"fa-bars","uri":null,"roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 16:38:38', '2017-10-13 16:38:38'),
+	(517, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 16:38:39', '2017-10-13 16:38:39'),
+	(518, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:39:54', '2017-10-13 16:39:54'),
+	(519, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-13 16:40:38', '2017-10-13 16:40:38'),
+	(520, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:40:41', '2017-10-13 16:40:41'),
+	(521, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:40:51', '2017-10-13 16:40:51'),
+	(522, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create","_pjax":"#pjax-container"}', '2017-10-13 16:40:54', '2017-10-13 16:40:54'),
+	(523, 1, 'admin/tags', 'POST', '127.0.0.1', '{"tag_name":null,"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/tags","_url":"\\/admin\\/tags"}', '2017-10-13 16:40:58', '2017-10-13 16:40:58'),
+	(524, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create"}', '2017-10-13 16:40:58', '2017-10-13 16:40:58'),
+	(525, 1, 'admin/tags', 'POST', '127.0.0.1', '{"tag_name":null,"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/tags"}', '2017-10-13 16:46:02', '2017-10-13 16:46:02'),
+	(526, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create"}', '2017-10-13 16:46:03', '2017-10-13 16:46:03'),
+	(527, 1, 'admin/tags', 'POST', '127.0.0.1', '{"tag_name":null,"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/tags"}', '2017-10-13 16:49:35', '2017-10-13 16:49:35'),
+	(528, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create"}', '2017-10-13 16:49:36', '2017-10-13 16:49:36'),
+	(529, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create","_pjax":"#pjax-container"}', '2017-10-13 16:52:46', '2017-10-13 16:52:46'),
+	(530, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create","_pjax":"#pjax-container"}', '2017-10-13 16:52:49', '2017-10-13 16:52:49'),
+	(531, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create","_pjax":"#pjax-container"}', '2017-10-13 16:52:50', '2017-10-13 16:52:50'),
+	(532, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 16:52:54', '2017-10-13 16:52:54'),
+	(533, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:54:35', '2017-10-13 16:54:35'),
+	(534, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:55:12', '2017-10-13 16:55:12'),
+	(535, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 16:55:36', '2017-10-13 16:55:36'),
+	(536, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create","_pjax":"#pjax-container"}', '2017-10-13 16:59:45', '2017-10-13 16:59:45'),
+	(537, 1, 'admin/tags', 'POST', '127.0.0.1', '{"tag_name":"\\u6700\\u70ed","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/tags","_url":"\\/admin\\/tags"}', '2017-10-13 17:00:04', '2017-10-13 17:00:04'),
+	(538, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create"}', '2017-10-13 17:00:06', '2017-10-13 17:00:06'),
+	(539, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-13 17:01:19', '2017-10-13 17:01:19'),
+	(540, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-13 17:01:26', '2017-10-13 17:01:26'),
+	(541, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags","_pjax":"#pjax-container"}', '2017-10-13 17:01:29', '2017-10-13 17:01:29'),
+	(542, 1, 'admin/tags/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/create","_pjax":"#pjax-container"}', '2017-10-13 17:01:33', '2017-10-13 17:01:33'),
+	(543, 1, 'admin/tags', 'POST', '127.0.0.1', '{"tag_name":"\\u6700\\u70ed","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/tags","_url":"\\/admin\\/tags"}', '2017-10-13 17:01:45', '2017-10-13 17:01:45'),
+	(544, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 17:01:46', '2017-10-13 17:01:46'),
+	(545, 1, 'admin/tags/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-13 17:06:08', '2017-10-13 17:06:08'),
+	(546, 1, 'admin/tags/2', 'PUT', '127.0.0.1', '{"tag_name":"\\u6700\\u70ed\\u6b3e","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/tags","_url":"\\/admin\\/tags\\/2"}', '2017-10-13 17:06:22', '2017-10-13 17:06:22'),
+	(547, 1, 'admin/tags', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/tags"}', '2017-10-13 17:06:22', '2017-10-13 17:06:22'),
+	(548, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 17:07:17', '2017-10-13 17:07:17'),
+	(549, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 17:07:20', '2017-10-13 17:07:20'),
+	(550, 1, 'admin/machine', 'POST', '127.0.0.1', '{"cate_name":null,"spec":"0","coin":"0","tag_id":"2","win_rate":"0","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/machine","_url":"\\/admin\\/machine"}', '2017-10-13 17:07:40', '2017-10-13 17:07:40'),
+	(551, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create"}', '2017-10-13 17:07:42', '2017-10-13 17:07:42'),
+	(552, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create"}', '2017-10-13 17:08:42', '2017-10-13 17:08:42'),
+	(553, 1, 'admin/machine', 'POST', '127.0.0.1', '{"cate_name":null,"spec":"0","coin":"0","tag_id":"1","win_rate":"0","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/machine"}', '2017-10-13 17:08:46', '2017-10-13 17:08:46'),
+	(554, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create"}', '2017-10-13 17:08:46', '2017-10-13 17:08:46'),
+	(555, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 17:14:49', '2017-10-13 17:14:49'),
+	(556, 1, 'admin/machine/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine\\/create","_pjax":"#pjax-container"}', '2017-10-13 17:14:51', '2017-10-13 17:14:51'),
+	(557, 1, 'admin/machine', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/machine","_pjax":"#pjax-container"}', '2017-10-13 17:14:52', '2017-10-13 17:14:52'),
+	(558, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods","_pjax":"#pjax-container"}', '2017-10-13 17:15:16', '2017-10-13 17:15:16'),
+	(559, 1, 'admin/goods', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/goods"}', '2017-10-13 17:15:44', '2017-10-13 17:15:44'),
+	(560, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 17:18:49', '2017-10-13 17:18:49'),
+	(561, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"0","title":"\\u516c\\u544a\\/\\u6d3b\\u52a8","icon":"fa-bullhorn","uri":null,"roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:20:24', '2017-10-13 17:20:24'),
+	(562, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:20:25', '2017-10-13 17:20:25'),
+	(563, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"12","title":"\\u516c\\u544a\\u7ba1\\u7406","icon":"fa-copy","uri":"notice","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:21:29', '2017-10-13 17:21:29'),
+	(564, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:21:30', '2017-10-13 17:21:30'),
+	(565, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:21:35', '2017-10-13 17:21:35'),
+	(566, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice"}', '2017-10-13 17:32:51', '2017-10-13 17:32:51'),
+	(567, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice"}', '2017-10-13 17:33:08', '2017-10-13 17:33:08'),
+	(568, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice"}', '2017-10-13 17:33:29', '2017-10-13 17:33:29'),
+	(569, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice"}', '2017-10-13 17:34:19', '2017-10-13 17:34:19'),
+	(570, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice"}', '2017-10-13 17:34:35', '2017-10-13 17:34:35'),
+	(571, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice"}', '2017-10-13 17:35:12', '2017-10-13 17:35:12'),
+	(572, 1, 'admin/notice/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice\\/create","_pjax":"#pjax-container"}', '2017-10-13 17:35:18', '2017-10-13 17:35:18'),
+	(573, 1, 'admin/notice/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice\\/create"}', '2017-10-13 17:38:14', '2017-10-13 17:38:14'),
+	(574, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice","_pjax":"#pjax-container"}', '2017-10-13 17:38:17', '2017-10-13 17:38:17'),
+	(575, 1, 'admin/notice/1/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice\\/1\\/edit","_pjax":"#pjax-container"}', '2017-10-13 17:38:26', '2017-10-13 17:38:26'),
+	(576, 1, 'admin/notice/1', 'PUT', '127.0.0.1', '{"title":"\\u6d4b\\u8bd5\\u7528\\u7684","contents":"\\u6d4b\\u8bd5\\u6d4b\\u8bd5","_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/notice","_url":"\\/admin\\/notice\\/1"}', '2017-10-13 17:38:42', '2017-10-13 17:38:42'),
+	(577, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice"}', '2017-10-13 17:38:43', '2017-10-13 17:38:43'),
+	(578, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/","_pjax":"#pjax-container"}', '2017-10-13 17:39:19', '2017-10-13 17:39:19'),
+	(579, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-13 17:39:22', '2017-10-13 17:39:22'),
+	(580, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"12","title":"\\u73a9\\u5bb6\\u79c0","icon":"fa-star-o","uri":"usershow","roles":[null],"_token":"uL9gWMh1mOgu9w48F87f0ROopQujFTPIuw8rmPfp","_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:41:04', '2017-10-13 17:41:04'),
+	(581, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:41:05', '2017-10-13 17:41:05'),
+	(582, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-13 17:54:58', '2017-10-13 17:54:58'),
+	(583, 1, 'admin/usershow', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/usershow"}', '2017-10-13 17:55:28', '2017-10-13 17:55:28'),
+	(584, 1, 'admin/usershow', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/usershow"}', '2017-10-13 17:57:51', '2017-10-13 17:57:51'),
+	(585, 1, 'admin/usershow', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/usershow"}', '2017-10-13 18:09:55', '2017-10-13 18:09:55'),
+	(586, 1, 'admin/usershow', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/usershow"}', '2017-10-13 18:11:07', '2017-10-13 18:11:07'),
+	(587, 1, 'admin/usershow', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/usershow"}', '2017-10-13 18:24:58', '2017-10-13 18:24:58');
 /*!40000 ALTER TABLE `admin_operation_log` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.admin_permissions 结构
@@ -518,23 +795,20 @@ CREATE TABLE IF NOT EXISTS `goods` (
   `goods_cate_id` int(11) NOT NULL COMMENT '娃娃种类',
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '娃娃名称',
   `pic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '娃娃图片',
-  `coin` int(11) NOT NULL COMMENT '所需金币',
-  `spec` int(11) NOT NULL COMMENT '娃娃规格',
-  `tag_id` int(11) NOT NULL COMMENT '娃娃标签',
   `status` enum('0','1','-1') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '娃娃的状态',
-  `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '添加时间',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.goods 的数据：4 rows
+-- 正在导出表  pocketdoll.goods 的数据：5 rows
 /*!40000 ALTER TABLE `goods` DISABLE KEYS */;
-INSERT INTO `goods` (`id`, `goods_cate_id`, `name`, `pic`, `coin`, `spec`, `tag_id`, `status`, `addtime`, `created_at`, `updated_at`) VALUES
-	(1, 1, '派大星', '', 10, 5, 3, '0', '2017-10-06 11:24:04', '2017-10-06 11:24:04', '2017-10-06 11:24:04'),
-	(2, 9, '哈密瓜', '1AFa8BzPPaZJGAXLXaHiGEH0mb0HVaTN7IaOxJwB.jpeg', 10, 5, 3, '0', '2017-10-12 17:27:01', '2017-10-06 11:24:26', '2017-10-06 12:08:30'),
-	(3, 1, '派大星', '', 10, 5, 3, '-1', '2017-10-06 12:13:52', '2017-10-06 12:10:49', '2017-10-06 12:13:52'),
-	(4, 1, '派大星', 'D:\\Project\\PocketDoll\\storage\\image/C8gh9Ew9HLWqLEuhdVhnEhbC3y82fSjeUsb2wEsJ.jpeg', 10, 5, 3, '0', '2017-10-06 12:11:15', '2017-10-06 12:11:15', '2017-10-06 12:11:15');
+INSERT INTO `goods` (`id`, `goods_cate_id`, `name`, `pic`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 1, '派大星', '', '0', '2017-10-06 11:24:04', '2017-10-06 11:24:04'),
+	(2, 9, '哈密瓜', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '0', '2017-10-06 11:24:26', '2017-10-06 12:08:30'),
+	(3, 1, '派大星', '', '-1', '2017-10-06 12:10:49', '2017-10-06 12:13:52'),
+	(4, 1, '派大星', 'D:\\Project\\PocketDoll\\storage\\image/C8gh9Ew9HLWqLEuhdVhnEhbC3y82fSjeUsb2wEsJ.jpeg', '0', '2017-10-06 12:11:15', '2017-10-06 12:11:15'),
+	(5, 1, '星星包', 'images/36b6a0b291fa8b2bdb67bad75429cc72.jpg', '0', '2017-10-13 13:20:29', '2017-10-13 13:20:29');
 /*!40000 ALTER TABLE `goods` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.goods_category 结构
@@ -542,27 +816,28 @@ CREATE TABLE IF NOT EXISTS `goods_category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '类别id',
   `cate_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '类别名称',
   `win_rate` double(6,5) NOT NULL COMMENT '赢得比例',
-  `spec` int(10) NOT NULL,
-  `tag_id` int(10) NOT NULL,
-  `coin` int(10) NOT NULL,
+  `spec` int(10) NOT NULL COMMENT '娃娃规格',
+  `tag_id` int(10) NOT NULL COMMENT '标签id',
+  `coin` int(10) NOT NULL COMMENT '金币',
   `pic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '对应图片',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.goods_category 的数据：9 rows
+-- 正在导出表  pocketdoll.goods_category 的数据：10 rows
 /*!40000 ALTER TABLE `goods_category` DISABLE KEYS */;
 INSERT INTO `goods_category` (`id`, `cate_name`, `win_rate`, `spec`, `tag_id`, `coin`, `pic`, `created_at`, `updated_at`) VALUES
-	(1, '海绵宝宝与派大星', 0.00100, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/lQ3MROX0gtdVTjIQDRfH1wxVrMC5CnN9G0HoUPoU.jpeg', '2017-10-07 11:28:04', '2017-10-07 11:28:04'),
-	(2, '海绵宝宝与派大星', 1.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/LfqDNV2MW7Ws2KO4cwv583V8WBF7C22DBehmps1O.jpeg', '2017-10-07 11:29:13', '2017-10-07 11:29:13'),
+	(1, '海绵宝宝与派大星', 0.00100, 30, 1, 20, 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-07 11:28:04', '2017-10-07 11:28:04'),
+	(2, '海绵宝宝与派大星', 1.00000, 30, 1, 20, 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-07 11:29:13', '2017-10-07 11:29:13'),
 	(3, '海绵宝宝与派大星', 2.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/HMZL2ntIComIyMI9DYDTwg5HMCmCD2bTVbcpnW4D.jpeg', '2017-10-07 11:29:24', '2017-10-07 11:29:24'),
 	(4, '海绵宝宝与派大星', 5.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/TA4aOJsRUaYXGOPas5b4NevE4QAirBmWKCTwoy1m.jpeg', '2017-10-07 11:29:31', '2017-10-07 11:29:31'),
-	(5, '海绵宝宝与派大星', 6.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/qE4js3r9jJQQwgjfnqMWLXrdlqkgmX1CdM6SmrsX.jpeg', '2017-10-07 11:29:37', '2017-10-07 11:29:37'),
-	(6, '海绵宝宝与派大星', 7.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/EUXPDJNXPJzremzbWQU3Z8U7kSNSHTRkyoNr2XyD.jpeg', '2017-10-07 11:29:41', '2017-10-07 11:29:41'),
-	(7, '海绵宝宝与派大星', 8.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/kAzxIcg7VRhyc8DOjldtBJc4oxZcQ62MK0UYwUkg.jpeg', '2017-10-07 11:29:50', '2017-10-07 11:29:50'),
-	(8, '海绵宝宝与派大星', 9.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/XVuPGdWLG5d3IBcWK8J16j3k8fyTTCVG1BFA0iQw.jpeg', '2017-10-07 11:29:56', '2017-10-07 11:29:56'),
-	(9, '海盗船长', 9.00000, 30, 1, 20, 'D:\\Project\\PocketDoll\\storage\\image/X6U3LcXxVphDDrfOU4uZSFj7xJGH1wxRLilpVRij.jpeg', '2017-10-07 11:31:40', '2017-10-07 11:31:40');
+	(5, '海绵宝宝与派大星', 6.00000, 30, 1, 20, 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-07 11:29:37', '2017-10-07 11:29:37'),
+	(6, '海绵星', 7.00000, 30, 1, 20, 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-07 11:29:41', '2017-10-13 15:02:22'),
+	(10, '鳄鱼宝宝', 9.00000, 30, 1, 20, 'images/4496503d44e6ddd57b978a3e8c0b60a3.jpg', '2017-10-13 15:11:59', '2017-10-13 15:11:59'),
+	(7, '海绵宝宝与派大星', 8.00000, 30, 1, 20, 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-07 11:29:50', '2017-10-07 11:29:50'),
+	(8, '海绵宝宝与派大星', 9.00000, 30, 1, 20, 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-07 11:29:56', '2017-10-07 11:29:56'),
+	(9, '海盗船长', 9.00000, 30, 1, 20, 'images/X6U3LcXxVphDDrfOU4uZSFj7xJGH1wxRLilpVRij.jpeg', '2017-10-07 11:31:40', '2017-10-07 11:31:40');
 /*!40000 ALTER TABLE `goods_category` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.goods_tags_cate 结构
@@ -573,10 +848,13 @@ CREATE TABLE IF NOT EXISTS `goods_tags_cate` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.goods_tags_cate 的数据：0 rows
+-- 正在导出表  pocketdoll.goods_tags_cate 的数据：2 rows
 /*!40000 ALTER TABLE `goods_tags_cate` DISABLE KEYS */;
+INSERT INTO `goods_tags_cate` (`id`, `tag_name`, `tag_icon`, `created_at`, `updated_at`) VALUES
+	(1, '八折', 'images/36b6a0b291fa8b2bdb67bad75429cc72.jpg', '2017-10-13 14:53:37', '2017-10-13 14:53:39'),
+	(2, '最热款', 'images/e2ad36f20759ffa34e0459fd93b553f8.jpg', '2017-10-13 17:01:45', '2017-10-13 17:06:22');
 /*!40000 ALTER TABLE `goods_tags_cate` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.migrations 结构
@@ -585,7 +863,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 正在导出表  pocketdoll.migrations 的数据：20 rows
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
@@ -656,8 +934,8 @@ INSERT INTO `mission_type` (`id`, `title`, `created_at`, `updated_at`) VALUES
 CREATE TABLE IF NOT EXISTS `notice` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '公告id',
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告标题',
-  `content` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告内容',
-  `pic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '对应图片',
+  `contents` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告内容',
+  `pic` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对应图片',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '添加时间',
   `status` enum('1','-1') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告状态',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -667,18 +945,18 @@ CREATE TABLE IF NOT EXISTS `notice` (
 
 -- 正在导出表  pocketdoll.notice 的数据：11 rows
 /*!40000 ALTER TABLE `notice` DISABLE KEYS */;
-INSERT INTO `notice` (`id`, `title`, `content`, `pic`, `addtime`, `status`, `created_at`, `updated_at`) VALUES
-	(1, '213', '123', 'asdsadsadasd', '2017-10-02 07:08:37', '1', NULL, NULL),
-	(2, '测试', '1233', 'asdsadsadasd', '2017-10-02 15:33:51', '1', NULL, NULL),
-	(5, '娃娃上新公告', '一批新娃娃商家啦', 'asdsadsadasd', '2017-10-02 15:49:53', '1', NULL, NULL),
-	(4, '修改', '修改的内容', 'D:\\Project\\PocketDoll\\storage\\image/LFSV1x9SmuoTJVBcdjqFpeqtC3HxUZcUYrDPaySo.jpeg', '2017-10-02 17:37:50', '1', NULL, '2017-10-02 17:37:50'),
-	(6, '娃娃上新公告', '一批新娃娃商家啦', 'public/image/hyl4towvvMTYIA5buc4y0Ad3lGDex9nY1WU7Zkt9.jpeg', '2017-10-02 16:56:27', '1', NULL, NULL),
-	(7, '娃娃上新公告', '一批新娃娃商家啦', 'public/image/4a14ZcmmYfssjDzQ36xZRLzt1x7MMKhwFwkh4Fj6.jpeg', '2017-10-02 16:58:36', '1', NULL, NULL),
-	(8, '娃娃上新公告', '一批新娃娃商家啦', 'D:\\Project\\PocketDoll\\storage\\image/IwJWCc9wP6a0UmMToBCHVHSjm47VVVO76iidDU6D.jpeg', '2017-10-02 17:15:43', '1', NULL, NULL),
-	(9, '娃娃上新公告', '一批新娃娃商家啦', 'D:\\Project\\PocketDoll\\storage\\image/NGSYyZITBZsEXNFldM1hT1OJ8gqgLF9donrUE2FZ.jpeg', '2017-10-06 09:38:56', '1', NULL, NULL),
-	(10, '娃娃上新公告', '一批新娃娃商家啦', '1', '2017-10-06 10:38:38', '1', NULL, NULL),
-	(11, '娃娃上新公告', '一批新娃娃商家啦', '', '2017-10-06 11:33:47', '1', '2017-10-06 11:33:47', '2017-10-06 11:33:47'),
-	(12, '娃娃上新公告', '一批新娃娃商家啦', 'D:\\Project\\PocketDoll\\storage\\image/gDcE4asAOq8ZdXQvricXaZgJrGd2rY7LmTJmgGzY.jpeg', '2017-10-06 11:35:03', '1', '2017-10-06 11:35:03', '2017-10-06 11:35:03');
+INSERT INTO `notice` (`id`, `title`, `contents`, `pic`, `addtime`, `status`, `created_at`, `updated_at`) VALUES
+	(1, '测试用的', '测试测试', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:38:42', '1', '2017-10-13 17:34:58', '2017-10-13 17:38:42'),
+	(2, '测试', '1233', 'asdsadsadasdimages/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:35:02', '1', '2017-10-13 17:34:59', '2017-10-13 17:35:02'),
+	(5, '娃娃上新公告', '一批新娃娃商家啦', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:35:03', '1', '2017-10-13 17:34:56', '2017-10-13 17:35:03'),
+	(4, '修改', '修改的内容', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:34:56', '1', '2017-10-13 17:34:56', '2017-10-02 17:37:50'),
+	(6, '娃娃上新公告', '一批新娃娃商家啦', 'public/image/hyl4towvvMTYIA5buc4y0Ad3lGDex9nY1WU7Zkt9.jpeg', '2017-10-13 17:35:04', '1', '2017-10-13 17:34:53', '2017-10-13 17:35:04'),
+	(7, '娃娃上新公告', '一批新娃娃商家啦', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:35:05', '1', '2017-10-13 17:34:55', '2017-10-13 17:35:05'),
+	(8, '娃娃上新公告', '一批新娃娃商家啦', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:35:05', '1', '2017-10-13 17:34:54', '2017-10-13 17:35:05'),
+	(9, '娃娃上新公告', '一批新娃娃商家啦', 'D:\\Project\\PocketDoll\\storage\\image/NGSYyZITBZsEXNFldM1hT1OJ8gqgLF9donrUE2FZ.jpeg', '2017-10-13 17:35:07', '1', '2017-10-13 17:34:52', '2017-10-13 17:35:06'),
+	(10, '娃娃上新公告', '一批新娃娃商家啦', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:35:06', '1', '2017-10-13 17:34:51', '2017-10-13 17:35:06'),
+	(11, '娃娃上新公告', '一批新娃娃商家啦', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:34:13', '1', '2017-10-06 11:33:47', '2017-10-06 11:33:47'),
+	(12, '娃娃上新公告', '一批新娃娃商家啦', 'images/6de1d441e41d488279b8625cd5de57f3.jpg', '2017-10-13 17:34:12', '1', '2017-10-06 11:35:03', '2017-10-06 11:35:03');
 /*!40000 ALTER TABLE `notice` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.oauth_access_tokens 结构
