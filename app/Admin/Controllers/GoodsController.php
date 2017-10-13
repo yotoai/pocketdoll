@@ -98,24 +98,19 @@ class GoodsController extends Controller
     protected function form()
     {
         return Admin::form(Goods::class, function (Form $form) {
-
             $form->display('id', 'ID');
-
             $form->text('name','商品名称：');
             $form->number('coin','金币：');
-
             $cate = GoodsCategory::all(['id','cate_name'])->pluck('cate_name','id')->toArray();
             $form->select('goods_cate_id','娃娃机：')->options($cate);
-
             $form->image('pic','娃娃图片：');
-
+            $form->hidden('goods_cate_id')->default(1);
+            $form->hidden('tag_id')->default(1);
+            $form->hidden('status')->default(1);
+            $form->hidden('spec')->default(1);
+            $form->hidden('addtime')->default(date('Y-m-d H:i:s',time()));
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
-
-            $form->saved(function (Form $form){
-                Goods::create($form);
-                return redirect('/admin/goods');
-            });
         });
     }
 }

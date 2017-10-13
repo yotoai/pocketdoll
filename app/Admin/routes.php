@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 
-Admin::registerAuthRoutes();
+//Admin::registerAuthRoutes();
 
 Route::group([
     'prefix'        => config('admin.route.prefix'),
@@ -13,7 +13,7 @@ Route::group([
     $router->get('/', 'HomeController@index');
 
     // 商品管理
-//     $router->resource('goods',GoodsController::class,['as' => 'admin']);
-    $router->get('goods/index','GoodsController@index');
-    $router->get('goods/index/create','GoodsController@create');
+     $router->resource('goods',GoodsController::class,['as' => 'admin']);
+//    $router->get('goods/index','GoodsController@index');
+//    $router->get('goods/index/create','GoodsController@create');
 });
