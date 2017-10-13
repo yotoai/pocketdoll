@@ -111,6 +111,12 @@ class GoodsController extends Controller
             $form->hidden('addtime')->default(date('Y-m-d H:i:s',time()));
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
+            $form->saving(function (Form $form){
+                //保存之前的操作
+            });
+            $form->saved(function (Form $form){
+                //保存之前的操作
+            });
         });
     }
 }
