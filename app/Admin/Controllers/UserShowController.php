@@ -81,12 +81,16 @@ class UserShowController extends Controller
             $grid->user_id('玩家名称')->display(function ($uid){
                 return Users::find($uid)->nickname;
             });
-//            $grid->pic('图秀')->image('',36,36);
+            $grid->pic('图秀')->image('/uploads/',36,36);
 
             $grid->contents('内容');
 
+            $grid->status('审核状态')->display(function($status){
+                return $status == 1 ? '审核通过' : '未审核';
+            });
+
             $grid->actions(function ($actions){
-                $actions->append(new ConfirmBox($actions->getKey()));
+                $actions->append(new ConfirmBox());
             });
 
             $grid->created_at('上传时间');
@@ -117,7 +121,7 @@ class UserShowController extends Controller
     // 自定义 审核方法
     public function updateStatus()
     {
-        $id = request('id');
-        return UserShow::where('id', $id)->update(['status' => request('action')]);
+        $res = UserShow::where('id', request('id'))->update(['status' => request('action')]);
+        return $res ? ['status' => true,'message' => '已通过...'] : ['status' => false,'message' => '审核通过失败！'];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\RechargeAmount;
-use App\Model\RechargeLog;
+use App\Model\Goods;
+use App\Model\UserRucksack;
 
 use App\Model\Users;
 use Encore\Admin\Form;
@@ -13,7 +13,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class RechargeLogController extends Controller
+class RucksackController extends Controller
 {
     use ModelForm;
 
@@ -26,8 +26,8 @@ class RechargeLogController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('充值记录');
-            $content->description('列表');
+            $content->header('提现');
+            $content->description('提现列表');
 
             $content->body($this->grid());
         });
@@ -73,7 +73,7 @@ class RechargeLogController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(RechargeLog::class, function (Grid $grid) {
+        return Admin::grid(UserRucksack::class, function (Grid $grid) {
 
             $grid->actions(function ($actions) {
                 $actions->disableEdit();
@@ -81,22 +81,24 @@ class RechargeLogController extends Controller
             $grid->disableCreation();
 
             $grid->id('ID')->sortable();
+
             $grid->user_id('用户名')->display(function ($uid){
                return Users::find($uid)->nickname;
             });
-            $grid->order('订单号');
-            $grid->pay('支付金额');
-            $grid->coin('充值数量')->display(function ($aid){
-               $res = RechargeAmount::find($aid);
-               return $res->coin_num . ' ' . ($res->award_num ? '(奖励 '. $res->award_num .')' : '');
+            $grid->goods_id('娃娃名称')->display(function ($gid){
+                return Goods::find($gid)->name;
             });
-            $grid->status('充值状态')->display(function ($status){
-               return  $status == 1 ? '充值成功' : $status == -1 ? '未支付' : '充值失败';
+            $grid->column('pic','娃娃图片')->display(function ($ggid){
+               return '<img src="/uploads/' . Goods::find($this->goods_id)->pic . '" width="36">';
             });
-            $grid->column('time','充值时间');
+            $grid->status('状态')->display(function ($status){
+                return $status == 1 ? '已提现' : '未提现';
+            });
 
-            $grid->created_at('创建时间');
-            //$grid->updated_at('更新时间');
+            $grid->withdraw_time('提现时间');
+            $grid->gain_time('获取时间');
+           //$grid->created_at();
+           // $grid->updated_at();
         });
     }
 
@@ -107,7 +109,7 @@ class RechargeLogController extends Controller
      */
     protected function form()
     {
-        return Admin::form(RechargeLog::class, function (Form $form) {
+        return Admin::form(UserRucksack::class, function (Form $form) {
 
             $form->display('id', 'ID');
 

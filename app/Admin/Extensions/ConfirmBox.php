@@ -12,9 +12,9 @@ class ConfirmBox extends AbstractTool
     protected $action;
     protected $id;
 
-    public function __construct($id)
+    public function __construct()
     {
-        $this->id = $id;
+
     }
 
     protected function script()
@@ -22,11 +22,10 @@ class ConfirmBox extends AbstractTool
         return <<<EOT
     $('.upstatus').unbind('click').on('click',function()
     {
-         var id = $(this).data('id');
-         console.log(id + '11');
+         var id = $(this).parents('tr').find('.grid-row-delete').attr('data-id');
          swal({
                 title: "确认通过？",
-                text:{$this->id},
+                text:'确定审核通过',
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -42,7 +41,7 @@ class ConfirmBox extends AbstractTool
                         url: 'usershow/updateStatus',
                         data: {
                             _token:LA.token,
-                            id:$this->id,
+                            id:id,
                             action:1
                         },
                         success: function (data)
@@ -73,7 +72,7 @@ EOT;
 
         return <<<EOT
 
-        <a style="float: left" class="upstatus" href="javascript:;"><i class="fa fa-check"></i></a>    
+        <a style="float: left;margin-right: 5px;" class="upstatus" href="javascript:;"><i class="fa fa-check"></i></a>    
     
 
 EOT;
