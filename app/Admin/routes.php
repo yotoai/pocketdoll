@@ -27,4 +27,5 @@ Route::group([
     $router->resource('mission',MissionController::class,['as' => 'admin']);
     $router->resource('recharge',RechargeController::class,['as' => 'admin']);
     $router->resource('rechargeLog',RechargeLogController::class,['as' => 'admin']);
+    $router->resource('awards',AwardsController::class,['as' => 'admin']);
 });
