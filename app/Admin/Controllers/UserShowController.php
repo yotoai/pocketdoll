@@ -115,8 +115,9 @@ class UserShowController extends Controller
     }
 
     // 自定义 审核方法
-    public function updateStatus(Request $request,$id)
+    public function updateStatus()
     {
-        return UserShow::where('id',$id)->update(['status' => $request->action]);
+        $id = request('id');
+        return UserShow::where('id', $id)->update(['status' => request('action')]);
     }
 }

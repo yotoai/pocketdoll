@@ -19,7 +19,7 @@ Route::group([
     $router->resource('notice',NoticeController::class,['as' => 'admin']);
 
     // 就是这个
-    $router->resource('usershow/updateStatus',UserShowController::class,['as' => 'admin.usershow']);
+    $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
 
     $router->resource('usershow',UserShowController::class,['as' => 'admin']);
 

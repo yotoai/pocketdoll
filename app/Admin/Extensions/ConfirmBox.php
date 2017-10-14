@@ -39,10 +39,10 @@ class ConfirmBox extends AbstractTool
                	{
                     $.ajax({
                         type: 'post',
-                        url: 'usershow/updateStatus/' + {$this->id},
+                        url: 'usershow/updateStatus',
                         data: {
-                            _method:'update',
                             _token:LA.token,
+                            id:$this->id,
                             action:1
                         },
                         success: function (data)
