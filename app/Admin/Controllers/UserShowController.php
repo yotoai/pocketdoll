@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\ConfirmBox;
 use App\Model\Users;
 use App\Model\UserShow;
 
@@ -11,6 +12,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Illuminate\Support\Facades\Request;
 
 class UserShowController extends Controller
 {
@@ -79,13 +81,12 @@ class UserShowController extends Controller
             $grid->user_id('玩家名称')->display(function ($uid){
                 return Users::find($uid)->nickname;
             });
-            $grid->pic('图秀')->image('',36,36);
+//            $grid->pic('图秀')->image('',36,36);
 
             $grid->contents('内容');
 
             $grid->actions(function ($actions){
-                $id = $actions->getKey();
-                $actions->append('<a class"btn" style="float:left;margin-right:5px;" href=""><i class="fa fa-check"></i>通过</a>');
+                $actions->append(new ConfirmBox($actions->getKey()));
             });
 
             $grid->created_at('上传时间');
@@ -104,8 +105,18 @@ class UserShowController extends Controller
 
             $form->display('id', 'ID');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->text('user_id','玩家名称：');
+            $form->image('pic','图秀');
+            $form->textarea('contents','内容');
+
+            $form->display('created_at', '添加时间');
+            $form->display('updated_at', '修改时间');
         });
+    }
+
+    // 自定义 审核方法
+    public function updateStatus(Request $request,$id)
+    {
+        return UserShow::where('id',$id)->update(['status' => $request->action]);
     }
 }

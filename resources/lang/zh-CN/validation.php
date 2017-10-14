@@ -61,7 +61,7 @@ return [
         'array' => ':attribute must have at least :min items.',
     ],
     'not_in' => ':attribute 不能为 :values.',
-    'numeric' => ':attribute must be a number.',
+    'numeric' => ':attribute 必须是数字！',
     'present' => ':attribute field must be present.',
     'regex' => ':attribute格式不正确.',
     'required' => ':attribute不能为空',
