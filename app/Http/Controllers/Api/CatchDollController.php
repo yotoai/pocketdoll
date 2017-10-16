@@ -14,12 +14,12 @@ class CatchDollController extends BaseController
     // 娃娃机选择
     public function selectDollMachine($id)
     {
-        $user = session('wechat.oauth_user')->toArray(); // 拿到授权用户资料
-        if(!Redis::exists($user['id'] . '_'. $id .'_lucky'))
+        $key = $this->getRedisKey($id);
+        if(!Redis::exists($key))
         {
-            Redis::set( $user['id'] . '_'. $id .'_lucky',0);
+            Redis::set($key,0);
         }
-        $lucky = Redis::get($user['id'] . '_'. $id .'_lucky');
+        $lucky = Redis::get($key);
         $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
         return array_merge(['data' => $data],['lucky' => $lucky]);
     }
@@ -30,52 +30,56 @@ class CatchDollController extends BaseController
         //Redis::del('doll_machine');
         $key = 'doll_machine';
         if(Redis::scard($key) > 0){
-            return json_decode('['.implode(',',Redis::srandmember($key, 6)).']',true);
+            return $this->randDollMachine($key);
         }else {
             foreach (GoodsCategory::all() as $item) {
                 Redis::sadd($key, $item);
             }
-            return json_decode('['.implode(',',Redis::srandmember($key, 6)).']',true);
+            return $this->randDollMachine($key);
         }
     }
 
     // 抓取娃娃
     public function catchDoll($id,$gid)
     {
-        $user = session('wechat.oauth_user')->toArray(); // 拿到授权用户资料
+        $openid = $this->getOpenid();
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
-        $ucoin = Users::where('openid',$user['id'])->value('coin');
+        $ucoin = Users::where('openid',$openid)->value('coin');
         if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
 
-        $lucky = Redis::get($user['id'] . '_'. $id .'_lucky');
+        $key = $this->getRedisKey($id);
+
+        $lucky = Redis::get($key);
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
         $arr = ['get'=>$rate + $lucky,'lost'=>1000 - ($rate + $lucky)];
         if(($res = $this->getRand($arr)) == 'get' || $lucky == 100)
         {
-            Redis::set($user['id'] . '_'. $id .'_lucky',0);
+            Redis::set($key,0);
             try{
-                $res = UserRucksack::where('openid',$user['id'])->where('goods_id',$id)->first();
-                if($res->goods_id == $gid) {
-                    UserRucksack::where('openid',$user['id'])->where('goods_id',$id)->update([
-                        'num' => $res->num + 1
-                    ]);
-                }else {
-                    UserRucksack::create([
-                        'user_id' => $user['id'],
-                        'goods_id' => $gid,
-                        'gain_time' => date('Y-m-d H:i:s', time())
-                    ]);
-                }
-                Users::where('openid',$user['id'])->update(['coin' => $ucoin - $gcoin]);
+                DB::transaction(function () use ($openid,$gid,$gcoin,$ucoin){
+                    $res = UserRucksack::where('openid',$openid)->where('goods_id',$gid)->first();
+                    if($res->goods_id == $gid) {
+                        UserRucksack::where('openid',$openid)->where('goods_id',$gid)->update([
+                            'num' => $res->num + 1
+                        ]);
+                    }else {
+                        UserRucksack::create([
+                            'user_id' => $openid,
+                            'goods_id' => $gid,
+                            'gain_time' => date('Y-m-d H:i:s', time())
+                        ]);
+                    }
+                    Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
+                });
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
             return ['data' => 'get','lucky' => 'clear'];
         }else{
-            Users::where('openid',$user['id'])->update(['coin' => $ucoin - $gcoin]);
+            Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
             $add_lucky = $this->reLucky($lucky);
             $ret_lucky = ( ($lucky + $add_lucky) >= 100 ) ? 100 : $lucky + $add_lucky;
-            Redis::set($user['id'] . '_'. $id .'_lucky',$ret_lucky);
+            Redis::set($key,$ret_lucky);
             return ['data' => $res,'lucky' => $add_lucky];
         }
     }
@@ -105,6 +109,12 @@ class CatchDollController extends BaseController
             return ['code' => -1,'msg' => $e->getMessage()];
         }
         return $res ? ['code' => 1,'msg' => '添加成功！'] : ['code' => -1,'msg' => '添加失败！'];
+    }
+
+    // 返回 $num 个随机 娃娃机
+    protected function randDollMachine($key,$num = 6)
+    {
+        return json_decode('['.implode(',',Redis::srandmember($key, $num)).']',true);
     }
 
     // 返回随机键

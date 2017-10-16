@@ -24,7 +24,7 @@ class UserShowController extends BaseController
         $pic = $this->filesUpload($request);
         try{
             $res = UserShow::create([
-                'user_id'  => 2,
+                'user_id'  => $this->getOpenid(),
                 'contents' => $request->contents,
                 'pic'      => $pic
             ]);

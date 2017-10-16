@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     // 用户授权
     public function oauthUser()
@@ -25,7 +25,8 @@ class UserController extends Controller
     //添加用户
     protected function addUser($user,$gid)
     {
-        if(!is_array($user) && empty($user)) return;
+        if(!is_array($user) && empty($user)) return false;
+        $key = $this->getRedisKey($gid);
         $data = Users::where('openid',$user['id'])->first();
         if(!empty($data))
         {
@@ -38,9 +39,9 @@ class UserController extends Controller
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
             if(!$res) return ['code' => -1,'msg' => '用户更新失败！'];
-            if(!Redis::exists($user['id'] . '_'. $gid .'_lucky'))
+            if(!Redis::exists( $key ))
             {
-                Redis::set( $user['id'] . '_'. $gid .'_lucky',0);
+                Redis::set( $key,0 );
             }
             return ['code' => 1,'token' => $token];
         }
@@ -57,7 +58,7 @@ class UserController extends Controller
             return ['code' => -1,'msg' => $e->getMessage()];
         }
         if(!$res) return ['code' => -1,'msg' => '用户添加失败！'];
-        Redis::set( $user['id'] . '_'. $gid .'_lucky',0);
+        Redis::set( $key,0 );
         return true;
     }
 }

@@ -23,4 +23,22 @@ class BaseController extends Controller
             return $pic;
         }
     }
+
+    // 获取openid // 拿到授权用户资料
+    public function getOpenid()
+    {
+        return session('wechat.oauth_user')->toArray()['id'];
+    }
+
+    // 返回 redis 的键
+    public function getRedisKey($id)
+    {
+        return $this->getOpenid() . '_' . $id . '_lucky';
+    }
+
+    // 返回成功 或者 失败 状态信息
+    public function returnSuccessOrfail($res)
+    {
+        return $res ? ['code' => 1,'msg' => '添加成功！'] : ['code' => -1,'msg' => '添加失败！'];
+    }
 }
