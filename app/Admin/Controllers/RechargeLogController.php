@@ -91,7 +91,7 @@ class RechargeLogController extends Controller
                return $res->coin_num . ' ' . ($res->award_num ? '(奖励 '. $res->award_num .')' : '');
             });
             $grid->status('充值状态')->display(function ($status){
-               return  $status == 1 ? '充值成功' : $status == -1 ? '未支付' : '充值失败';
+               return  $status == 1 ? "<span class='label label-success'>支付成功</span>" : $status == -1 ? "<span class='label label-default'>未支付</span>" : "<span class='label label-danger'>充值失败</span>";
             });
             $grid->column('time','充值时间');
 

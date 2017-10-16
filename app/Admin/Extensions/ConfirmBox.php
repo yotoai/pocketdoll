@@ -9,12 +9,13 @@ use Encore\Admin\Grid\Tools\BatchAction;
 
 class ConfirmBox extends AbstractTool
 {
-    protected $action;
-    protected $id;
+    protected $title;
+    protected $url;
 
-    public function __construct()
+    public function __construct($title,$url)
     {
-
+        $this->title = $title;
+        $this->url = $url;
     }
 
     protected function script()
@@ -24,8 +25,7 @@ class ConfirmBox extends AbstractTool
     {
          var id = $(this).parents('tr').find('.grid-row-delete').attr('data-id');
          swal({
-                title: "确认通过？",
-                text:'确定审核通过',
+                title: "{$this->title}",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -38,7 +38,7 @@ class ConfirmBox extends AbstractTool
                	{
                     $.ajax({
                         type: 'post',
-                        url: 'usershow/updateStatus',
+                        url: "{$this->url}",
                         data: {
                             _token:LA.token,
                             id:id,

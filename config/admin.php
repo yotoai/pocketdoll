@@ -140,12 +140,14 @@ return [
     |               | sidebar-mini                            |
     |---------------------------------------------------------|
      */
-    'layout'  => ['sidebar-mini', 'sidebar-collapse'],
+  //  'layout'  => ['sidebar-mini', 'sidebar-collapse'],
+
+    'layout'  => ['sidebar-mini'],  // 默认打开左边栏
 
     /*
      * Version displayed in footer.
      */
-    'version'   => '1.5.x-dev',
+    'version'   => '1.0.0-dev',
 
     /*
      * Settings for extensions.

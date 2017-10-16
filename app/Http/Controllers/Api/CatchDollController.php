@@ -45,10 +45,7 @@ class CatchDollController extends BaseController
         $user = session('wechat.oauth_user')->toArray(); // 拿到授权用户资料
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
         $ucoin = Users::where('openid',$user['id'])->value('coin');
-        if($ucoin < $gcoin)
-        {
-            return ['code' => -1,'msg' => '金币不足！'];
-        }
+        if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
 
         $lucky = Redis::get($user['id'] . '_'. $id .'_lucky');
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
@@ -57,13 +54,18 @@ class CatchDollController extends BaseController
         {
             Redis::set($user['id'] . '_'. $id .'_lucky',0);
             try{
-                UserRucksack::create([
-                    'user_id'   => 1,
-                    'goods_id'  => $gid,
-                    'status'    => '0',
-                    'gain_time' => date('Y-m-d H:i:s',time())
-                ]);
-
+                $res = UserRucksack::where('openid',$user['id'])->where('goods_id',$id)->first();
+                if($res->goods_id == $gid) {
+                    UserRucksack::where('openid',$user['id'])->where('goods_id',$id)->update([
+                        'num' => $res->num + 1
+                    ]);
+                }else {
+                    UserRucksack::create([
+                        'user_id' => $user['id'],
+                        'goods_id' => $gid,
+                        'gain_time' => date('Y-m-d H:i:s', time())
+                    ]);
+                }
                 Users::where('openid',$user['id'])->update(['coin' => $ucoin - $gcoin]);
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
@@ -127,8 +129,8 @@ class CatchDollController extends BaseController
     // 返回增加的幸运值
     protected function reLucky($lucky)
     {
-        if( $lucky < 60) return mt_rand(1,9);
-        if( $lucky >= 60  && $lucky < 80) return mt_rand(1,5);
+        if( $lucky < 60) return mt_rand(1,6);
+        if( $lucky >= 60  && $lucky < 80) return mt_rand(1,4);
         if( $lucky >= 80  && $lucky < 95) return  mt_rand(1,2);
         if( $lucky >= 95) return 1;
     }

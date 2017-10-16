@@ -86,11 +86,14 @@ class UserShowController extends Controller
             $grid->contents('内容');
 
             $grid->status('审核状态')->display(function($status){
-                return $status == 1 ? '审核通过' : '未审核';
+                return $status == 1 ?  "<span class='label label-success'>审核通过</span>" : "<span class='label label-default'>未审核</span>";
             });
 
             $grid->actions(function ($actions){
-                $actions->append(new ConfirmBox());
+                $status = UserShow::find($actions->getKey())->status;
+                if($status != 1){
+                    $actions->append(new ConfirmBox('确认通过吗？','usershow/updateStatus'));
+                }
             });
 
             $grid->created_at('上传时间');
@@ -124,4 +127,6 @@ class UserShowController extends Controller
         $res = UserShow::where('id', request('id'))->update(['status' => request('action')]);
         return $res ? ['status' => true,'message' => '已通过...'] : ['status' => false,'message' => '审核通过失败！'];
     }
+
+
 }

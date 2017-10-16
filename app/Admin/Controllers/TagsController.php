@@ -43,8 +43,8 @@ class TagsController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('编辑');
+            $content->description('编辑标签');
 
             $content->body($this->form()->edit($id));
         });
@@ -59,8 +59,8 @@ class TagsController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('创建');
+            $content->description('创建标签');
 
             $content->body($this->form());
         });

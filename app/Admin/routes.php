@@ -15,6 +15,8 @@ Route::group([
     $router->resource('goods',GoodsController::class,['as' => 'admin']);
     $router->resource('machine',CategoryController::class,['as' => 'admin']);
     $router->resource('tags',TagsController::class,['as' => 'admin']);
+    $router->resource('gainlog',GainLogController::class,['as' => 'admin']);
+
     $router->resource('rucksack',RucksackController::class,['as' => 'admin']);
     // 公告/活动
     $router->resource('notice',NoticeController::class,['as' => 'admin']);
@@ -22,6 +24,7 @@ Route::group([
 
     // 修改审核状态
     $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
+    $router->post('gainlog/updateStatus', 'GainLogController@updateStatus')->name('admin.gainlog.updateStatus');
 
     // 任务&充值
     $router->resource('mission',MissionController::class,['as' => 'admin']);

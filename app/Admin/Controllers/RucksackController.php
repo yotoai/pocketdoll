@@ -86,13 +86,14 @@ class RucksackController extends Controller
                return Users::find($uid)->nickname;
             });
             $grid->goods_id('娃娃名称')->display(function ($gid){
-                return Goods::find($gid)->name;
+                $ids = explode(',',$gid);
+                return Goods::find($ids)->name;
             });
             $grid->column('pic','娃娃图片')->display(function ($ggid){
                return '<img src="/uploads/' . Goods::find($this->goods_id)->pic . '" width="36">';
             });
             $grid->status('状态')->display(function ($status){
-                return $status == 1 ? '已提现' : '未提现';
+                return $status == 1 ? "<span class='label label-success'>已提现</span>" : "<span class='label label-default'>未提现</span>";
             });
 
             $grid->withdraw_time('提现时间');
