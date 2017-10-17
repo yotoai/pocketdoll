@@ -16,9 +16,11 @@ class CreateMissionTable extends Migration
         Schema::create('mission', function (Blueprint $table) {
             $table->increments('id')->comment('任务id');
             $table->integer('type')->comment('任务种类');
-            $table->string('contents',200)->comment('任务内容');
+            $table->string('title',200)->comment('任务内容');
             $table->integer('award_id')->comment('奖励id');
             $table->integer('need_num')->comment('需要完成次数或天数');
+            $table->integer('parent_id')->comment('父级任务');
+            $table->integer('sort')->comment('排序');
             $table->enum('status',['0','1'])->commen('任务状态');
             $table->string('icon',255)->comment('任务图标');
             $table->timestamps();

@@ -11,7 +11,12 @@ class UserShowController extends BaseController
     // 获取玩家秀
     public function userShow()
     {
-        return UserShow::all()->toArray();
+        try{
+            $data = UserShow::where('status','1')->get();
+        }catch (\Exception $e){
+            return ['code' => -1,'msg'=> $e->getMessage()];
+        }
+        return ['code' => 1,'data' => $data->toArray()];
     }
 
     // 增加个玩家秀

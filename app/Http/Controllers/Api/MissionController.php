@@ -11,16 +11,34 @@ class MissionController extends BaseController
     //登录任务
     public function loginInMission()
     {
-
+       return Mission::join('awards','mission.award_id','=', 'awards.id')
+           ->where('type',4)
+           ->orderBy('sort')
+           ->get([
+               'mission.id as mission_id',
+               'mission.title as mission_title',
+               'awards.contents as awards_contents',
+               'mission.status as mission_status',
+               'mission.icon as mission_icon'
+           ]);
     }
 
     // 每日任务
     public function dayMission()
     {
-        $tid = missionType::get(['id']);
-        foreach($tid as $v){
-            $list[] = Mission::with('Awards')->where('type',$v['id'])->orderBy('id')->get();
-        }
+        $list[] = Mission::join('awards','mission.award_id','=', 'awards.id')
+                ->whereNotIn('type',[3,4])
+                ->where('parent_id',0)
+                ->orderBy('mission.id')
+                ->get([
+                    'mission.id as mission_id',
+                    'mission.type as mission_type',
+                    'mission.title as mission_title',
+                    'awards.contents as awards_contents',
+                    'mission.status as mission_status',
+                    'mission.icon as mission_icon',
+                    'mission.need_num as mission_need_num'
+                ]);
         return $list;
     }
 

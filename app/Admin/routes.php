@@ -17,12 +17,12 @@ Route::group([
     $router->resource('tags',TagsController::class,['as' => 'admin']);
     $router->resource('gainlog',GainLogController::class,['as' => 'admin']);
 
-    $router->resource('rucksack',RucksackController::class,['as' => 'admin']);
+//    $router->resource('rucksack',RucksackController::class,['as' => 'admin']);
     // 公告/活动
     $router->resource('notice',NoticeController::class,['as' => 'admin']);
     $router->resource('usershow',UserShowController::class,['as' => 'admin']);
 
-    // 修改审核状态
+    // 修改 状态
     $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
     $router->post('gainlog/updateStatus', 'GainLogController@updateStatus')->name('admin.gainlog.updateStatus');
 

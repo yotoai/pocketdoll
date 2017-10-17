@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Model\Awards;
 use App\Model\Mission;
 
+use App\Model\missionType;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -101,6 +102,9 @@ class MissionController extends Controller
 
             $form->select('parent_id','父级任务：')->options(Mission::selectOptions(1));
             $form->text('title','任务名称：')->rules('required|max:255');
+            $form->select('type','任务类型：')->options(function ($type){
+                return missionType::all()->pluck('title','id')->toArray();
+            });
             $form->select('award_id','奖励：')->options(function (){
                 return Awards::all()->pluck('contents','id')->toArray();
             });

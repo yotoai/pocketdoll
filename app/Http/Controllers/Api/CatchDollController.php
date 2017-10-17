@@ -11,20 +11,27 @@ use Illuminate\Support\Facades\Redis;
 
 class CatchDollController extends BaseController
 {
-    // 娃娃机选择
+    // 娃娃机选择 // 需开启redis
     public function selectDollMachine($id)
     {
-        $key = $this->getRedisKey($id);
-        if(!Redis::exists($key))
-        {
-            Redis::set($key,0);
+        try{
+            $key = $this->getRedisKey($id);
+            if(!Redis::exists($key))
+            {
+                Redis::set($key,0);
+            }
+            $lucky = Redis::get($key);
+            $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
         }
-        $lucky = Redis::get($key);
-        $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
-        return array_merge(['data' => $data],['lucky' => $lucky]);
+        return array_merge(['code' => 1],['data' => $data],['lucky' => $lucky]);
     }
 
-    // 随机返回6个娃娃种类
+    /**
+     *  notice ：要开redis
+     * @return array
+     */
     public function getRandDollMachine()
     {
         //Redis::del('doll_machine');
@@ -64,8 +71,9 @@ class CatchDollController extends BaseController
                         ]);
                     }else {
                         UserRucksack::create([
-                            'user_id' => $openid,
-                            'goods_id' => $gid,
+                            'user_id'   => $openid,
+                            'goods_id'  => $gid,
+                            'num'       => 1,
                             'gain_time' => date('Y-m-d H:i:s', time())
                         ]);
                     }

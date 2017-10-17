@@ -11,7 +11,12 @@ class RechargeAmountController extends BaseController
     // 获取充值列表
     public function rechargeAmount()
     {
-        return RechargeAmount::all()->toArray();
+        try{
+            $data = RechargeAmount::all();
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+        return ['code' => 1,'data' => $data->toArray()];
     }
 
     // 添加一个充值额度
