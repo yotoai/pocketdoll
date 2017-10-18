@@ -87,10 +87,19 @@ class GainLogController extends Controller
             $grid->goods_id('娃娃名称')->display(function ($gid){
                 $ids = explode(',',$gid);
                 $name = '';
-                foreach ($ids as $id){
-                    $name .=  Goods::find($id)->name .'<br />';
+                $nums = explode(',',$this->num);
+                foreach ($ids as $key=>$id){
+                    $name .= Goods::find($id)->name .'<br />';
                 }
                 return trim($name,'<br />');
+            });
+            $grid->column('nums','数量')->display(function (){
+                $nums = explode(',',$this->num);
+                $numss = '';
+                foreach ($nums as $num){
+                    $numss .= '×'. $num .'<br />';
+                }
+                return trim($numss,'<br />');
             });
             $grid->column('pic','娃娃图片')->display(function ($ggid){
                 $ids = explode(',',$this->goods_id);

@@ -36,6 +36,12 @@ class BaseController extends Controller
         return $this->getOpenid() . '_' . $id . '_lucky';
     }
 
+    // 返回积分key
+    public function getPointKey()
+    {
+        return $this->getOpenid() . '_point';
+    }
+
     // 返回成功 或者 失败 状态信息
     public function returnSuccessOrfail($res)
     {

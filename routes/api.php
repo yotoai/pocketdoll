@@ -48,11 +48,12 @@ $api->version('v1',function($api){
         $api->post('catchdoll/{id}/{gid}','CatchDollController@catchDoll');
         // 用户背包
         $api->get('rucksack/{uid}','UserRucksackController@rucksack');
-        $api->post('withdrawdoll/','UserRucksackController@withdrawDoll');
-        $api->post('withdrawlog/{id}','UserRucksackController@withdrawLog');
+        $api->post('withdrawdoll','UserRucksackController@withdrawDoll');
+        $api->post('withdrawlog','UserRucksackController@withdrawLog');
         // 任务
         $api->get('mission','MissionController@dayMission');
         $api->get('daymission','MissionController@loginInMission');
+        $api->post('finishmission/{id}','MissionController@finishMission');
 //        $api->post('addmission','MissionController@addMission');
 //        $api->post('upmission/{id}','MissionController@updateMission');
 //        $api->post('delmission/{id}','MissionController@deleteMission');

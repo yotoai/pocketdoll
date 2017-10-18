@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\catchLog;
 use App\Model\GainLog;
+use App\Model\Goods;
 use App\Model\UserRucksack;
-use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +39,7 @@ class UserRucksackController extends Controller
     // 提现记录 中的 每个娃娃的提现数量 根据 添加记录中 status = 1的 记录计算数量
     public function withdrawDoll(Request $request)
     {
+
         $rules = [
             'address_id' => 'required|integer',
             'data' => 'required',
@@ -46,43 +48,59 @@ class UserRucksackController extends Controller
             'data.*.num' => 'required|integer',
         ];
         $this->validate($request,$rules);
-
         try{
             $data = $request->data;
-            foreach($data as $key=>$val){
-                if(UserRucksack::where('id',$val['rucksack_id'])->value('status') == 1) {
-                    return ['code' => -1,'msg' => '该娃娃已提现！'];
-                }
+            foreach($data as $key=>$val) {
+                $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
+                if ($num < $val['num']) return ['code' => -1, 'msg' => '娃娃数量不足！'];
             }
             DB::transaction(function () use ($data,$request){
-                $rucksack_id = '';
-                $count = 0;
-                foreach($data as $key=>$val){
+                $goods_id = '';
+                $count = '';
+                foreach($data as $key=>$val) {
+                    $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
                     UserRucksack::where('id',$val['rucksack_id'])->update([
-                        'status' => '1',
-                        'withdraw_time' => date('Y-m-d H:i:s',time())
+                        'num' => $num - $val['num'],
                     ]);
-                    $rucksack_id .= $val['rucksack_id'] . ',';
-                    $count += $val['num'];
+                    $res_id =  catchLog::where([
+                        ['user_id','=',2],
+                        ['goods_id','=',$val['goods_id']],
+                        ['status','<>','1']
+                    ])->orderBy('id')->take($val['num'])->get(['id'])->pluck('id');
+                    catchLog::whereIn('id',$res_id)->update([
+                        'status' => '1'
+                    ]);
+                    $goods_id .= $val['goods_id'] . ',';
+                    $count .= $val['num'].',';
                 }
-
                 GainLog::create([
-                    'user_id'    => $request->user_id,
-                    'goods_id'   => trim($rucksack_id,','),
-                    'num'        => $request->num,
+                    'user_id'    => 2,
+                    'goods_id'   => rtrim($goods_id,','),
+                    'num'        => rtrim($count,','),
                     'address_id' => $request->address_id
                 ]);
             },3);
 
         }catch (\Exception $e){
-            return ['code' => -1,'msg' => '提现异常...'];
+            return ['code' => -1,'msg' => $e->getMessage()];
         }
         return ['code' => 1,'msg' => '提现成功！'];
     }
 
     // 提取记录
-    public function withdrawLog($id)
+    public function withdrawLog()
     {
-        return UserRucksack::where('status','1')->where('user_id',$id)->get();
+        $res = GainLog::where('user_id',2)->get(['id','goods_id','num','status']);
+        foreach ($res as $key=>$val){
+            $data = [];
+            $gids = explode(',',$val['goods_id']);
+            $nums = explode(',',$val['num']);
+            foreach (Goods::whereIn('id',$gids)->get(['name','pic']) as $k=>$v){
+                $data[$k] = $v;
+                $data[$k]['num'] = $nums[$k];
+            }
+            $res[$key]['data'] = $data;
+        }
+        return $res;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\catchLog;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\UserRucksack;
@@ -29,6 +30,7 @@ class CatchDollController extends BaseController
     }
 
     /**
+     * 随机返回娃娃机
      *  notice ：要开redis
      * @return array
      */
@@ -77,6 +79,10 @@ class CatchDollController extends BaseController
                             'gain_time' => date('Y-m-d H:i:s', time())
                         ]);
                     }
+                    catchLog::create([
+                        'user_id'  => $openid,
+                        'goods_id' => $gid,
+                    ]);
                     Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
                 });
             }catch (\Exception $e){
@@ -129,6 +135,7 @@ class CatchDollController extends BaseController
     private function getRand($arr)
     {
 	 	$sum = array_sum($arr);
+        $res = 'lost';
 	 	foreach($arr as $k => $v)
 	 	{
 	 		$current = mt_rand(1,$sum);

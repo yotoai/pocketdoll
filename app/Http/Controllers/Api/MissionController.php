@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\Awards;
 use App\Model\Mission;
 use App\Model\missionType;
+use App\Model\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class MissionController extends BaseController
 {
@@ -41,6 +44,27 @@ class MissionController extends BaseController
                 ]);
         return $list;
     }
+    
+    // 完成一个任务
+    public function finishMission($mid)
+    {
+        try{
+            $aid = Mission::where('id',$mid)->value('award_id');
+            $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
+            $ures = Users::where('openid',$this->getOpenid())->first(['coin']);
+            Users::where('openid',$this->getOpenid())->update([
+                'coin' => $ures->coin + $res->award_coin,
+            ]);
+            $p = Redis::get($this->getPointKey());
+            Redis::set($this->getPointKey(),$res->award_point + $p);
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+        return ['code' => 1,'msg' => '完成'];
+    }
+    
+    
+    
 
     // 添加个任务
     public function addMission(Request $request)

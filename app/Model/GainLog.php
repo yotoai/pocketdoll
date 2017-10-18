@@ -10,5 +10,5 @@ class GainLog extends Model
     protected $table = 'gain_log';
 
     // 指定字段
-    protected $fillable = ['user_id','goods_id','num','status'];
+    protected $fillable = ['user_id','goods_id','num','status','address_id'];
 }
