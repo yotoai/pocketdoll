@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Model\Awards;
 use App\Model\Mission;
 use App\Model\missionType;
+use App\Model\UserMission;
 use App\Model\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class MissionController extends BaseController
@@ -50,13 +52,23 @@ class MissionController extends BaseController
     {
         try{
             $aid = Mission::where('id',$mid)->value('award_id');
+
             $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
+
             $ures = Users::where('openid',$this->getOpenid())->first(['coin']);
-            Users::where('openid',$this->getOpenid())->update([
-                'coin' => $ures->coin + $res->award_coin,
-            ]);
-            $p = Redis::get($this->getPointKey());
-            Redis::set($this->getPointKey(),$res->award_point + $p);
+            DB::transaction(function () use ($res,$ures,$mid){
+                Users::where('openid',$this->getOpenid())->update([
+                    'coin' => $ures->coin + $res->award_coin,
+                ]);
+                UserMission::create([
+                    'user_id'    => $this->getOpenid(),
+                    'mission_id' => $mid,
+                    'status'     => '1'
+                ]);
+            });
+            $this->getMissionRedis($mid);
+            $p = Redis::get($this->getPointKey($mid));
+            Redis::set($this->getPointKey($mid),$res->award_point + $p);
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }

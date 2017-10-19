@@ -8,6 +8,7 @@ use App\Model\GoodsCategory;
 use App\Model\UserRucksack;
 use App\Model\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class CatchDollController extends BaseController
@@ -16,17 +17,18 @@ class CatchDollController extends BaseController
     public function selectDollMachine($id)
     {
         try{
-            $key = $this->getRedisKey($id);
-            if(!Redis::exists($key))
+            $lucky = $this->getLuckyRedis($id);
+            if(!$lucky >= 0 )
             {
-                Redis::set($key,0);
+                $this->setLuckyRedis($id,0);
+                $lucky = $this->getLuckyRedis($id);
             }
-            $lucky = Redis::get($key);
             $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
+            if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return array_merge(['code' => 1],['data' => $data],['lucky' => $lucky]);
+        return ['code' => 1,'data' => $data,'lucky' => $lucky];
     }
 
     /**
@@ -48,7 +50,12 @@ class CatchDollController extends BaseController
         }
     }
 
-    // 抓取娃娃
+    /**
+     * 抓取娃娃
+     * @param $id        @娃娃机id
+     * @param $gid       @娃娃id
+     * @return array
+     */
     public function catchDoll($id,$gid)
     {
         $openid = $this->getOpenid();
@@ -56,19 +63,19 @@ class CatchDollController extends BaseController
         $ucoin = Users::where('openid',$openid)->value('coin');
         if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
 
-        $key = $this->getRedisKey($id);
-
-        $lucky = Redis::get($key);
+        $lucky = $this->getLuckyRedis($id);
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
+
         $arr = ['get'=>$rate + $lucky,'lost'=>1000 - ($rate + $lucky)];
+
         if(($res = $this->getRand($arr)) == 'get' || $lucky == 100)
         {
-            Redis::set($key,0);
+            $this->setLuckyRedis($id,0);
             try{
                 DB::transaction(function () use ($openid,$gid,$gcoin,$ucoin){
-                    $res = UserRucksack::where('openid',$openid)->where('goods_id',$gid)->first();
+                    $res = UserRucksack::where('user_id',$openid)->where('goods_id',$gid)->first();
                     if($res->goods_id == $gid) {
-                        UserRucksack::where('openid',$openid)->where('goods_id',$gid)->update([
+                        UserRucksack::where('user_id',$openid)->where('goods_id',$gid)->update([
                             'num' => $res->num + 1
                         ]);
                     }else {
@@ -92,8 +99,7 @@ class CatchDollController extends BaseController
         }else{
             Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
             $add_lucky = $this->reLucky($lucky);
-            $ret_lucky = ( ($lucky + $add_lucky) >= 100 ) ? 100 : $lucky + $add_lucky;
-            Redis::set($key,$ret_lucky);
+            $this->setLuckyRedis($id,$add_lucky);
             return ['data' => $res,'lucky' => $add_lucky];
         }
     }
