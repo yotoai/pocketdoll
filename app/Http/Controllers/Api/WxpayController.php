@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\Mission;
 use App\Model\RechargeAmount;
 use App\Model\RechargeLog;
 use App\Model\Users;
@@ -11,7 +12,7 @@ use EasyWeChat\Payment\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class WxpayController extends Controller
+class WxpayController extends BaseController
 {
     //
 //    protected function __construct()
@@ -71,6 +72,8 @@ class WxpayController extends Controller
                 return ['code' => -1,'msg' => '订单不存在！']; // 如果订单不存在
             }
             if ($order->time) {
+                $this->setChargeNum(1);
+                $this->finishChargeMission();
                 return true; // 已经支付成功了就不再更新了
             }
             if ($successful) {
@@ -83,5 +86,17 @@ class WxpayController extends Controller
             return true;
         });
         return $response;
+    }
+
+    // 完成 充值任务
+    public function finishChargeMission()
+    {
+        $num = $this->getChargeNum();
+        $res = Mission::where('type',1)->get(['id','need_num']);
+        foreach ($res as $v){
+            if($v->need_num == $num && $this->getMissionRedis($v->id) != 1){
+                $this->setMissionRedis($v->id,1);
+            }
+        }
     }
 }

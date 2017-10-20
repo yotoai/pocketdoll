@@ -14,6 +14,8 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Encore\Admin\Widgets\Table;
+
 
 class GainLogController extends Controller
 {
@@ -82,7 +84,7 @@ class GainLogController extends Controller
             $grid->id('ID')->sortable();
 
             $grid->user_id('用户名')->display(function ($uid){
-                return Users::find($uid)->nickname;
+                return Users::where('openid',$uid)->first()->nickname;
             });
             $grid->goods_id('娃娃名称')->display(function ($gid){
                 $ids = explode(',',$gid);
@@ -114,12 +116,16 @@ class GainLogController extends Controller
                 }
                 return $pic;
             });
-            $grid->address_id('收货信息')->display(function ($aid){
-                $res = Address::find($aid);
-                return '收 货 人：'.$res->name .'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机号码：'.$res->phone .'<br />' .
-                        '地区信息：'.$res->area_info .'&nbsp;&nbsp;&nbsp;&nbsp;邮政编码：'. $res->post_code .'<br />' .
-                        '详细地址：' . $res->address;
+            $grid->address_info('收货信息')->display(function ($info){
+                $dzs = explode(',',$info);
+                return '收货人：' .$dzs[0].'<br>手机号码：' .$dzs[1].'<br>地区信息：' .$dzs[2].'<br>详细地址：' .$dzs[3].'<br>邮编：'.$dzs[4];
             });
+//            $grid->address_id('收货信息')->display(function ($aid){
+//                $res = Address::find($aid);
+//                return '收 货 人：'.$res->name .'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机号码：'.$res->phone .'<br />' .
+//                        '地区信息：'.$res->area_info .'&nbsp;&nbsp;&nbsp;&nbsp;邮政编码：'. $res->post_code .'<br />' .
+//                        '详细地址：' . $res->address;
+//            });
             $grid->status('状态')->display(function ($status){
                 return $status == 1 ? "<span class='label label-success'>已发货</span>" : "<span class='label label-default'>未发货</span>";
             });

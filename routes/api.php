@@ -34,7 +34,7 @@ $api->version('v1',function($api){
 //        $api->post('upgoods/{id}','GoodsController@updateGoods');
         // 玩家秀
         $api->get('usershow','UserShowController@userShow');
-//        $api->post('addusershow','UserShowController@addUserShow');
+        $api->post('addusershow','UserShowController@addUserShow');
 //        $api->post('delusershow/{id}','UserShowController@deleteUserShow');
 //        $api->post('upusershowstatus/{id}','UserShowController@updateUserShowStatus');
         // 充值额度

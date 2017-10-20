@@ -17,6 +17,7 @@ class CreateUserMissionTable extends Migration
             $table->increments('id')->comment('关联表id');
             $table->integer('user_id')->comment('用户id');
             $table->integer('mission_id')->comment('任务id');
+            $table->enum('status',['-1','1'])->default('-1')->comment('完成状态');
             $table->timestamps();
         });
     }

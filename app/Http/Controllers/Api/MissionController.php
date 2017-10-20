@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Model\Awards;
 use App\Model\Mission;
 use App\Model\missionType;
+use App\Model\UserMission;
 use App\Model\Users;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\DB;
 
 class MissionController extends BaseController
 {
@@ -26,22 +27,38 @@ class MissionController extends BaseController
            ]);
     }
 
-    // 每日任务
+    // 每日任务  先初始化
+    // 然后  根据 Redis数据 来
+    // 新出来的任务
+    // 已做完未领取奖励任务
+    // 已领取奖励任务
     public function dayMission()
     {
-        $list[] = Mission::join('awards','mission.award_id','=', 'awards.id')
-                ->whereNotIn('type',[3,4])
-                ->where('parent_id',0)
-                ->orderBy('mission.id')
-                ->get([
-                    'mission.id as mission_id',
-                    'mission.type as mission_type',
-                    'mission.title as mission_title',
-                    'awards.contents as awards_contents',
-                    'mission.status as mission_status',
-                    'mission.icon as mission_icon',
-                    'mission.need_num as mission_need_num'
-                ]);
+        $keys = $this->getKeys('mission');
+        if(empty($keys)){
+            $list[] = Mission::join('awards','mission.award_id','=', 'awards.id')
+                    ->whereNotIn('type',[3,4])
+                    ->where('parent_id',0)
+                    ->orderBy('mission.id')
+                    ->get([
+                        'mission.id as mission_id',
+                        'mission.type as mission_type',
+                        'mission.title as mission_title',
+                        'awards.contents as awards_contents',
+                        'mission.status as mission_status',
+                        'mission.icon as mission_icon',
+                        'mission.need_num as mission_need_num'
+                    ]);
+        }else{
+            $values = [];
+            foreach ($keys as $v){
+                $values[] = $this->getValues($v);
+            }
+            //$data = Mission::where('parent_id',$mid)->first();
+            return $values;
+        }
+
+
         return $list;
     }
     
@@ -50,17 +67,31 @@ class MissionController extends BaseController
     {
         try{
             $aid = Mission::where('id',$mid)->value('award_id');
+
             $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
+
             $ures = Users::where('openid',$this->getOpenid())->first(['coin']);
-            Users::where('openid',$this->getOpenid())->update([
-                'coin' => $ures->coin + $res->award_coin,
-            ]);
-            $p = Redis::get($this->getPointKey());
-            Redis::set($this->getPointKey(),$res->award_point + $p);
+            DB::transaction(function () use ($res,$ures,$mid){
+                Users::where('openid',$this->getOpenid())->update([
+                    'coin' => $ures->coin + $res->award_coin,
+                ]);
+                UserMission::create([
+                    'user_id'    => $this->getOpenid(),
+                    'mission_id' => $mid,
+                    'status'     => '1'
+                ]);
+            });
+            if($this->getMissionRedis($mid) == 2){
+                return ['code' => -1,'msg' => '该任务已完成！'];
+            }else{
+                $this->setMissionRedis($mid,2);
+                $this->setPointRedis($res->award_point);
+                $data = Mission::where('parent_id',$mid)->first();
+                return ['code' => 1,'msg' => '完成','point' => $res->award_point,'data' => $data];
+            }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'msg' => '完成'];
     }
     
     

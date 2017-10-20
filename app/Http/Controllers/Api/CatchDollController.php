@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Model\catchLog;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
+use App\Model\Mission;
 use App\Model\UserRucksack;
 use App\Model\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class CatchDollController extends BaseController
@@ -16,17 +18,18 @@ class CatchDollController extends BaseController
     public function selectDollMachine($id)
     {
         try{
-            $key = $this->getRedisKey($id);
-            if(!Redis::exists($key))
+            $lucky = $this->getLuckyRedis($id);
+            if(!$lucky >= 0 )
             {
-                Redis::set($key,0);
+                $this->setLuckyRedis($id,0);
+                $lucky = $this->getLuckyRedis($id);
             }
-            $lucky = Redis::get($key);
             $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
+            if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return array_merge(['code' => 1],['data' => $data],['lucky' => $lucky]);
+        return ['code' => 1,'data' => $data,'lucky' => $lucky];
     }
 
     /**
@@ -48,7 +51,12 @@ class CatchDollController extends BaseController
         }
     }
 
-    // 抓取娃娃
+    /**
+     * 抓取娃娃
+     * @param $id        @娃娃机id
+     * @param $gid       @娃娃id
+     * @return array
+     */
     public function catchDoll($id,$gid)
     {
         $openid = $this->getOpenid();
@@ -56,19 +64,19 @@ class CatchDollController extends BaseController
         $ucoin = Users::where('openid',$openid)->value('coin');
         if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
 
-        $key = $this->getRedisKey($id);
-
-        $lucky = Redis::get($key);
+        $lucky = $this->getLuckyRedis($id);
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
+
         $arr = ['get'=>$rate + $lucky,'lost'=>1000 - ($rate + $lucky)];
+
         if(($res = $this->getRand($arr)) == 'get' || $lucky == 100)
         {
-            Redis::set($key,0);
+            $this->setLuckyRedis($id,0);
             try{
                 DB::transaction(function () use ($openid,$gid,$gcoin,$ucoin){
-                    $res = UserRucksack::where('openid',$openid)->where('goods_id',$gid)->first();
+                    $res = UserRucksack::where('user_id',$openid)->where('goods_id',$gid)->first();
                     if($res->goods_id == $gid) {
-                        UserRucksack::where('openid',$openid)->where('goods_id',$gid)->update([
+                        UserRucksack::where('user_id',$openid)->where('goods_id',$gid)->update([
                             'num' => $res->num + 1
                         ]);
                     }else {
@@ -88,42 +96,19 @@ class CatchDollController extends BaseController
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
+            $this->finishMission('catched');
+            $this->setCatchedNum(1);
             return ['data' => 'get','lucky' => 'clear'];
         }else{
+            $this->setCatchNum(1);
+            $this->finishMission('catch');
             Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
             $add_lucky = $this->reLucky($lucky);
-            $ret_lucky = ( ($lucky + $add_lucky) >= 100 ) ? 100 : $lucky + $add_lucky;
-            Redis::set($key,$ret_lucky);
+            $this->setLuckyRedis($id,$add_lucky);
             return ['data' => $res,'lucky' => $add_lucky];
         }
     }
 
-    // 添加一个娃娃种类
-    public function addGoodsCategory(Request $request)
-    {
-        $rules = [
-            'cate_name' => 'required|unique:goods_category|max:255',
-            'win_rate'  => 'required|numeric',
-            'spec'      => 'required|integer',
-            'coin'      => 'required|integer',
-            'tag'       => 'integer'
-        ];
-        $this->validate($request,$rules);
-        $pic = $this->filesUpload($request);
-        try{
-            $res  = GoodsCategory::create([
-                'cate_name' => $request->cate_name,
-                'win_rate'  => $request->win_rate,
-                'spec'      => $request->spec,
-                'coin'      => $request->coin,
-                'tag_id'    => $request->tag,
-                'pic'       => $pic
-            ]);
-        }catch (\Exception $e){
-            return ['code' => -1,'msg' => $e->getMessage()];
-        }
-        return $res ? ['code' => 1,'msg' => '添加成功！'] : ['code' => -1,'msg' => '添加失败！'];
-    }
 
     // 返回 $num 个随机 娃娃机
     protected function randDollMachine($key,$num = 6)
@@ -154,9 +139,30 @@ class CatchDollController extends BaseController
     // 返回增加的幸运值
     protected function reLucky($lucky)
     {
-        if( $lucky < 60) return mt_rand(1,6);
+        if( $lucky < 60 && $lucky >=0) return mt_rand(1,6);
         if( $lucky >= 60  && $lucky < 80) return mt_rand(1,4);
         if( $lucky >= 80  && $lucky < 95) return  mt_rand(1,2);
-        if( $lucky >= 95) return 1;
+        if( $lucky >= 95 && $lucky <=100) return 1;
+    }
+
+    protected function finishMission($action)
+    {
+        if($action == 'catch'){
+            $num = $this->getCatchNum();
+            $res = Mission::where('type',2)->get(['id','need_num']);
+            foreach ($res as $v){
+                if($v->need_num == $num && $this->getMissionRedis($v->id) != 1){
+                    $this->setMissionRedis($v->id,1);
+                }
+            }
+        }elseif($action == 'catched'){
+            $num = $this->getCatchedNum();
+            $res = Mission::where('type',5)->get(['id','need_num']);
+            foreach ($res as $v){
+                if($v->need_num == $num && $this->getMissionRedis($v->id) != 1){
+                    $this->setMissionRedis($v->id,1);
+                }
+            }
+        }
     }
 }

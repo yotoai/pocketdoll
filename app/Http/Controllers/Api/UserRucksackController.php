@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\Address;
 use App\Model\catchLog;
 use App\Model\GainLog;
 use App\Model\Goods;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class UserRucksackController extends Controller
+class UserRucksackController extends BaseController
 {
     // 获取背包列表
     public function rucksack($uid)
@@ -63,7 +64,7 @@ class UserRucksackController extends Controller
                         'num' => $num - $val['num'],
                     ]);
                     $res_id =  catchLog::where([
-                        ['user_id','=',2],
+                        ['user_id','=',$this->getOpenid()],
                         ['goods_id','=',$val['goods_id']],
                         ['status','<>','1']
                     ])->orderBy('id')->take($val['num'])->get(['id'])->pluck('id');
@@ -73,11 +74,14 @@ class UserRucksackController extends Controller
                     $goods_id .= $val['goods_id'] . ',';
                     $count .= $val['num'].',';
                 }
+
+                $dz = Address::where('id',$request->address_id)->first();
+                $address_info = $dz->name.','.$dz->phone.','.$dz->area_info.','.$dz->address.','.$dz->post_code;
                 GainLog::create([
-                    'user_id'    => 2,
+                    'user_id'    => $this->getOpenid(),
                     'goods_id'   => rtrim($goods_id,','),
                     'num'        => rtrim($count,','),
-                    'address_id' => $request->address_id
+                    'address_info' => $address_info
                 ]);
             },3);
 
@@ -90,7 +94,7 @@ class UserRucksackController extends Controller
     // 提取记录
     public function withdrawLog()
     {
-        $res = GainLog::where('user_id',2)->get(['id','goods_id','num','status']);
+        $res = GainLog::where('user_id',$this->getOpenid())->get(['id','goods_id','num','status']);
         foreach ($res as $key=>$val){
             $data = [];
             $gids = explode(',',$val['goods_id']);
@@ -102,5 +106,30 @@ class UserRucksackController extends Controller
             $res[$key]['data'] = $data;
         }
         return $res;
+    }
+    
+    
+    // 添加收货地址
+    public function storeAddress(Request $request)
+    {
+        $rules = [
+            'name'  => 'required|max:255',
+            'phone' => 'required|regex:/^1[34578][0-9]{9}$/',
+            'area_info' => 'required',
+            'address'   => 'required'
+        ];
+        $this->validate($request,$rules);
+        try{
+            Address::create([
+                'user_id'   => $this->getOpenid(),
+                'name'      => $request->name,
+                'phone'     => $request->phone,
+                'area_info' => $request->area,
+                'address'   => $request->address
+            ]);
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+        return ['code' => 1,'msg' => '添加成功！'];
     }
 }

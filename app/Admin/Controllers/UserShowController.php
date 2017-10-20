@@ -79,7 +79,7 @@ class UserShowController extends Controller
             $grid->id('ID')->sortable();
 
             $grid->user_id('玩家名称')->display(function ($uid){
-                return Users::find($uid)->nickname;
+                return Users::where('openid',$uid)->first()->nickname;
             });
             $grid->pic('图秀')->image('/uploads/',36,36);
 

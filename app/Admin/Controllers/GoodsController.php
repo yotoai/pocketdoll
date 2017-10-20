@@ -98,10 +98,13 @@ class GoodsController extends Controller
     {
         return Admin::form(Goods::class, function (Form $form) {
             $form->display('id', 'ID');
-            $form->text('name','商品名称：');
+            $form->text('name','商品名称：')->rules('required|max:255');
             $cate = GoodsCategory::all(['id','cate_name'])->pluck('cate_name','id')->toArray();
             $form->select('goods_cate_id','娃娃机：')->options($cate);
-            $form->image('pic','娃娃图片：');
+            $form->number('width','娃娃宽度：')->rules('required');
+            $form->number('height','娃娃高度：')->rules('required');
+            $form->image('pic','展示图片：');
+            $form->image('sc_pic','素材图片：')->rules('required');
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
             $form->saving(function (Form $form){
