@@ -97,8 +97,62 @@ class BaseController extends Controller
         return Redis::get($this->getOpenid().'_'.$mid.'_mission');
     }
 
+    // 设置抓取次数
+    public function setCatchNum($num=0)
+    {
+        if($num == 0){
+            Redis::set($this->getOpenid().'_catch', $num);
+        }else{
+            Redis::set($this->getOpenid().'_catch',$this->getCatchNum() + $num);
+        }
+    }
 
+    // 获取用户的抓取次数
+    public function getCatchNum()
+    {
+        return Redis::get($this->getOpenid().'_catch');
+    }
 
+    // 设置 抓到娃娃次数
+    public function setCatchedNum($num=0)
+    {
+        if($num == 0){
+            Redis::set($this->getOpenid().'_catched',$num);
+        }else{
+            Redis::set($this->getOpenid() .'_catched',$this->getCatchedNum() + $num);
+
+        }
+    }
+
+    // 获取用户抓到娃娃的次数
+    public function getCatchedNum()
+    {
+        return Redis::get($this->getOpenid().'_catched');
+    }
+
+    // 设置 充值次数
+    public function setChargeNum($num=0)
+    {
+        Redis::set($this->getOpenid().'_charge',$this->getChargeNum() + $num);
+    }
+
+    // 获取 充值次数
+    public function getChargeNum()
+    {
+        return Redis::get($this->getOpenid().'_charge');
+    }
+
+    // 模糊获取 Redis 的key
+    public function getKeys($type)
+    {
+        return Redis::keys($this->getOpenid().'_*_'.$type);
+    }
+
+    // 获取对应key的值
+    public function getValues($key)
+    {
+        return Redis::get($key);
+    }
 
     // 返回成功 或者 失败 状态信息
     public function returnSuccessOrfail($res)

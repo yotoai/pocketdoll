@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Model\catchLog;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
+use App\Model\Mission;
 use App\Model\UserRucksack;
 use App\Model\Users;
 use Illuminate\Http\Request;
@@ -95,8 +96,12 @@ class CatchDollController extends BaseController
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
+            $this->finishMission('catched');
+            $this->setCatchedNum(1);
             return ['data' => 'get','lucky' => 'clear'];
         }else{
+            $this->setCatchNum(1);
+            $this->finishMission('catch');
             Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
             $add_lucky = $this->reLucky($lucky);
             $this->setLuckyRedis($id,$add_lucky);
@@ -104,32 +109,6 @@ class CatchDollController extends BaseController
         }
     }
 
-    // 添加一个娃娃种类
-    public function addGoodsCategory(Request $request)
-    {
-        $rules = [
-            'cate_name' => 'required|unique:goods_category|max:255',
-            'win_rate'  => 'required|numeric',
-            'spec'      => 'required|integer',
-            'coin'      => 'required|integer',
-            'tag'       => 'integer'
-        ];
-        $this->validate($request,$rules);
-        $pic = $this->filesUpload($request);
-        try{
-            $res  = GoodsCategory::create([
-                'cate_name' => $request->cate_name,
-                'win_rate'  => $request->win_rate,
-                'spec'      => $request->spec,
-                'coin'      => $request->coin,
-                'tag_id'    => $request->tag,
-                'pic'       => $pic
-            ]);
-        }catch (\Exception $e){
-            return ['code' => -1,'msg' => $e->getMessage()];
-        }
-        return $res ? ['code' => 1,'msg' => '添加成功！'] : ['code' => -1,'msg' => '添加失败！'];
-    }
 
     // 返回 $num 个随机 娃娃机
     protected function randDollMachine($key,$num = 6)
@@ -160,9 +139,30 @@ class CatchDollController extends BaseController
     // 返回增加的幸运值
     protected function reLucky($lucky)
     {
-        if( $lucky < 60) return mt_rand(1,6);
+        if( $lucky < 60 && $lucky >=0) return mt_rand(1,6);
         if( $lucky >= 60  && $lucky < 80) return mt_rand(1,4);
         if( $lucky >= 80  && $lucky < 95) return  mt_rand(1,2);
-        if( $lucky >= 95) return 1;
+        if( $lucky >= 95 && $lucky <=100) return 1;
+    }
+
+    protected function finishMission($action)
+    {
+        if($action == 'catch'){
+            $num = $this->getCatchNum();
+            $res = Mission::where('type',2)->get(['id','need_num']);
+            foreach ($res as $v){
+                if($v->need_num == $num && $this->getMissionRedis($v->id) != 1){
+                    $this->setMissionRedis($v->id,1);
+                }
+            }
+        }elseif($action == 'catched'){
+            $num = $this->getCatchedNum();
+            $res = Mission::where('type',5)->get(['id','need_num']);
+            foreach ($res as $v){
+                if($v->need_num == $num && $this->getMissionRedis($v->id) != 1){
+                    $this->setMissionRedis($v->id,1);
+                }
+            }
+        }
     }
 }
