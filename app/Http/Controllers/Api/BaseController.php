@@ -154,6 +154,12 @@ class BaseController extends Controller
         return Redis::get($key);
     }
 
+    // 获取对应key的值
+    public function getVal($key)
+    {
+        return Redis::get($this->getOpenid().'_'.$key.'_mission');
+    }
+
     // 返回成功 或者 失败 状态信息
     public function returnSuccessOrfail($res)
     {
