@@ -100,7 +100,7 @@ class MissionController extends Controller
 
             $form->display('id', 'ID：');
 
-            $form->select('parent_id','父级任务：')->options(Mission::selectOptions(1));
+            $form->select('parent_id','父级任务：')->options(Mission::selectOptions(1))->help($this->iconHelp());
             $form->text('title','任务名称：')->rules('required|max:255');
             $form->select('type','任务类型：')->options(function ($type){
                 return missionType::all()->pluck('title','id')->toArray();
@@ -115,5 +115,10 @@ class MissionController extends Controller
             $form->display('created_at', '创建时间：');
             $form->display('updated_at', '修改时间：');
         });
+    }
+
+    protected function iconHelp()
+    {
+        return '<span style="color: red;">如果没有前置任务，无需选择...</span>';
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Users;
+use EasyWeChat\Foundation\Application;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
@@ -74,5 +75,15 @@ class UserController extends BaseController
             return ['code' => -1,'msg' => $e->getMessage()];
         }
         return ['code' => 1,'data' => $data,'lucky' => $lucky];
+    }
+
+    // 返回 微信分享 需要的 配置
+    public function getJsConfig()
+    {
+        $app = new Application(config('wechat'));
+
+        $js = $app->js;
+
+        return $js->config(['onMenuShareQQ', 'onMenuShareWeibo'],true);
     }
 }

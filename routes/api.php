@@ -52,6 +52,7 @@ $api->version('v1',function($api){
         $api->post('withdrawlog','UserRucksackController@withdrawLog');
         // 任务
         $api->get('mission','MissionController@dayMission');
+        $api->get('invite','MissionController@inviteMission');
         $api->get('daymission','MissionController@loginInMission');
         $api->post('finishmission/{id}','MissionController@finishMission');
 //        $api->post('addmission','MissionController@addMission');
@@ -67,5 +68,7 @@ $api->version('v1',function($api){
         // 充值
         $api->post('wxpay/{id}','WxpayController@Wxpay');
         $api->post('wxnotify','WxpayController@wxNotify');
+        // 分享
+        $api->get('jssdk','UserController@getJsConfig');
     });
 });

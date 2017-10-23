@@ -35,4 +35,7 @@ Route::group([
     // 充值管理
     $router->resource('recharge',RechargeController::class,['as' => 'admin']);
     $router->resource('rechargeLog',RechargeLogController::class,['as' => 'admin']);
+
+    // 用户管理
+    $router->resource('user',UserController::class,['as' =>'admin']);
 });

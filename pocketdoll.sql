@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS `admin_menu` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.admin_menu 的数据：21 rows
+-- 正在导出表  pocketdoll.admin_menu 的数据：23 rows
 /*!40000 ALTER TABLE `admin_menu` DISABLE KEYS */;
 INSERT INTO `admin_menu` (`id`, `parent_id`, `order`, `title`, `icon`, `uri`, `created_at`, `updated_at`) VALUES
 	(1, 0, 1, '控制台', 'fa-bar-chart', '/', NULL, '2017-10-12 15:47:40'),
@@ -75,7 +75,8 @@ INSERT INTO `admin_menu` (`id`, `parent_id`, `order`, `title`, `icon`, `uri`, `c
 	(19, 15, 10, '奖励管理', 'fa-empire', 'awards', '2017-10-14 17:22:27', '2017-10-17 17:00:34'),
 	(20, 8, 15, '提现管理', 'fa-dropbox', 'gainlog', '2017-10-14 18:27:52', '2017-10-17 17:07:27'),
 	(21, 0, 16, '充值管理', 'fa-dollar', NULL, '2017-10-17 16:58:59', '2017-10-17 17:07:27'),
-	(23, 8, 0, '抓取日志', 'fa-reddit-square', 'catchlog', '2017-10-21 18:04:04', '2017-10-21 18:04:41');
+	(23, 8, 0, '抓取日志', 'fa-reddit-square', 'catchlog', '2017-10-21 18:04:04', '2017-10-21 18:04:41'),
+	(24, 0, 0, '玩家管理', 'fa-odnoklassniki', 'user', '2017-10-23 17:57:35', '2017-10-23 17:59:43');
 /*!40000 ALTER TABLE `admin_menu` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.admin_operation_log 结构
@@ -90,9 +91,9 @@ CREATE TABLE IF NOT EXISTS `admin_operation_log` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `admin_operation_log_user_id_index` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1237 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1322 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.admin_operation_log 的数据：1,207 rows
+-- 正在导出表  pocketdoll.admin_operation_log 的数据：1,288 rows
 /*!40000 ALTER TABLE `admin_operation_log` DISABLE KEYS */;
 INSERT INTO `admin_operation_log` (`id`, `user_id`, `path`, `method`, `ip`, `input`, `created_at`, `updated_at`) VALUES
 	(1, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-12 10:59:15', '2017-10-12 10:59:15'),
@@ -1330,7 +1331,92 @@ INSERT INTO `admin_operation_log` (`id`, `user_id`, `path`, `method`, `ip`, `inp
 	(1233, 1, 'admin/catchlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/catchlog"}', '2017-10-21 18:07:53', '2017-10-21 18:07:53'),
 	(1234, 1, 'admin/catchlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/catchlog"}', '2017-10-21 18:07:55', '2017-10-21 18:07:55'),
 	(1235, 1, 'admin/catchlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/catchlog","_pjax":"#pjax-container"}', '2017-10-21 18:09:17', '2017-10-21 18:09:17'),
-	(1236, 1, 'admin/catchlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/catchlog","_pjax":"#pjax-container"}', '2017-10-21 18:13:13', '2017-10-21 18:13:13');
+	(1236, 1, 'admin/catchlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/catchlog","_pjax":"#pjax-container"}', '2017-10-21 18:13:13', '2017-10-21 18:13:13'),
+	(1237, 1, 'admin/notice', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/notice","_pjax":"#pjax-container"}', '2017-10-21 18:20:23', '2017-10-21 18:20:23'),
+	(1238, 1, 'admin/usershow', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/usershow","_pjax":"#pjax-container"}', '2017-10-21 18:20:25', '2017-10-21 18:20:25'),
+	(1239, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-23 09:31:51', '2017-10-23 09:31:51'),
+	(1240, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 09:32:00', '2017-10-23 09:32:00'),
+	(1241, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 10:55:11', '2017-10-23 10:55:11'),
+	(1242, 1, 'admin/auth/users', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/users","_pjax":"#pjax-container"}', '2017-10-23 10:55:37', '2017-10-23 10:55:37'),
+	(1243, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 10:56:32', '2017-10-23 10:56:32'),
+	(1244, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create"}', '2017-10-23 14:04:42', '2017-10-23 14:04:42'),
+	(1245, 1, 'admin/auth/login', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/login"}', '2017-10-23 14:04:48', '2017-10-23 14:04:48'),
+	(1246, 1, 'admin/auth/login', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/login"}', '2017-10-23 14:04:48', '2017-10-23 14:04:48'),
+	(1247, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-23 14:04:49', '2017-10-23 14:04:49'),
+	(1248, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission"}', '2017-10-23 14:04:55', '2017-10-23 14:04:55'),
+	(1249, 1, 'admin/auth/users', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/users","_pjax":"#pjax-container"}', '2017-10-23 14:04:57', '2017-10-23 14:04:57'),
+	(1250, 1, 'admin/auth/users', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/users"}', '2017-10-23 14:04:59', '2017-10-23 14:04:59'),
+	(1251, 1, 'admin/auth/logout', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/logout","_pjax":"#pjax-container"}', '2017-10-23 14:05:04', '2017-10-23 14:05:04'),
+	(1252, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-23 14:18:34', '2017-10-23 14:18:34'),
+	(1253, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:18:41', '2017-10-23 14:18:41'),
+	(1254, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 14:18:44', '2017-10-23 14:18:44'),
+	(1255, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:20:54', '2017-10-23 14:20:54'),
+	(1256, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 14:20:56', '2017-10-23 14:20:56'),
+	(1257, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:21:55', '2017-10-23 14:21:55'),
+	(1258, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 14:21:57', '2017-10-23 14:21:57'),
+	(1259, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:22:14', '2017-10-23 14:22:14'),
+	(1260, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 14:22:17', '2017-10-23 14:22:17'),
+	(1261, 1, 'admin/awards', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/awards","_pjax":"#pjax-container"}', '2017-10-23 14:23:30', '2017-10-23 14:23:30'),
+	(1262, 1, 'admin/awards/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/awards\\/create","_pjax":"#pjax-container"}', '2017-10-23 14:23:32', '2017-10-23 14:23:32'),
+	(1263, 1, 'admin/awards', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/awards","_pjax":"#pjax-container"}', '2017-10-23 14:23:38', '2017-10-23 14:23:38'),
+	(1264, 1, 'admin/awards', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/awards","_pjax":"#pjax-container"}', '2017-10-23 14:23:41', '2017-10-23 14:23:41'),
+	(1265, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:23:44', '2017-10-23 14:23:44'),
+	(1266, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 14:23:48', '2017-10-23 14:23:48'),
+	(1267, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:23:52', '2017-10-23 14:23:52'),
+	(1268, 1, 'admin/mission/3/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/3\\/edit","_pjax":"#pjax-container"}', '2017-10-23 14:23:54', '2017-10-23 14:23:54'),
+	(1269, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:33:24', '2017-10-23 14:33:24'),
+	(1270, 1, 'admin/mission/7/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/7\\/edit","_pjax":"#pjax-container"}', '2017-10-23 14:33:29', '2017-10-23 14:33:29'),
+	(1271, 1, 'admin/mission/7', 'PUT', '127.0.0.1', '{"parent_id":"0","title":"\\u7d2f\\u8ba1\\u767b\\u5f55\\u4e24\\u5929","type":"4","award_id":"1","need_num":"2","_token":"ar8us1b1xr8dhnZlWylDZvscmdPqRPhhvTCj1AA5","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/mission","_url":"\\/admin\\/mission\\/7"}', '2017-10-23 14:33:37', '2017-10-23 14:33:37'),
+	(1272, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission"}', '2017-10-23 14:33:38', '2017-10-23 14:33:38'),
+	(1273, 1, 'admin/awards', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/awards","_pjax":"#pjax-container"}', '2017-10-23 14:33:43', '2017-10-23 14:33:43'),
+	(1274, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 14:33:44', '2017-10-23 14:33:44'),
+	(1275, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 14:33:46', '2017-10-23 14:33:46'),
+	(1276, 1, 'admin/missionlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/missionlog","_pjax":"#pjax-container"}', '2017-10-23 15:32:10', '2017-10-23 15:32:10'),
+	(1277, 1, 'admin/missionlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/missionlog","_pjax":"#pjax-container","page":"2"}', '2017-10-23 15:32:34', '2017-10-23 15:32:34'),
+	(1278, 1, 'admin/missionlog', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/missionlog","_pjax":"#pjax-container","page":"1"}', '2017-10-23 15:32:38', '2017-10-23 15:32:38'),
+	(1279, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 15:47:52', '2017-10-23 15:47:52'),
+	(1280, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 15:48:21', '2017-10-23 15:48:21'),
+	(1281, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 16:07:24', '2017-10-23 16:07:24'),
+	(1282, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 16:07:29', '2017-10-23 16:07:29'),
+	(1283, 1, 'admin/mission', 'POST', '127.0.0.1', '{"parent_id":"0","title":"\\u6293\\u5230 1 \\u4e2a\\u5a03\\u5a03","type":"5","award_id":"1","need_num":"1","_token":"ar8us1b1xr8dhnZlWylDZvscmdPqRPhhvTCj1AA5","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/mission","_url":"\\/admin\\/mission"}', '2017-10-23 16:07:59', '2017-10-23 16:07:59'),
+	(1284, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission"}', '2017-10-23 16:08:01', '2017-10-23 16:08:01'),
+	(1285, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission","_pjax":"#pjax-container"}', '2017-10-23 16:36:24', '2017-10-23 16:36:24'),
+	(1286, 1, 'admin/mission/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission\\/create","_pjax":"#pjax-container"}', '2017-10-23 16:36:26', '2017-10-23 16:36:26'),
+	(1287, 1, 'admin/mission', 'POST', '127.0.0.1', '{"parent_id":"0","title":"\\u9080\\u8bf7 1 \\u4e2a\\u4eba","type":"3","award_id":"1","need_num":"1","_token":"ar8us1b1xr8dhnZlWylDZvscmdPqRPhhvTCj1AA5","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/mission","_url":"\\/admin\\/mission"}', '2017-10-23 16:36:55', '2017-10-23 16:36:55'),
+	(1288, 1, 'admin/mission', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/mission"}', '2017-10-23 16:36:55', '2017-10-23 16:36:55'),
+	(1289, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/","_pjax":"#pjax-container"}', '2017-10-23 17:56:42', '2017-10-23 17:56:42'),
+	(1290, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu","_pjax":"#pjax-container"}', '2017-10-23 17:56:43', '2017-10-23 17:56:43'),
+	(1291, 1, 'admin/auth/menu', 'POST', '127.0.0.1', '{"parent_id":"0","title":"\\u73a9\\u5bb6\\u7ba1\\u7406","icon":"fa-odnoklassniki","uri":null,"roles":[null],"_token":"ar8us1b1xr8dhnZlWylDZvscmdPqRPhhvTCj1AA5","_url":"\\/admin\\/auth\\/menu"}', '2017-10-23 17:57:35', '2017-10-23 17:57:35'),
+	(1292, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-23 17:57:36', '2017-10-23 17:57:36'),
+	(1293, 1, 'admin/auth/menu/24/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu\\/24\\/edit","_pjax":"#pjax-container"}', '2017-10-23 17:59:31', '2017-10-23 17:59:31'),
+	(1294, 1, 'admin/auth/menu/24', 'PUT', '127.0.0.1', '{"parent_id":"0","title":"\\u73a9\\u5bb6\\u7ba1\\u7406","icon":"fa-odnoklassniki","uri":"user","roles":[null],"_token":"ar8us1b1xr8dhnZlWylDZvscmdPqRPhhvTCj1AA5","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/auth\\/menu?_url=%2Fadmin%2Fauth%2Fmenu","_url":"\\/admin\\/auth\\/menu\\/24"}', '2017-10-23 17:59:43', '2017-10-23 17:59:43'),
+	(1295, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-23 17:59:44', '2017-10-23 17:59:44'),
+	(1296, 1, 'admin/auth/menu', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/auth\\/menu"}', '2017-10-23 17:59:47', '2017-10-23 17:59:47'),
+	(1297, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 17:59:50', '2017-10-23 17:59:50'),
+	(1298, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:00:21', '2017-10-23 18:00:21'),
+	(1299, 1, 'admin/user/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/create","_pjax":"#pjax-container"}', '2017-10-23 18:00:37', '2017-10-23 18:00:37'),
+	(1300, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:03:46', '2017-10-23 18:03:46'),
+	(1301, 1, 'admin/user/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-23 18:03:50', '2017-10-23 18:03:50'),
+	(1302, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:04:33', '2017-10-23 18:04:33'),
+	(1303, 1, 'admin/user/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/create","_pjax":"#pjax-container"}', '2017-10-23 18:04:35', '2017-10-23 18:04:35'),
+	(1304, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:04:38', '2017-10-23 18:04:38'),
+	(1305, 1, 'admin/user/1/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/1\\/edit","_pjax":"#pjax-container"}', '2017-10-23 18:04:41', '2017-10-23 18:04:41'),
+	(1306, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:04:46', '2017-10-23 18:04:46'),
+	(1307, 1, 'admin/user/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-23 18:04:48', '2017-10-23 18:04:48'),
+	(1308, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:05:31', '2017-10-23 18:05:31'),
+	(1309, 1, 'admin/user/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-23 18:05:34', '2017-10-23 18:05:34'),
+	(1310, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:05:53', '2017-10-23 18:05:53'),
+	(1311, 1, 'admin/user/1/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/1\\/edit","_pjax":"#pjax-container"}', '2017-10-23 18:05:55', '2017-10-23 18:05:55'),
+	(1312, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:06:07', '2017-10-23 18:06:07'),
+	(1313, 1, 'admin/user/2/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/2\\/edit","_pjax":"#pjax-container"}', '2017-10-23 18:06:10', '2017-10-23 18:06:10'),
+	(1314, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container"}', '2017-10-23 18:08:15', '2017-10-23 18:08:15'),
+	(1315, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container","per_page":"10"}', '2017-10-23 18:09:30', '2017-10-23 18:09:30'),
+	(1316, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","_pjax":"#pjax-container","per_page":"10"}', '2017-10-23 18:09:32', '2017-10-23 18:09:32'),
+	(1317, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","per":null}', '2017-10-23 18:09:38', '2017-10-23 18:09:38'),
+	(1318, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","per":null}', '2017-10-23 18:09:46', '2017-10-23 18:09:46'),
+	(1319, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/auser","per":null}', '2017-10-23 18:09:49', '2017-10-23 18:09:49'),
+	(1320, 1, 'admin/user/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/create","_pjax":"#pjax-container"}', '2017-10-23 18:10:01', '2017-10-23 18:10:01'),
+	(1321, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/auser","per":null,"_pjax":"#pjax-container"}', '2017-10-23 18:10:05', '2017-10-23 18:10:05');
 /*!40000 ALTER TABLE `admin_operation_log` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.admin_permissions 结构
@@ -1435,7 +1521,7 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
 -- 正在导出表  pocketdoll.admin_users 的数据：1 rows
 /*!40000 ALTER TABLE `admin_users` DISABLE KEYS */;
 INSERT INTO `admin_users` (`id`, `username`, `password`, `name`, `avatar`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 'admin', '$2y$10$tFQtJ47J23eN9qZFRGzO0uq03K0nZkHTUwPV1SgTdx5xHwtgxbKcW', 'Administrator', NULL, 'OMcjY6TT9uvnbktcPh2nsfOJO35pX5ky8a1E0Ull1yugXHc4CYiYICOWgeyW', '2017-10-12 10:58:48', '2017-10-12 10:58:48');
+	(1, 'admin', '$2y$10$tFQtJ47J23eN9qZFRGzO0uq03K0nZkHTUwPV1SgTdx5xHwtgxbKcW', 'Administrator', NULL, 'PHTDAUtksPX9njkq5BuzBPhFjr8I9rm9YSkVUPW7iiOak5eXmGKdCKke75kR', '2017-10-12 10:58:48', '2017-10-12 10:58:48');
 /*!40000 ALTER TABLE `admin_users` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.admin_user_permissions 结构
@@ -1633,9 +1719,9 @@ CREATE TABLE IF NOT EXISTS `mission` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.mission 的数据：6 rows
+-- 正在导出表  pocketdoll.mission 的数据：8 rows
 /*!40000 ALTER TABLE `mission` DISABLE KEYS */;
 INSERT INTO `mission` (`id`, `title`, `type`, `award_id`, `need_num`, `parent_id`, `sort`, `status`, `icon`, `created_at`, `updated_at`) VALUES
 	(2, '抓 2次娃娃', 2, 1, 5, 0, 0, '0', 'images/33364749011482fdb4fec6f5155cd565.jpg', '2017-10-11 11:29:53', '2017-10-14 16:42:05'),
@@ -1643,7 +1729,9 @@ INSERT INTO `mission` (`id`, `title`, `type`, `award_id`, `need_num`, `parent_id
 	(4, '充值 9.9 元', 1, 1, 2, 0, 0, '0', '', '2017-10-11 14:31:41', '2017-10-11 14:31:41'),
 	(5, '充值 19.9 元', 1, 1, 10, 4, 0, '0', 'images/0d3891547fce0be01f96ca0bf17b3abd.jpg', '2017-10-11 14:41:41', '2017-10-17 16:13:38'),
 	(6, '累计登录一天', 4, 1, 1, 0, NULL, '0', 'images/010300986bfa326555ffd5eca6455136.jpg', '2017-10-17 17:26:08', '2017-10-17 17:26:25'),
-	(7, '累计登录两天', 4, 1, 2, 6, NULL, '0', 'images/213886e0c2d8f08887082ca6a026d38b.jpg', '2017-10-17 17:26:48', '2017-10-17 17:27:21');
+	(7, '累计登录两天', 4, 1, 2, 0, NULL, '0', 'images/213886e0c2d8f08887082ca6a026d38b.jpg', '2017-10-17 17:26:48', '2017-10-23 14:33:37'),
+	(8, '抓到 1 个娃娃', 5, 1, 1, 0, NULL, '0', 'images/06209c593a9a4c1bc70d0e33095e2996.jpg', '2017-10-23 16:08:00', '2017-10-23 16:08:00'),
+	(9, '邀请 1 个人', 3, 1, 1, 0, NULL, '0', 'images/a1ee027fd13af43b0ce50c2927074426.jpg', '2017-10-23 16:36:55', '2017-10-23 16:36:55');
 /*!40000 ALTER TABLE `mission` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.mission_type 结构
@@ -1845,9 +1933,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `openid` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户openid',
   `coin` int(11) NOT NULL COMMENT '用户持有的金币数量',
   `point` int(11) NOT NULL COMMENT '用户积分',
-  `login_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '登录时间',
+  `login_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近登录时间',
   `nickname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户昵称',
   `icon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户头像',
+  `new_user_mission` enum('-1','1') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '新用户任务是否完成',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1855,9 +1944,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 -- 正在导出表  pocketdoll.user 的数据：2 rows
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`, `openid`, `coin`, `point`, `login_time`, `nickname`, `icon`, `created_at`, `updated_at`) VALUES
-	(1, 'asddefasfasdefafsafaf', 380, 5, '2017-10-10 16:54:57', 'dwdasd', 'wdsadw', '0000-00-00 00:00:00', '2017-10-10 16:54:57'),
-	(2, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 330, 0, '2017-10-21 17:20:11', 'overtrue', 'http://wx.qlogo.cn/mmopen/C2rEUskXQiblFYMUl9O0G05Q6pKibg7V1WpHX6CIQaic824apriabJw4r6EWxziaSt5BATrlbx1GVzwW2qjUCqtYpDvIJLjKgP1ug/0', '2017-10-09 11:51:14', '2017-10-21 17:20:11');
+INSERT INTO `user` (`id`, `openid`, `coin`, `point`, `login_time`, `nickname`, `icon`, `new_user_mission`, `created_at`, `updated_at`) VALUES
+	(1, 'asddefasfasdefafsafaf', 380, 5, '2017-10-23 18:00:17', 'dwdasd', 'wdsadw', '-1', '2017-10-09 11:51:14', '2017-10-10 16:54:57'),
+	(2, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 330, 0, '2017-10-21 17:20:11', 'overtrue', 'http://wx.qlogo.cn/mmopen/C2rEUskXQiblFYMUl9O0G05Q6pKibg7V1WpHX6CIQaic824apriabJw4r6EWxziaSt5BATrlbx1GVzwW2qjUCqtYpDvIJLjKgP1ug/0', '-1', '2017-10-09 11:51:14', '2017-10-21 17:20:11');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.user_mission 结构
@@ -1871,7 +1960,7 @@ CREATE TABLE IF NOT EXISTS `user_mission` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.user_mission 的数据：9 rows
+-- 正在导出表  pocketdoll.user_mission 的数据：21 rows
 /*!40000 ALTER TABLE `user_mission` DISABLE KEYS */;
 INSERT INTO `user_mission` (`id`, `user_id`, `mission_id`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 2, '1', '2017-10-20 17:25:10', '2017-10-20 17:25:10'),
