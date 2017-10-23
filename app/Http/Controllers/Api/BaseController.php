@@ -57,7 +57,7 @@ class BaseController extends Controller
         if($lucky == 0){
             Redis::set($this->getOpenid() .'_'. $wid .'_lucky',$lucky);
         }else{
-            Redis::set($this->getOpenid() .'_'. $wid .'_lucky',$this->getLuckyRedis($wid) + $lucky);
+            Redis::set($this->getOpenid() .'_'. $wid .'_lucky',$lucky + $this->getLuckyRedis($wid) );
         }
     }
 

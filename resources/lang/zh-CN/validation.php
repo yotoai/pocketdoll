@@ -210,6 +210,7 @@ return [
         'private_key' => '私钥',
         'source_type' => '回源类型',
         'sources' => '源站域名或IP',
+        'contents' => '内容',
     ],
 
 ];

@@ -11,6 +11,10 @@ class UserShowController extends BaseController
     // 获取玩家秀
     public function userShow()
     {
+        $rules = [
+            'contents' => 'required|integer',
+        ];
+        $this->validate(request(),$rules);
         try{
             $data = UserShow::where('status','1')->get();
         }catch (\Exception $e){
