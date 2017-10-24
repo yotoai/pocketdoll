@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class BaseController extends Controller
 {
+    public function __construct()
+    {
+    }
+
     //
     public function filesUpload(Request $request)
     {
@@ -31,7 +36,11 @@ class BaseController extends Controller
         return session('wechat.oauth_user')->toArray()['id'];
     }
 
-
+    public function getUserid()
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        return $user->openid;
+    }
     /**
      * 获取 redis 中用户的幸运值
      * @param $wid     @娃娃机id

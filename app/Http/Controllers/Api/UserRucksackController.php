@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\DB;
 class UserRucksackController extends BaseController
 {
     // 获取背包列表
-    public function rucksack($uid)
+    public function rucksack()
     {
         try{
             $data = UserRucksack::join('goods','user_rucksack.goods_id','=','goods.id')
                 ->where([
-                'user_rucksack.user_id'=>$uid,
+                'user_rucksack.user_id'=>$this->getUserid(),
                 'user_rucksack.status'=>'0'
             ])->get([
                 'user_rucksack.id as rucksack_id',
@@ -28,10 +28,13 @@ class UserRucksackController extends BaseController
                 'goods.name',
                 'goods.pic'
             ]);
+            foreach ($data as $d) {
+                $d->pic = public_path($d->pic);
+            }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'data' => $data];
+        return ['code' => 1,'msg' => '查询成功','data' => $data];
     }
 
     // 提取娃娃   !有问题待解决

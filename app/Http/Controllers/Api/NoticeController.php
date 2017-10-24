@@ -3,18 +3,27 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\Notice;
-//use Illuminate\Http\Request;
-use Dingo\Api\Http\FormRequest;
-use App\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
-use App\Http\Controllers\Api\BaseController;
+
 class NoticeController extends BaseController
 {
     // 前台获取公告列表
     public function qnotice()
     {
-        return Notice::where('status','<>','-1')->get();
+        try{
+            $list = Notice::where('status','<>','-1')->get();
+            foreach ($list as $notic){
+                $notic->pic = public_path($notic->pic);
+            }
+        }catch (\Exception $e){
+            return ['code' =>-1,'msg' => $e->getMessage()];
+        }
+        return ['code' => 1,'msg' => '查询成功','data' => $list];
     }
+
+
+
+
     // 后台获取公告列表
     public function hnotice()
     {

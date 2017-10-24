@@ -11,16 +11,23 @@ class UserShowController extends BaseController
     // 获取玩家秀
     public function userShow()
     {
-        $rules = [
-            'contents' => 'required|integer',
-        ];
-        $this->validate(request(),$rules);
         try{
-            $data = UserShow::where('status','1')->get();
+            $data = UserShow::join('user','user.openid','=','user_show.user_id')
+                ->where('user_show.status','1')
+                ->get([
+                    'user_show.id as id',
+                    'user_show.contents as contents',
+                    'user_show.pic as pic',
+                    'user.nickname as nickname',
+                    'user.icon as icon'
+                ]);
+            foreach ($data as $d){
+                $d->pic = public_path($d->pic);
+            }
         }catch (\Exception $e){
             return ['code' => -1,'msg'=> $e->getMessage()];
         }
-        return ['code' => 1,'data' => $data->toArray()];
+        return ['code' => 1,'msg' => '查询成功','data' => $data];
     }
 
     // 增加个玩家秀
@@ -28,6 +35,7 @@ class UserShowController extends BaseController
     {
         $rules = [
             'contents' => 'required|max:500',
+            'pic'      => 'required'
         ];
         $this->validate($request,$rules);
         $pic = $this->filesUpload($request);

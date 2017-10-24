@@ -71,13 +71,23 @@ class MissionController extends BaseController
                         'mission.icon as mission_icon',
                         'mission.need_num as mission_need_num'
                     ])[0];
-
-                if(in_array($li['id'],$mid) && !empty($mid)){
-                    $lists[$k]['mission_status'] = $this->getVal($li['id']);
-                }
             }
         }
-        return $lists;
+
+        foreach ($lists as $ks =>$ls){
+            $ls->mission_icon = public_path($ls->mission_icon);
+            if(in_array($ls->mission_id,$mid) && !empty($mid)){
+                $lists[$ks]['mission_status'] = $this->getVal($ls->mission_id);
+            }
+            if($ls->mission_type == 2 ){
+                $lists[$ks]['finish_num'] = empty($this->getCatchNum()) ? 0 : $this->getCatchNum();
+            }elseif($ls->mission_type == 1){
+                $lists[$ks]['finish_num'] = empty($this->getChargeNum()) ? 0 : $this->getChargeNum();
+            }elseif($ls->mission_type == 5){
+                $lists[$ks]['finish_num'] = empty($this->getCatchedNum()) ? 0 : $this->getCatchedNum();
+            }
+        }
+        return ['code' => 1,'msg' => '查询成功','data' => $lists];
     }
     
     // 完成一个任务

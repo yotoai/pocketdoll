@@ -12,11 +12,21 @@ class RechargeAmountController extends BaseController
     public function rechargeAmount()
     {
         try{
-            $data = RechargeAmount::all();
+            $data = RechargeAmount::get([
+                'id',
+                'title',
+                'coin_num',
+                'award_num',
+                'price',
+                'pic'
+            ]);
+            foreach ($data as $d){
+                $d->pic = public_path($d->pic);
+            }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'data' => $data->toArray()];
+        return ['code' => 1,'msg' => '查询成功','data' => $data];
     }
 
     // 添加一个充值额度

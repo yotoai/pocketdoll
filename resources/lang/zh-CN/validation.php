@@ -211,6 +211,10 @@ return [
         'source_type' => '回源类型',
         'sources' => '源站域名或IP',
         'contents' => '内容',
+        'pic' => '图片',
+        'data.*.rucksack_id' => '背包id',
+        'data.*.goods_id' => '商品id',
+        'data.*.num' => '提现数量'
     ],
 
 ];

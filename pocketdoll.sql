@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `admin_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.admin_menu 的数据：23 rows
+-- 正在导出表  pocketdoll.admin_menu 的数据：24 rows
 /*!40000 ALTER TABLE `admin_menu` DISABLE KEYS */;
 INSERT INTO `admin_menu` (`id`, `parent_id`, `order`, `title`, `icon`, `uri`, `created_at`, `updated_at`) VALUES
 	(1, 0, 1, '控制台', 'fa-bar-chart', '/', NULL, '2017-10-12 15:47:40'),
@@ -91,9 +91,9 @@ CREATE TABLE IF NOT EXISTS `admin_operation_log` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `admin_operation_log_user_id_index` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1322 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1336 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  pocketdoll.admin_operation_log 的数据：1,288 rows
+-- 正在导出表  pocketdoll.admin_operation_log 的数据：1,321 rows
 /*!40000 ALTER TABLE `admin_operation_log` DISABLE KEYS */;
 INSERT INTO `admin_operation_log` (`id`, `user_id`, `path`, `method`, `ip`, `input`, `created_at`, `updated_at`) VALUES
 	(1, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-12 10:59:15', '2017-10-12 10:59:15'),
@@ -1416,7 +1416,21 @@ INSERT INTO `admin_operation_log` (`id`, `user_id`, `path`, `method`, `ip`, `inp
 	(1318, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user","per":null}', '2017-10-23 18:09:46', '2017-10-23 18:09:46'),
 	(1319, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/auser","per":null}', '2017-10-23 18:09:49', '2017-10-23 18:09:49'),
 	(1320, 1, 'admin/user/create', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/user\\/create","_pjax":"#pjax-container"}', '2017-10-23 18:10:01', '2017-10-23 18:10:01'),
-	(1321, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/auser","per":null,"_pjax":"#pjax-container"}', '2017-10-23 18:10:05', '2017-10-23 18:10:05');
+	(1321, 1, 'admin/user', 'GET', '127.0.0.1', '{"_url":"\\/auser","per":null,"_pjax":"#pjax-container"}', '2017-10-23 18:10:05', '2017-10-23 18:10:05'),
+	(1322, 1, 'admin', 'GET', '127.0.0.1', '{"_url":"\\/admin"}', '2017-10-24 15:29:03', '2017-10-24 15:29:03'),
+	(1323, 1, 'admin/recharge', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge","_pjax":"#pjax-container"}', '2017-10-24 15:29:13', '2017-10-24 15:29:13'),
+	(1324, 1, 'admin/recharge/1/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge\\/1\\/edit","_pjax":"#pjax-container"}', '2017-10-24 15:29:20', '2017-10-24 15:29:20'),
+	(1325, 1, 'admin/recharge/1', 'PUT', '127.0.0.1', '{"title":"\\u5145\\u503c100","coin_num":"100","award_num":"10","price":"10","_token":"TT2JkfJFYXy2NqjYE5EaaV4nIPkbWcWfIHZiJcWf","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/recharge","_url":"\\/admin\\/recharge\\/1"}', '2017-10-24 15:29:27', '2017-10-24 15:29:27'),
+	(1326, 1, 'admin/recharge', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge"}', '2017-10-24 15:29:28', '2017-10-24 15:29:28'),
+	(1327, 1, 'admin/recharge/3/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge\\/3\\/edit","_pjax":"#pjax-container"}', '2017-10-24 15:29:32', '2017-10-24 15:29:32'),
+	(1328, 1, 'admin/recharge/3', 'PUT', '127.0.0.1', '{"title":"\\u5145\\u503c80","coin_num":"80","award_num":"8","price":"8.8","_token":"TT2JkfJFYXy2NqjYE5EaaV4nIPkbWcWfIHZiJcWf","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/recharge","_url":"\\/admin\\/recharge\\/3"}', '2017-10-24 15:29:39', '2017-10-24 15:29:39'),
+	(1329, 1, 'admin/recharge', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge"}', '2017-10-24 15:29:39', '2017-10-24 15:29:39'),
+	(1330, 1, 'admin/recharge/4/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge\\/4\\/edit","_pjax":"#pjax-container"}', '2017-10-24 15:29:45', '2017-10-24 15:29:45'),
+	(1331, 1, 'admin/recharge/4', 'PUT', '127.0.0.1', '{"title":"\\u5145\\u503c88","coin_num":"88","award_num":"8","price":"8.8","_token":"TT2JkfJFYXy2NqjYE5EaaV4nIPkbWcWfIHZiJcWf","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/recharge","_url":"\\/admin\\/recharge\\/4"}', '2017-10-24 15:29:53', '2017-10-24 15:29:53'),
+	(1332, 1, 'admin/recharge', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge"}', '2017-10-24 15:29:55', '2017-10-24 15:29:55'),
+	(1333, 1, 'admin/recharge/5/edit', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge\\/5\\/edit","_pjax":"#pjax-container"}', '2017-10-24 15:29:58', '2017-10-24 15:29:58'),
+	(1334, 1, 'admin/recharge/5', 'PUT', '127.0.0.1', '{"title":"\\u5145\\u503c80","coin_num":"80","award_num":"8","price":"8.8","_token":"TT2JkfJFYXy2NqjYE5EaaV4nIPkbWcWfIHZiJcWf","_method":"PUT","_previous_":"http:\\/\\/www.pocketdoll.cp\\/admin\\/recharge","_url":"\\/admin\\/recharge\\/5"}', '2017-10-24 15:30:04', '2017-10-24 15:30:04'),
+	(1335, 1, 'admin/recharge', 'GET', '127.0.0.1', '{"_url":"\\/admin\\/recharge"}', '2017-10-24 15:30:05', '2017-10-24 15:30:05');
 /*!40000 ALTER TABLE `admin_operation_log` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.admin_permissions 结构
@@ -1611,7 +1625,7 @@ CREATE TABLE IF NOT EXISTS `goods` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 正在导出表  pocketdoll.goods 的数据：5 rows
 /*!40000 ALTER TABLE `goods` DISABLE KEYS */;
@@ -1620,7 +1634,9 @@ INSERT INTO `goods` (`id`, `goods_cate_id`, `name`, `pic`, `sc_pic`, `width`, `h
 	(2, 9, '哈密瓜', 'images/33364749011482fdb4fec6f5155cd565.jpg', 'images/33364749011482fdb4fec6f5155cd565.jpg', 20, 30, '1', '2017-10-06 11:24:26', '2017-10-06 12:08:30'),
 	(3, 4, '派大星', 'images/33364749011482fdb4fec6f5155cd565.jpg', 'images/33364749011482fdb4fec6f5155cd565.jpg', 10, 20, '1', '2017-10-06 12:10:49', '2017-10-06 12:13:52'),
 	(4, 2, '派大星', 'D:\\Project\\PocketDoll\\storage\\image/C8gh9Ew9HLWqLEuhdVhnEhbC3y82fSjeUsb2wEsJ.jpeg', 'images/33364749011482fdb4fec6f5155cd565.jpg', 10, 20, '1', '2017-10-06 12:11:15', '2017-10-06 12:11:15'),
-	(5, 1, '星星包', 'images/36b6a0b291fa8b2bdb67bad75429cc72.jpg', 'images/33364749011482fdb4fec6f5155cd565.jpg', 20, 20, '1', '2017-10-13 13:20:29', '2017-10-13 13:20:29');
+	(5, 1, '星星包', 'images/36b6a0b291fa8b2bdb67bad75429cc72.jpg', 'images/33364749011482fdb4fec6f5155cd565.jpg', 20, 20, '1', '2017-10-13 13:20:29', '2017-10-13 13:20:29'),
+	(6, 1, '派大星', 'images/33364749011482fdb4fec6f5155cd565.jpg', 'images/33364749011482fdb4fec6f5155cd565.jpg', 20, 30, '1', '2017-10-06 11:24:04', '2017-10-06 11:24:04'),
+	(7, 1, '蟹老板', 'images/33364749011482fdb4fec6f5155cd565.jpg', 'images/33364749011482fdb4fec6f5155cd565.jpg', 20, 30, '1', '2017-10-06 11:24:04', '2017-10-06 11:24:04');
 /*!40000 ALTER TABLE `goods` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.goods_category 结构
@@ -1724,8 +1740,8 @@ CREATE TABLE IF NOT EXISTS `mission` (
 -- 正在导出表  pocketdoll.mission 的数据：8 rows
 /*!40000 ALTER TABLE `mission` DISABLE KEYS */;
 INSERT INTO `mission` (`id`, `title`, `type`, `award_id`, `need_num`, `parent_id`, `sort`, `status`, `icon`, `created_at`, `updated_at`) VALUES
-	(2, '抓 2次娃娃', 2, 1, 5, 0, 0, '0', 'images/33364749011482fdb4fec6f5155cd565.jpg', '2017-10-11 11:29:53', '2017-10-14 16:42:05'),
-	(3, '抓 5 次娃娃', 2, 1, 2, 2, 0, '0', '', '2017-10-11 14:31:12', '2017-10-11 14:31:12'),
+	(2, '抓 2次娃娃', 2, 1, 2, 0, 0, '0', 'images/33364749011482fdb4fec6f5155cd565.jpg', '2017-10-11 11:29:53', '2017-10-14 16:42:05'),
+	(3, '抓 5 次娃娃', 2, 1, 5, 2, 0, '0', '', '2017-10-11 14:31:12', '2017-10-11 14:31:12'),
 	(4, '充值 9.9 元', 1, 1, 2, 0, 0, '0', '', '2017-10-11 14:31:41', '2017-10-11 14:31:41'),
 	(5, '充值 19.9 元', 1, 1, 10, 4, 0, '0', 'images/0d3891547fce0be01f96ca0bf17b3abd.jpg', '2017-10-11 14:41:41', '2017-10-17 16:13:38'),
 	(6, '累计登录一天', 4, 1, 1, 0, NULL, '0', 'images/010300986bfa326555ffd5eca6455136.jpg', '2017-10-17 17:26:08', '2017-10-17 17:26:25'),
@@ -1885,10 +1901,10 @@ CREATE TABLE IF NOT EXISTS `recharge_amount` (
 -- 正在导出表  pocketdoll.recharge_amount 的数据：4 rows
 /*!40000 ALTER TABLE `recharge_amount` DISABLE KEYS */;
 INSERT INTO `recharge_amount` (`id`, `title`, `coin_num`, `award_num`, `price`, `pic`, `created_at`, `updated_at`) VALUES
-	(1, '充值100', 100, 10, 10.00, '', '2017-10-06 15:41:32', '2017-10-06 15:41:32'),
-	(3, '充值80', 80, 8, 8.80, '', '2017-10-06 15:56:56', '2017-10-06 15:56:56'),
-	(4, '充值88', 88, 8, 8.80, 'D:\\Project\\PocketDoll\\storage\\image/XAj8LPnelMhXKrrQfm2ttJD6EJYAcLVnRg3RumQX.jpeg', '2017-10-06 16:01:03', '2017-10-06 16:24:06'),
-	(5, '充值80', 80, 8, 8.80, 'D:\\Project\\PocketDoll\\storage\\image/CAHX7QuSIQGx0rjUfTJ9hGqmupxzx0DKGkKLmqga.jpeg', '2017-10-06 16:09:16', '2017-10-06 16:09:16');
+	(1, '充值100', 100, 10, 10.00, 'images/2d5666126dbc4fdcaed186ef8cd2d5f5.jpg', '2017-10-06 15:41:32', '2017-10-24 15:29:28'),
+	(3, '充值80', 80, 8, 8.80, 'images/61eb31aa9e7cd3e4db99373b7c5d11e7.jpg', '2017-10-06 15:56:56', '2017-10-24 15:29:39'),
+	(4, '充值88', 88, 8, 8.80, 'images/74b1ac1a10779f42d63a0bb67867b0c3.jpg', '2017-10-06 16:01:03', '2017-10-24 15:29:53'),
+	(5, '充值80', 80, 8, 8.80, 'images/dbb54cfa9f85c7a7e639e2d261164aad.jpg', '2017-10-06 16:09:16', '2017-10-24 15:30:04');
 /*!40000 ALTER TABLE `recharge_amount` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.recharge_log 结构
@@ -1946,7 +1962,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `openid`, `coin`, `point`, `login_time`, `nickname`, `icon`, `new_user_mission`, `created_at`, `updated_at`) VALUES
 	(1, 'asddefasfasdefafsafaf', 380, 5, '2017-10-23 18:00:17', 'dwdasd', 'wdsadw', '-1', '2017-10-09 11:51:14', '2017-10-10 16:54:57'),
-	(2, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 330, 0, '2017-10-21 17:20:11', 'overtrue', 'http://wx.qlogo.cn/mmopen/C2rEUskXQiblFYMUl9O0G05Q6pKibg7V1WpHX6CIQaic824apriabJw4r6EWxziaSt5BATrlbx1GVzwW2qjUCqtYpDvIJLjKgP1ug/0', '-1', '2017-10-09 11:51:14', '2017-10-21 17:20:11');
+	(2, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 210, 0, '2017-10-24 18:26:21', 'overtrue', 'http://wx.qlogo.cn/mmopen/C2rEUskXQiblFYMUl9O0G05Q6pKibg7V1WpHX6CIQaic824apriabJw4r6EWxziaSt5BATrlbx1GVzwW2qjUCqtYpDvIJLjKgP1ug/0', '-1', '2017-10-09 11:51:14', '2017-10-24 18:26:21');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.user_mission 结构
@@ -2004,10 +2020,10 @@ CREATE TABLE IF NOT EXISTS `user_rucksack` (
 -- 正在导出表  pocketdoll.user_rucksack 的数据：4 rows
 /*!40000 ALTER TABLE `user_rucksack` DISABLE KEYS */;
 INSERT INTO `user_rucksack` (`id`, `user_id`, `goods_id`, `status`, `num`, `withdraw_time`, `gain_time`, `created_at`, `updated_at`) VALUES
-	(1, '1', 3, '1', 3, '2017-10-18 15:03:08', '2017-10-07 17:40:13', '2017-10-07 17:40:13', '2017-10-07 18:31:33'),
-	(2, '2', 3, '0', 0, '2017-10-18 16:11:19', '2017-10-07 17:45:28', '2017-10-07 17:45:28', '2017-10-18 16:11:19'),
-	(10, '2', 2, '0', 3, '2017-10-18 15:38:14', '2017-10-07 17:45:28', '2017-10-07 17:45:28', '2017-10-07 17:45:28'),
-	(9, '2', 5, '0', 1, '2017-10-18 16:11:19', '2017-10-07 17:45:28', '2017-10-07 17:45:28', '2017-10-18 16:11:19');
+	(1, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 3, '0', 3, '2017-10-24 16:14:10', '2017-10-07 17:40:13', '2017-10-07 17:40:13', '2017-10-07 18:31:33'),
+	(2, 'odh7zsgI75iT8FRh0fGlSjc9PWM', 3, '0', 0, '2017-10-24 16:10:45', '2017-10-07 17:45:28', '2017-10-07 17:45:28', '2017-10-18 16:11:19'),
+	(10, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 2, '0', 3, '2017-10-24 16:16:47', '2017-10-07 17:45:28', '2017-10-07 17:45:28', '2017-10-07 17:45:28'),
+	(9, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 5, '0', 1, '2017-10-24 16:16:46', '2017-10-07 17:45:28', '2017-10-07 17:45:28', '2017-10-18 16:11:19');
 /*!40000 ALTER TABLE `user_rucksack` ENABLE KEYS */;
 
 -- 导出  表 pocketdoll.user_show 结构
@@ -2020,7 +2036,7 @@ CREATE TABLE IF NOT EXISTS `user_show` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 正在导出表  pocketdoll.user_show 的数据：9 rows
 /*!40000 ALTER TABLE `user_show` DISABLE KEYS */;
@@ -2033,7 +2049,8 @@ INSERT INTO `user_show` (`id`, `user_id`, `contents`, `pic`, `status`, `created_
 	(7, 'odh7zsgI75iT8FRh0fGlSojc9PWM', '很好很好', 'D:\\gitProject\\pocketdolls\\storage\\image/MFuyeZWTEvRsnhgJceH8wqx4JSJGiBXGbWEnRear.jpeg', '-1', '2017-10-19 10:46:03', '2017-10-19 10:46:03'),
 	(8, 'odh7zsgI75iT8FRh0fGlSojc9PWM', '很好很好真的很好玩啊', 'D:\\gitProject\\pocketdolls\\storage\\images/aUKsf1w3HdLP4dQ2SEguQ3xWN8GNPjMhWOTFZMNi.jpeg', '-1', '2017-10-19 10:52:51', '2017-10-19 10:52:51'),
 	(9, 'odh7zsgI75iT8FRh0fGlSojc9PWM', '很好很好真的很好玩啊啊啊啊', 'D:\\gitProject\\pocketdolls\\storage\\images/j6jaMxQvuyCa9qcKV6ew1gLHxMHbRRfNZsLIfwXE.jpeg', '-1', '2017-10-19 10:55:39', '2017-10-19 10:55:39'),
-	(10, 'odh7zsgI75iT8FRh0fGlSojc9PWM', '很好很好真的很好玩啊嗯嗯嗯呃十点多', 'images/wkTE6tp8olyop8vkRn7f4AeaCH1EXCpYxvu4nQkg.jpeg', '-1', '2017-10-19 10:56:54', '2017-10-19 10:56:54');
+	(10, 'odh7zsgI75iT8FRh0fGlSojc9PWM', '很好很好真的很好玩啊嗯嗯嗯呃十点多', 'images/wkTE6tp8olyop8vkRn7f4AeaCH1EXCpYxvu4nQkg.jpeg', '-1', '2017-10-19 10:56:54', '2017-10-19 10:56:54'),
+	(12, 'odh7zsgI75iT8FRh0fGlSojc9PWM', 'wdsadsadsadasdas', 'images/y7tBUPHVXBmNM7vKal1iwZnmMmLzmc7xaSuYBrmK.jpeg', '-1', '2017-10-24 15:24:42', '2017-10-24 15:24:42');
 /*!40000 ALTER TABLE `user_show` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

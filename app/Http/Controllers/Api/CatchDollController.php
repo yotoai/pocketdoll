@@ -24,12 +24,24 @@ class CatchDollController extends BaseController
                 $this->setLuckyRedis($id,0);
                 $lucky = $this->getLuckyRedis($id);
             }
-            $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
+            $data = Goods::where('goods_cate_id',intval($id))
+                ->get([
+                    'id',
+                    'name',
+                    'pic',
+                    'sc_pic',
+                    'width',
+                    'height',
+                ]);
+            foreach ($data as $d) {
+                $d->pic = public_path($d->pic);
+                $d->sc_pic = public_path($d->pic);
+            }
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'data' => $data,'lucky' => $lucky];
+        return ['code' => 1,'msg' => '查询成功','lucky' => $lucky,'data' => $data];
     }
 
     /**
@@ -39,16 +51,35 @@ class CatchDollController extends BaseController
      */
     public function getRandDollMachine()
     {
-        //Redis::del('doll_machine');
+        Redis::del('doll_machine');
         $key = 'doll_machine';
         if(Redis::scard($key) > 0){
             return $this->randDollMachine($key);
         }else {
-            foreach (GoodsCategory::all() as $item) {
+            $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                ->get([
+                    'goods_category.id as id',
+                    'goods_category.cate_name as name',
+                    'goods_category.spec as spec',
+                    'goods_category.coin as coin',
+                    'goods_category..pic as pic',
+                    'goods_tags_cate.tag_icon as tag_icon'
+                ]);
+            foreach ($data as $d){
+                $d->pic = public_path($d->pic);
+                $d->tag_icon = public_path($d->tag_icon);
+            }
+            foreach ($data as $item) {
                 Redis::sadd($key, $item);
             }
             return $this->randDollMachine($key);
         }
+    }
+
+    // 返回 $num 个随机 娃娃机
+    protected function randDollMachine($key,$num = 6)
+    {
+        return ['code' => 1,'msg' => '查询成功','data' => json_decode('['.implode(',',Redis::srandmember($key, $num)).']',true)];
     }
 
     /**
@@ -67,7 +98,7 @@ class CatchDollController extends BaseController
         $lucky = $this->getLuckyRedis($id);
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
 
-        $arr = ['get'=>$rate + $lucky,'lost'=>1000 - ($rate + $lucky)];
+        $arr = ['get' => $rate + $lucky,'lost'=>1000 - ($rate + $lucky)];
 
         if(($res = $this->getRand($arr)) == 'get' || $lucky == 100)
         {
@@ -98,22 +129,19 @@ class CatchDollController extends BaseController
             }
             $this->finishMission('catched');
             $this->setCatchedNum(1);
-            return ['data' => 'get','lucky' => 'clear'];
+            return ['code' => 1,'data' => 'get','lucky' => 'clear'];
         }else{
-            $this->setCatchNum(1);
-            $this->finishMission('catch');
-            Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
-            $add_lucky = $this->reLucky($lucky);
-            $this->setLuckyRedis($id,$add_lucky);
-            return ['data' => $res,'lucky' => $add_lucky];
+            try{
+                $this->setCatchNum(1);
+                $this->finishMission('catch');
+                Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
+                $add_lucky = $this->reLucky($lucky);
+                $this->setLuckyRedis($id,$add_lucky);
+                return ['code' => 1,'data' => $res,'lucky' => $add_lucky];
+            }catch (\Exception $e){
+                return ['code' => -1,'msg' => $e->getMessage()];
+            }
         }
-    }
-
-
-    // 返回 $num 个随机 娃娃机
-    protected function randDollMachine($key,$num = 6)
-    {
-        return json_decode('['.implode(',',Redis::srandmember($key, $num)).']',true);
     }
 
     // 返回随机键
