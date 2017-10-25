@@ -6,9 +6,6 @@ use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Users;
 use EasyWeChat\Foundation\Application;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redis;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends BaseController
@@ -32,11 +29,11 @@ class UserController extends BaseController
         $data = Users::where('openid',$user['id'])->first();
         if(!empty($data))
         {
-            $token = JWTAuth::fromUser($data);
             try{
                 Users::where('openid',$user['id'])->update([
                     'login_time' => date('Y-m-d H:i:s',time())
                 ]);
+                $token = JWTAuth::fromUser(Users::where('openid',$user['id'])->first());
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
@@ -85,5 +82,14 @@ class UserController extends BaseController
         $js = $app->js;
 
         return $js->config(['onMenuShareQQ', 'onMenuShareWeibo'],true);
+    }
+
+    // 刷新 token
+    public function refreshToken()
+    {
+        $old_token = JWTAuth::getToken();
+        $token = JWTAuth::refresh($old_token);
+        JWTAuth::invalidate($old_token);
+        return $token;
     }
 }

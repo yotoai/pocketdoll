@@ -8,8 +8,9 @@ use Dingo\Api\Http\Request;
 class NoticeController extends BaseController
 {
     // 前台获取公告列表
-    public function qnotice()
+    public function qnotice(Request $request)
     {
+        return $request;
         try{
             $list = Notice::where('status','<>','-1')->get();
             foreach ($list as $notic){

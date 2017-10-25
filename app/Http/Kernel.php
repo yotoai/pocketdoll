@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\RefreshToken;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -19,6 +20,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        RefreshToken::class
+
     ];
 
     /**
@@ -43,7 +46,8 @@ class Kernel extends HttpKernel
         ],
         'api:auth' => [
             'auth:api',
-            'api.auth'
+            'api.auth',
+            'refreshToken'
         ]
     ];
 
@@ -64,5 +68,6 @@ class Kernel extends HttpKernel
 
         // 微信授权
         'wechat.oauth'=>\Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
+        'refreshToken' => RefreshToken::class
     ];
 }

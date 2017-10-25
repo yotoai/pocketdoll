@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 //});
 $api = app('Dingo\Api\Routing\Router');
 $api->version('v1',function($api){
-    $api->group(['middleware' => 'api.auth','namespace' => 'App\Http\Controllers\Api'],function($api){
+    $api->group(['middleware' => ['api.auth','refreshToken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
 //    $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 公告
         $api->get('notice','NoticeController@qnotice');
@@ -52,5 +52,7 @@ $api->version('v1',function($api){
         $api->post('wxnotify','WxpayController@wxNotify');
         // 分享
         $api->get('jssdk','UserController@getJsConfig');
+        // 刷新token
+        $api->get('refresh','UserController@refreshToken');
     });
 });
