@@ -148,7 +148,7 @@ class MissionController extends BaseController
                         'mission.status as mission_status'
                     ])->toArray()[0];
                 $this->addRedisMission($data['mission_id']);
-                return ['code' => 1,'msg' => '完成','point' => $res->award_point,'data' => $data];
+                return ['code' => 1,'msg' => '任务完成','point' => $res->award_point,'data' => $data];
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
