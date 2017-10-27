@@ -33,11 +33,11 @@ class CatchDollController extends BaseController
                     'width',
                     'height',
                 ]);
-            foreach ($data as $d) {
-                $d->pic = public_path($d->pic);
-                $d->sc_pic = public_path($d->pic);
-            }
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
+            foreach ($data as $d) {
+                $d->pic = public_path('uploads').$d->pic;
+                $d->sc_pic = public_path('uploads').$d->pic;
+            }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
@@ -98,7 +98,7 @@ class CatchDollController extends BaseController
         $lucky = $this->getLuckyRedis($id);
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
 
-        $arr = ['get' => $rate + $lucky,'lost'=>1000 - ($rate + $lucky)];
+        $arr = ['get' => $rate + $lucky,'lost'=>1000];
 
         if(($res = $this->getRand($arr)) == 'get' || $lucky == 100)
         {
