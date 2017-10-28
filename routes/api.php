@@ -44,6 +44,11 @@ $api->version('v1',function($api){
         $api->get('daymission','MissionController@loginInMission');
         $api->post('finishmission/{id}','MissionController@finishMission');
     });
+
+    $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
+         $api->post('login','LoginController@login');
+    });
+
     $api->group(['middleware' => ['api', 'wechat.oauth'],'namespace' => 'App\Http\Controllers\Api'], function ($api) {
         // 用户授权
         $api->get('user','UserController@oauthUser');

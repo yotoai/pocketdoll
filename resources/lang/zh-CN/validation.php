@@ -214,7 +214,9 @@ return [
         'pic' => '图片',
         'data.*.rucksack_id' => '背包id',
         'data.*.goods_id' => '商品id',
-        'data.*.num' => '提现数量'
+        'data.*.num' => '提现数量',
+        'sdkId' => '渠道参数',
+        'userId' => '用户id'
     ],
 
 ];

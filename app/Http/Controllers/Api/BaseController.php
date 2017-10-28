@@ -39,7 +39,7 @@ class BaseController extends Controller
     public function getUserid()
     {
         $user = JWTAuth::parseToken()->authenticate();
-        return $user->openid;
+        return $user->userId;
     }
     /**
      * 获取 redis 中用户的幸运值

@@ -21,7 +21,7 @@ class RechargeAmountController extends BaseController
                 'pic'
             ]);
             foreach ($data as $d){
-                $d->pic = env('APP_URL').'/uploads/'. ($d->pic);
+                $d->pic = env('APP_URL') . '/uploads/'. $d->pic;
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
