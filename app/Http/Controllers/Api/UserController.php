@@ -15,6 +15,7 @@ class UserController extends BaseController
     {
         $user = session('wechat.oauth_user')->toArray(); // 拿到授权用户资料
         $gc = GoodsCategory::orderBy(\DB::raw('RAND()'))->take(1)->get(['id'])[0];
+       // return $gc;
         $res = $this->addUser($user);
         if(!$res) return ['code' => -1,'msg' => '获取数据异常...'];
         if($res['code'] == -1) return $res;
@@ -66,11 +67,21 @@ class UserController extends BaseController
                 $this->setLuckyRedis($id,0);
                 $lucky = $this->getLuckyRedis($id);
             }
-            $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
+            $data = Goods::where('goods_cate_id',intval($id))->get([
+		'id',
+		'goods_cate_id',
+		'name',
+		'pic',
+		'sc_pic',
+		'width',
+		'height'
+            ]);
+	   // return $data;
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机没有放入娃娃...'];
             foreach ($data as $d) {
-                $d->pic = '/public/uploads/'.$d->pic;
-                $d->sc_pic = '/public/uploads/'.$d->sc_pic;
+	       // return $d;
+                $d->pic = env('APP_URL').'/uploads/'.$d->pic;
+                $d->sc_pic = env('APP_URL').'/uploads/'.$d->sc_pic;
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
