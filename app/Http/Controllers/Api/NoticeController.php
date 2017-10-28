@@ -8,13 +8,12 @@ use Dingo\Api\Http\Request;
 class NoticeController extends BaseController
 {
     // 前台获取公告列表
-    public function qnotice(Request $request)
+    public function qnotice()
     {
-        return $request;
         try{
             $list = Notice::where('status','<>','-1')->get();
             foreach ($list as $notic){
-                $notic->pic = public_path($notic->pic);
+                $notic->pic = env('APP_URL').'/uploads/'. ($notic->pic);
             }
         }catch (\Exception $e){
             return ['code' =>-1,'msg' => $e->getMessage()];

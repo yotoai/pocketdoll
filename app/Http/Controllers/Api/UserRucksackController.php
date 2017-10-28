@@ -29,7 +29,7 @@ class UserRucksackController extends BaseController
                 'goods.pic'
             ]);
             foreach ($data as $d) {
-                $d->pic = public_path($d->pic);
+                $d->pic = env('APP_URL').'/uploads/'. ($d->pic);
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];

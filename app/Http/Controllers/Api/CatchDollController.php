@@ -35,8 +35,8 @@ class CatchDollController extends BaseController
                 ]);
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
             foreach ($data as $d) {
-                $d->pic = public_path('uploads').$d->pic;
-                $d->sc_pic = public_path('uploads').$d->pic;
+                $d->pic = env('APP_URL').'/uploads/'.$d->pic;
+                $d->sc_pic = env('APP_URL').'/uploads/'.$d->pic;
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
@@ -66,8 +66,8 @@ class CatchDollController extends BaseController
                     'goods_tags_cate.tag_icon as tag_icon'
                 ]);
             foreach ($data as $d){
-                $d->pic = public_path($d->pic);
-                $d->tag_icon = public_path($d->tag_icon);
+                $d->pic = env('APP_URL').'/uploads/'.$d->pic;
+                $d->tag_icon = env('APP_URL').'/uploads/'.$d->tag_icon;
             }
             foreach ($data as $item) {
                 Redis::sadd($key, $item);
