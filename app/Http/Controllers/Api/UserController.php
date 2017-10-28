@@ -66,11 +66,19 @@ class UserController extends BaseController
                 $this->setLuckyRedis($id,0);
                 $lucky = $this->getLuckyRedis($id);
             }
-            $data = Goods::where('goods_cate_id',intval($id))->get()->toArray();
+            $data = Goods::where('goods_cate_id',intval($id))->get([
+                'id',
+                'goods_cate_id',
+                'name',
+                'pic',
+                'sc_pic',
+                'width',
+                'height'
+            ]);
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机没有放入娃娃...'];
             foreach ($data as $d) {
-                $d->pic = '/public/uploads/'.$d->pic;
-                $d->sc_pic = '/public/uploads/'.$d->sc_pic;
+                $d->pic = env('APP_URL').'/uploads/'. ($d->pic);
+                $d->sc_pic = env('APP_URL').'/uploads/'. ($d->sc_pic);
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
