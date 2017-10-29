@@ -36,7 +36,10 @@ class PayController extends Controller
             ];
             $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do',['headers'=>$headers,'form_params'=>$params]);
 
-            $this->storeOrder($user_id,$data->price,$order,$gid);
+            $res = $this->storeOrder($user_id,$data->price,$order,$gid);
+            if($res['code'] == -1){
+                return $res;
+            }
             return json_decode($response->getBody(),true);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
@@ -56,7 +59,7 @@ class PayController extends Controller
                 'coin'    => $gid,
                 'time'    => date('Y-m-d H:i:s',time()),
             ]);
-            return true;
+            return ['code' => 1];
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
