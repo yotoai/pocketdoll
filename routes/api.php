@@ -29,6 +29,8 @@ $api->version('v1',function($api){
 
         // 充值额度
         $api->get('rechargeamount','RechargeAmountController@rechargeAmount');
+        // 支付
+        $api->get('pay/{id}','PayController@doPay');
 
         // 抓娃娃
         $api->get('selectdm/{id}','CatchDollController@selectDollMachine'); // 选择了一个娃娃机

@@ -216,7 +216,8 @@ return [
         'data.*.goods_id' => '商品id',
         'data.*.num' => '提现数量',
         'sdkId' => '渠道参数',
-        'userId' => '用户id'
+        'userId' => '用户id',
+        'sign'  => '验证信息'
     ],
 
 ];

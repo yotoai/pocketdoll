@@ -14,11 +14,16 @@ class LoginController extends BaseController
     // 用户授权
     public function login(Request $request)
     {
-        $rules = [
-            'sdkId' => 'required',
-            'userId' => 'required'
-        ];
-        $this->validate($request,$rules);
+        $this->validate($request,[
+            'sdkId'  => 'required',
+            'userId' => 'required',
+            'sign'   => 'required'
+        ]);
+
+        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.env('GAMEKEY')))){
+            return ['code' => -1,'msg' => '验证失败'];
+        }
+
         $gc = GoodsCategory::orderBy(DB::raw('RAND()'))->take(1)->get(['id'])[0];
         $res = $this->addUser($request);
         if(!$res){
