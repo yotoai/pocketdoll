@@ -29,12 +29,28 @@ class UserRucksackController extends BaseController
                 'goods.pic'
             ]);
             foreach ($data as $d) {
-                $d->pic = env('APP_URL').'/uploads/'. ($d->pic);
+                $d->pic = env('APP_URL') . '/uploads/'. ($d->pic);
+            }
+            $list = [];
+            foreach ($data as $d){
+                $num = $d->num;
+                if($num > 1){
+                    for($i = 0; $i < $num; $i++) {
+                        $list[] = [
+                            'rucksack_id' => $d->rucksack_id,
+                            'goods_id' => $d->goods_id,
+                            'name' => $d->name,
+                            'pic' => $d->pic
+                        ];
+                    }
+                }else{
+                    $list[] = $d;
+                }
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'msg' => '查询成功','data' => $data];
+        return ['code' => 1,'msg' => '查询成功','data' => $list];
     }
 
     // 提取娃娃   !有问题待解决
@@ -67,7 +83,7 @@ class UserRucksackController extends BaseController
                         'num' => $num - $val['num'],
                     ]);
                     $res_id =  catchLog::where([
-                        ['user_id','=',$this->getOpenid()],
+                        ['user_id','=',$this->getUserid()],
                         ['goods_id','=',$val['goods_id']],
                         ['status','<>','1']
                     ])->orderBy('id')->take($val['num'])->get(['id'])->pluck('id');
@@ -81,7 +97,7 @@ class UserRucksackController extends BaseController
                 $dz = Address::where('id',$request->address_id)->first();
                 $address_info = $dz->name.','.$dz->phone.','.$dz->area_info.','.$dz->address.','.$dz->post_code;
                 GainLog::create([
-                    'user_id'    => $this->getOpenid(),
+                    'user_id'    => $this->getUserid(),
                     'goods_id'   => rtrim($goods_id,','),
                     'num'        => rtrim($count,','),
                     'address_info' => $address_info
@@ -97,20 +113,41 @@ class UserRucksackController extends BaseController
     // 提取记录
     public function withdrawLog()
     {
-        $res = GainLog::where('user_id',$this->getOpenid())->get(['id','goods_id','num','status']);
-        foreach ($res as $key=>$val){
-            $data = [];
-            $gids = explode(',',$val['goods_id']);
-            $nums = explode(',',$val['num']);
-            foreach (Goods::whereIn('id',$gids)->get(['name','pic']) as $k=>$v){
-                $data[$k] = $v;
-                $data[$k]['num'] = $nums[$k];
+        try{
+            $res = GainLog::where('user_id',$this->getUserid())->get(['id','goods_id','num','status']);
+            $list = [];
+            foreach ($res as $key=>$val){
+                $gids = explode(',',$val['goods_id']);
+                $nums = explode(',',$val['num']);
+                $data =  Goods::whereIn('id',$gids)->get(['name','pic']);
+                foreach ($data as $k=>$v){
+                    $num = $nums[$k];
+                    if($num >= 1){
+                        for ($i = 0; $i < $num; $i++){
+                            $list[] = [
+                                'name'   => $v->name,
+                                'pic'    => env('APP_URL') . '/uploads/' . $v->pic,
+                                'status' => $this->toStatusName($val->status)
+                            ];
+                        }
+                    }
+                }
+                //$res[$key]['data'] = $data;
             }
-            $res[$key]['data'] = $data;
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return $res;
+        return ['code' => 1,'msg' => '查询成功','data' => $list];
+        // return $res;
     }
-    
+
+    // 转换成状态名称
+    private function toStatusName($status)
+    {
+        if($status == '-1') return '待发货';
+        if($status == '1')  return '已发货';
+        if($status == '2')  return '已完成';
+    }
     
     // 添加收货地址
     public function storeAddress(Request $request)
@@ -124,7 +161,7 @@ class UserRucksackController extends BaseController
         $this->validate($request,$rules);
         try{
             Address::create([
-                'user_id'   => $this->getOpenid(),
+                'user_id'   => $this->getUserid(),
                 'name'      => $request->name,
                 'phone'     => $request->phone,
                 'area_info' => $request->area,

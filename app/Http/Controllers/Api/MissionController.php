@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Model\Awards;
 use App\Model\Mission;
 use App\Model\missionType;
+use App\Model\Player;
 use App\Model\UserMission;
 use App\Model\Users;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class MissionController extends BaseController
         $lists = [];
         $mid   = [];
         $this->restMisison();
-        $datas = Redis::smembers($this->getOpenid().'_mission');
+        $datas = Redis::smembers($this->getUserid().'_mission');
         foreach ($datas as $ds){
             $list[] = unserialize($ds);
         }
@@ -101,14 +102,14 @@ class MissionController extends BaseController
 
                 $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
 
-                $ures = Users::where('openid',$this->getOpenid())->first(['coin']);
+                $ures = Player::where('user_id',$this->getUserid())->first(['coin']);
 
                 DB::transaction(function () use ($res,$ures,$mid){
-                    Users::where('openid',$this->getOpenid())->update([
+                    Player::where('user_id',$this->getUserid())->update([
                         'coin' => $ures->coin + $res->award_coin,
                     ]);
                     UserMission::create([
-                        'user_id'    => $this->getOpenid(),
+                        'user_id'    => $this->getUserid(),
                         'mission_id' => $mid,
                         'status'     => '1'
                     ]);
@@ -120,14 +121,14 @@ class MissionController extends BaseController
 
                 $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
 
-                $ures = Users::where('openid',$this->getOpenid())->first(['coin']);
+                $ures = Player::where('user_id',$this->getUserid())->first(['coin']);
 
                 DB::transaction(function () use ($res,$ures,$mid){
-                    Users::where('openid',$this->getOpenid())->update([
+                    Player::where('user_id',$this->getUserid())->update([
                         'coin' => $ures->coin + $res->award_coin,
                     ]);
                     UserMission::create([
-                        'user_id'    => $this->getOpenid(),
+                        'user_id'    => $this->getUserid(),
                         'mission_id' => $mid,
                         'status'     => '1'
                     ]);
@@ -161,17 +162,17 @@ class MissionController extends BaseController
     // 初始化 每日任务
     public function restMisison()
     {
-        if(Users::where('openid',$this->getOpenid())->value('new_user_mission') == '1'){
+        if(Player::where('user_id',$this->getUserid())->value('new_user_mission') == '1'){
             $data = Mission::where('parent_id',0)->where('type','<>',3)
                 ->orderBy('mission.id')->get(['id','status'])->toArray();
             foreach ($data as $da){
-                Redis::sadd($this->getOpenid().'_mission',serialize($da) );
+                Redis::sadd($this->getUserid().'_mission',serialize($da) );
             }
         }else{
             $data = Mission::where('parent_id',0)
                 ->orderBy('mission.id')->get(['id','status'])->toArray();
             foreach ($data as $da){
-                Redis::sadd($this->getOpenid().'_mission',serialize($da) );
+                Redis::sadd($this->getUserid().'_mission',serialize($da) );
             }
         }
     }
@@ -179,7 +180,7 @@ class MissionController extends BaseController
     // 向任务列表添加任务
     public function addRedisMission($mid)
     {
-        Redis::sadd($this->getOpenid().'_mission',serialize([
+        Redis::sadd($this->getUserid().'_mission',serialize([
             'id'     => $mid,
             'status' => '0'
         ]));

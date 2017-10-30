@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Extensions\ConfirmBox;
+use App\Model\Player;
 use App\Model\Users;
 use App\Model\UserShow;
 
@@ -79,7 +80,7 @@ class UserShowController extends Controller
             $grid->id('ID')->sortable();
 
             $grid->user_id('玩家名称')->display(function ($uid){
-                return Users::where('openid',$uid)->first()->nickname;
+                return Player::where('user_id',$uid)->first()->user_name;
             });
             $grid->pic('图秀')->image('/uploads/',36,36);
 
@@ -92,7 +93,7 @@ class UserShowController extends Controller
             $grid->actions(function ($actions){
                 $status = UserShow::find($actions->getKey())->status;
                 if($status != 1){
-                    $actions->append(new ConfirmBox('确认通过吗？','usershow/updateStatus'));
+                    $actions->append(new ConfirmBox('确认通过吗？','usershow/updateStatus',1));
                 }
             });
 

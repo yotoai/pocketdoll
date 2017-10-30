@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Model\Player;
 use App\Model\RechargeAmount;
 use App\Model\RechargeLog;
 
@@ -75,14 +76,16 @@ class RechargeLogController extends Controller
     {
         return Admin::grid(RechargeLog::class, function (Grid $grid) {
 
-            $grid->actions(function ($actions) {
-                $actions->disableEdit();
-            });
+//            $grid->actions(function ($actions) {
+//                $actions->disableDelete();
+//                $actions->disableEdit();
+//            });
+            $grid->disableActions();
             $grid->disableCreation();
 
             $grid->id('ID')->sortable();
             $grid->user_id('用户名')->display(function ($uid){
-               return Users::find($uid)->nickname;
+               return Player::where('user_id',$uid)->first()->user_name;
             });
             $grid->order('订单号');
             $grid->pay('支付金额');
@@ -93,6 +96,8 @@ class RechargeLogController extends Controller
             $grid->status('充值状态')->display(function ($status){
                return  $status == 1 ? "<span class='label label-success'>支付成功</span>" : $status == -1 ? "<span class='label label-default'>未支付</span>" : "<span class='label label-danger'>充值失败</span>";
             });
+            $grid->status_des('状态描述');
+
             $grid->column('time','充值时间');
 
             $grid->created_at('创建时间');

@@ -17,8 +17,20 @@ use Illuminate\Http\Request;
 //    return 1;
 //});
 $api = app('Dingo\Api\Routing\Router');
+
 $api->version('v1',function($api){
-    $api->group(['middleware' => ['api.auth','refreshToken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
+    $api->get('test',function (){
+        return ['aa' => 11];
+    });
+    $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
+        $api->post('login','LoginController@login');
+        // 刷新token
+        $api->get('refresh','LoginController@refreshToken');
+
+
+    });
+
+    $api->group(['middleware' => ['api.cpy'],'namespace' => 'App\Http\Controllers\Api'],function($api){
 //    $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 公告
         $api->get('notice','NoticeController@qnotice');
@@ -29,6 +41,9 @@ $api->version('v1',function($api){
 
         // 充值额度
         $api->get('rechargeamount','RechargeAmountController@rechargeAmount');
+        // 支付
+        $api->get('pay/{id}','PayController@doPay');
+        $api->post('notify','PayController@pay_notify');
 
         // 抓娃娃
         $api->get('selectdm/{id}','CatchDollController@selectDollMachine'); // 选择了一个娃娃机
@@ -44,15 +59,17 @@ $api->version('v1',function($api){
         $api->get('daymission','MissionController@loginInMission');
         $api->post('finishmission/{id}','MissionController@finishMission');
     });
-    $api->group(['middleware' => ['api', 'wechat.oauth'],'namespace' => 'App\Http\Controllers\Api'], function ($api) {
-        // 用户授权
-        $api->get('user','UserController@oauthUser');
-        // 充值
-        $api->post('wxpay/{id}','WxpayController@Wxpay');
-        $api->post('wxnotify','WxpayController@wxNotify');
-        // 分享
-        $api->get('jssdk','UserController@getJsConfig');
-        // 刷新token
-        $api->get('refresh','UserController@refreshToken');
-    });
+
+//
+//    $api->group(['middleware' => ['api', 'wechat.oauth'],'namespace' => 'App\Http\Controllers\Api'], function ($api) {
+//        // 用户授权
+//        $api->get('user','UserController@oauthUser');
+//        // 充值
+//        $api->post('wxpay/{id}','WxpayController@Wxpay');
+//        $api->post('wxnotify','WxpayController@wxNotify');
+//        // 分享
+//        $api->get('jssdk','UserController@getJsConfig');
+//        // 刷新token
+//        $api->get('refresh','UserController@refreshToken');
+//    });
 });

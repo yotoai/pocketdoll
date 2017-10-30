@@ -20,8 +20,8 @@ class RefreshToken
     public function handle($request, Closure $next)
     {
         try {
-            $old_token = JWTAuth::getToken();
-//            $old_token_data = JWTAuth::parseToken()->authenticate();
+//            $old_token = JWTAuth::getToken();
+           $old_token_data = JWTAuth::parseToken()->authenticate();
 //            if($old_token_data->login_time >= $old_token_data->login_time + 3600){
 //                $token = JWTAuth::refresh($old_token);
 //                JWTAuth::invalidate($old_token);
@@ -33,7 +33,7 @@ class RefreshToken
             JWTAuth::invalidate($old_token);
             return response()->json(['code' => $e->getCode(),'msg' => 'token已过期','newToken' => $token]);
         } catch (JWTException $e) {
-            return response()->json( ['code' => -1,'msg' => 'token异常','errmsg' => $e->getMessage()] );
+            return response()->json( ['code' => -1,'msg' => 'token异常le','errmsg' => $e->getMessage()] );
         }
         return $next($request);
     }

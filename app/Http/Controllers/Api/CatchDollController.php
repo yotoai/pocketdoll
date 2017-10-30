@@ -6,6 +6,7 @@ use App\Model\catchLog;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Mission;
+use App\Model\Player;
 use App\Model\UserRucksack;
 use App\Model\Users;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class CatchDollController extends BaseController
             $data = Goods::where('goods_cate_id',intval($id))
                 ->get([
                     'id',
+                    'goods_cate_id',
                     'name',
                     'pic',
                     'sc_pic',
@@ -88,11 +90,11 @@ class CatchDollController extends BaseController
      * @param $gid       @娃娃id
      * @return array
      */
-    public function catchDoll($id,$gid)
+    public function catchDoll(Request $request,$id,$gid)
     {
-        $openid = $this->getOpenid();
+        $uid = $this->getUserid();
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
-        $ucoin = Users::where('openid',$openid)->value('coin');
+        $ucoin = Player::where('userId',$uid)->value('coin');
         if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
 
         $lucky = $this->getLuckyRedis($id);
@@ -100,29 +102,29 @@ class CatchDollController extends BaseController
 
         $arr = ['get' => $rate + $lucky,'lost'=>1000];
 
-        if(($res = $this->getRand($arr)) == 'get' || $lucky == 100)
+        if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == true)
         {
             $this->setLuckyRedis($id,0);
             try{
-                DB::transaction(function () use ($openid,$gid,$gcoin,$ucoin){
-                    $res = UserRucksack::where('user_id',$openid)->where('goods_id',$gid)->first();
+                DB::transaction(function () use ($uid,$gid,$gcoin,$ucoin){
+                    $res = UserRucksack::where('user_id',$uid)->where('goods_id',$gid)->first();
                     if($res->goods_id == $gid) {
-                        UserRucksack::where('user_id',$openid)->where('goods_id',$gid)->update([
+                        UserRucksack::where('user_id',$uid)->where('goods_id',$gid)->update([
                             'num' => $res->num + 1
                         ]);
                     }else {
                         UserRucksack::create([
-                            'user_id'   => $openid,
+                            'user_id'   => $uid,
                             'goods_id'  => $gid,
                             'num'       => 1,
                             'gain_time' => date('Y-m-d H:i:s', time())
                         ]);
                     }
                     catchLog::create([
-                        'user_id'  => $openid,
+                        'user_id'  => $uid,
                         'goods_id' => $gid,
                     ]);
-                    Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
+                    Player::where('userId',$uid)->update(['coin' => $ucoin - $gcoin]);
                 });
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
@@ -134,7 +136,7 @@ class CatchDollController extends BaseController
             try{
                 $this->setCatchNum(1);
                 $this->finishMission('catch');
-                Users::where('openid',$openid)->update(['coin' => $ucoin - $gcoin]);
+                Player::where('userId',$uid)->update(['coin' => $ucoin - $gcoin]);
                 $add_lucky = $this->reLucky($lucky);
                 $this->setLuckyRedis($id,$add_lucky);
                 return ['code' => 1,'data' => $res,'lucky' => $add_lucky];

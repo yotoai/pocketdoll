@@ -20,7 +20,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        RefreshToken::class
+//        RefreshToken::class
 
     ];
 
@@ -44,11 +44,11 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
-        'api:auth' => [
-            'auth:api',
-            'api.auth',
-            'refreshToken'
-        ]
+//        'api:auth' => [
+//            'auth:api',
+//            'api.auth',
+//            'refreshToken'
+//        ]
     ];
 
     /**
@@ -68,6 +68,6 @@ class Kernel extends HttpKernel
 
         // 微信授权
         'wechat.oauth'=>\Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
-        'refreshToken' => RefreshToken::class
+        'api.cpy' => RefreshToken::class
     ];
 }

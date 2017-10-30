@@ -3,9 +3,9 @@
 namespace App\Admin\Controllers;
 
 use App\Model\Mission;
+use App\Model\Player;
 use App\Model\UserMission;
 
-use App\Model\Users;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -79,7 +79,7 @@ class MissionLogController extends Controller
 
             $grid->disableCreation();
             $grid->user_id('用户名')->display(function ($uid){
-               return Users::where('openid',$uid)->first()->nickname;
+               return Player::where('user_id',$uid)->first()->user_name;
             });
             $grid->mission_id('任务名称')->display(function ($mid){
                return Mission::find($mid)->title;

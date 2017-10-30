@@ -9,8 +9,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class BaseController extends Controller
 {
+    //
+    protected $uid;
     public function __construct()
     {
+
     }
 
     //
@@ -33,13 +36,44 @@ class BaseController extends Controller
     // 获取openid // 拿到授权用户资料
     public function getOpenid()
     {
-        return session('wechat.oauth_user')->toArray()['id'];
+        if(empty(JWTAuth::getToken())){
+            return $this->getUid();
+        }else{
+            $user = JWTAuth::parseToken()->authenticate();
+            return $user->user_id;
+        }
+       // return session('wechat.oauth_user')->toArray()['id'];
+    }
+
+    public function getUser()
+    {
+        if(empty(JWTAuth::getToken())){
+            return $this->getUid();
+        }else{
+            $user = JWTAuth::parseToken()->authenticate();
+            return $user;
+        }
     }
 
     public function getUserid()
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        return $user->openid;
+        if(empty(JWTAuth::getToken())){
+            return $this->getUid();
+        }else{
+            $user = JWTAuth::parseToken()->authenticate();
+            return $user->user_id;
+        }
+    }
+
+
+    public function setUserId($user_id)
+    {
+        $this->uid = $user_id;
+    }
+
+    public function getUid()
+    {
+        return $this->uid;
     }
     /**
      * 获取 redis 中用户的幸运值
@@ -48,7 +82,7 @@ class BaseController extends Controller
      */
     public function getLuckyRedis($wid)
     {
-        $data = Redis::get($this->getOpenid() . '_' . $wid . '_lucky');
+        $data = Redis::get($this->getUserid() . '_' . $wid . '_lucky');
         if(empty($data)){
             return 0;
         }else{
