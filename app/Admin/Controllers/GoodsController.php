@@ -74,6 +74,11 @@ class GoodsController extends Controller
     {
         return Admin::grid(Goods::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->actions(function ($actions) {
+                $actions->disableDelete();
+
+            });
+
             $grid->name('商品名称');
             $grid->pic('图片')->image('/uploads/',36,36);
             $grid->goods_cate_id('所属娃娃机')->display(function($category){

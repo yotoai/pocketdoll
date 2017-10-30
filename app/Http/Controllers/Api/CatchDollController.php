@@ -28,6 +28,7 @@ class CatchDollController extends BaseController
             $data = Goods::where('goods_cate_id',intval($id))
                 ->get([
                     'id',
+                    'goods_cate_id',
                     'name',
                     'pic',
                     'sc_pic',
@@ -89,7 +90,7 @@ class CatchDollController extends BaseController
      * @param $gid       @娃娃id
      * @return array
      */
-    public function catchDoll($id,$gid)
+    public function catchDoll(Request $request,$id,$gid)
     {
         $uid = $this->getUserid();
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
@@ -101,7 +102,7 @@ class CatchDollController extends BaseController
 
         $arr = ['get' => $rate + $lucky,'lost'=>1000];
 
-        if(($res = $this->getRand($arr)) == 'get' || $lucky == 100)
+        if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == true)
         {
             $this->setLuckyRedis($id,0);
             try{

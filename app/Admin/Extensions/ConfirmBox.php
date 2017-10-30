@@ -11,11 +11,15 @@ class ConfirmBox extends AbstractTool
 {
     protected $title;
     protected $url;
+    protected $ac;
+    protected $tb;
 
-    public function __construct($title,$url)
+    public function __construct($title,$url,$ac,$tb='fa-check')
     {
         $this->title = $title;
         $this->url = $url;
+        $this->ac = $ac;
+        $this->tb = $tb;
     }
 
     protected function script()
@@ -24,8 +28,10 @@ class ConfirmBox extends AbstractTool
     $('.upstatus').unbind('click').on('click',function()
     {
          var id = $(this).parents('tr').find('.grid-row-delete').attr('data-id');
+         var title = $(this).attr('msg');
+         var status = $(this).attr('data-state');
          swal({
-                title: "{$this->title}",
+                title: title,
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -42,7 +48,7 @@ class ConfirmBox extends AbstractTool
                         data: {
                             _token:LA.token,
                             id:id,
-                            action:1
+                            action:status
                         },
                         success: function (data)
                         {
@@ -72,7 +78,7 @@ EOT;
 
         return <<<EOT
 
-        <a style="float: left;margin-right: 5px;" class="upstatus" href="javascript:;"><i class="fa fa-check"></i></a>    
+        <a style="float: left;margin-right: 5px;" class="upstatus" msg="{$this->title}" data-state="{$this->ac}" href="javascript:;"><i class="fa {$this->tb}"></i></a>   
     
 
 EOT;

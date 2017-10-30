@@ -23,10 +23,6 @@ Route::group([
     $router->resource('notice',NoticeController::class,['as' => 'admin']);
     $router->resource('usershow',UserShowController::class,['as' => 'admin']);
 
-    // 修改 状态
-    $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
-    $router->post('gainlog/updateStatus', 'GainLogController@updateStatus')->name('admin.gainlog.updateStatus');
-
     // 任务管理
     $router->resource('mission',MissionController::class,['as' => 'admin']);
     $router->resource('awards',AwardsController::class,['as' => 'admin']);
@@ -37,5 +33,10 @@ Route::group([
     $router->resource('rechargeLog',RechargeLogController::class,['as' => 'admin']);
 
     // 用户管理
-    $router->resource('user',UserController::class,['as' =>'admin']);
+    $router->resource('player',PlayerController::class,['as' =>'admin']);
+
+    // 修改 状态
+    $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
+    $router->post('gainlog/updateStatus', 'GainLogController@updateStatus')->name('admin.gainlog.updateStatus');
+    $router->post('machine/updateStatus', 'CategoryController@updateStatus')->name('admin.machine.updateStatus');
 });

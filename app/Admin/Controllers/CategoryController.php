@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\ConfirmBox;
 use App\Model\GoodsCategory;
 
 use App\Model\Tags;
@@ -85,6 +86,18 @@ class CategoryController extends Controller
             });
             $grid->win_rate('概率');
 
+            $grid->status('状态')->display(function ($status){
+                return $status == 1 ?  "<span class='label label-success'>已上架</span>" : "<span class='label label-default'>已下架</span>";
+            });
+
+            $grid->actions(function ($actions){
+                $status = GoodsCategory::find($actions->getKey())->status;
+                if($status == '-1'){
+                    $actions->append(new ConfirmBox('确认上架吗？','machine/updateStatus',$status));
+                }elseif ($status == '1'){
+                    $actions->append(new ConfirmBox('确认下架吗？','machine/updateStatus',$status,'fa-close'));
+                }
+            });
             $grid->created_at('添加时间');
             $grid->updated_at('更新时间');
         });
@@ -106,12 +119,20 @@ class CategoryController extends Controller
             $form->number('coin','金币：')->rules('required');
             $form->select('tag_id','标签：')->options(function(){
                 return Tags::all()->pluck('tag_name','id')->toArray();
-            })->rules('required');
+            });
+//            $form->multipleSelect('tag_id','标签：')->options(Tags::all()->pluck('tag_name','id'))->rules('required');
             $form->number('win_rate','概率：')->rules('required');
             $form->image('pic','图片：')->rules('required');
 
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });
+    }
+
+    // 自定义 上下架方法
+    public function updateStatus()
+    {
+        $res = GoodsCategory::where('id', request('id'))->update(['status' => request('action') == '-1' ? '1' : '-1']);
+        return $res ? ['status' => true,'message' => '操作成功'] : ['status' => false,'message' => '操作失败！'];
     }
 }

@@ -2,16 +2,16 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Player extends Model implements JWTSubject
+class Player extends Authenticatable  implements JWTSubject
 {
     // 指定表
     protected $table = 'player';
 
     // 指定字段
-    protected $fillable = ['sdkId','userId','userName','userImg','coin','new_user_mission','login_time'];
+    protected $fillable = ['sdk_id','user_id','user_name','user_img','coin','new_user_mission','login_time'];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

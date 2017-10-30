@@ -12,14 +12,15 @@ class UserShowController extends BaseController
     public function userShow()
     {
         try{
-            $data = UserShow::join('user','user.openid','=','user_show.user_id')
+            $data = UserShow::join('player','player.user_id','=','user_show.user_id')
                 ->where('user_show.status','1')
+                ->orderBy('user_show.id','desc')
                 ->get([
                     'user_show.id as id',
                     'user_show.contents as contents',
                     'user_show.pic as pic',
-                    'user.nickname as nickname',
-                    'user.icon as icon'
+                    'player.user_name as nickname',
+                    'player.user_img as icon'
                 ]);
             foreach ($data as $d){
                 $d->pic = env('APP_URL').'/uploads/'. ($d->pic);

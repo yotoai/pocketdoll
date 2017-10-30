@@ -33,7 +33,7 @@ class RefreshToken
             JWTAuth::invalidate($old_token);
             return response()->json(['code' => $e->getCode(),'msg' => 'token已过期','newToken' => $token]);
         } catch (JWTException $e) {
-            return response()->json( ['code' => -1,'msg' => 'token异常','errmsg' => $e->getMessage()] );
+            return response()->json( ['code' => -1,'msg' => 'token异常le','errmsg' => $e->getMessage()] );
         }
         return $next($request);
     }

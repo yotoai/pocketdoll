@@ -10,36 +10,36 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class PayController extends Controller
+class PayController extends BaseController
 {
     //
     public function doPay($gid)
     {
         try {
-            $user_id = $this->getUserid();
+            $user = $this->getUser();
             $data = RechargeAmount::find($gid);
-            $sdk_id = Player::where('user_id',$user_id)->first()->sdk_id;
             $order = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
-            $sign = strtolower($sdk_id.$user_id.$data->title.'123456'.$data->price.'test'.env('GAMEKEY'));
+            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.'123456'.$data->price.'test'.env('GAMEKEY')));
             $client = new Client();
             $params=[
-                'sdkId' => $sdk_id,
-                'userId' => $user_id,
+                'sdkId' => $user->sdk_id,
+                'userId' => $user->user_id,
                 'goodsName' => $data->title,
                 'orderNo' => $order,
                 'fee' => $data->price,
                 'extra' => 'test',
                 'sign' => $sign
             ];
+            //return $params;
             $headers=[
                 'Accept'     => 'application/json',
             ];
-            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do',['headers'=>$headers,'form_params'=>$params]);
+            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params),['headers'=>$headers,'form_params'=>$params]);
 
-            $res = $this->storeOrder($user_id,$data->price,$order,$gid);
-            if($res['code'] == -1){
-                return $res;
-            }
+            //$res = $this->storeOrder($user->user_id,$data->price,$order,$gid);
+//            if($res['code'] == -1){
+//                return $res;
+//            }
             return json_decode($response->getBody(),true);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {

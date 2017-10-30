@@ -7,6 +7,7 @@ use App\Model\Address;
 use App\Model\GainLog;
 
 use App\Model\Goods;
+use App\Model\Player;
 use App\Model\Users;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -84,7 +85,7 @@ class GainLogController extends Controller
             $grid->id('ID')->sortable();
 
             $grid->user_id('用户名')->display(function ($uid){
-                return Users::where('openid',$uid)->first()->nickname;
+                return Player::where('user_id',$uid)->first()->user_name;
             });
             $grid->goods_id('娃娃名称')->display(function ($gid){
                 $ids = explode(',',$gid);
@@ -134,8 +135,8 @@ class GainLogController extends Controller
                 $actions->disableEdit();
 
                 $status = GainLog::find($actions->getKey())->status;
-                if($status != 1){
-                    $actions->append(new ConfirmBox('确认发货吗？','gainlog/updateStatus'));
+                if($status == -1){
+                    $actions->append(new ConfirmBox('确认发货吗？','gainlog/updateStatus',1));
                 }
             });
 

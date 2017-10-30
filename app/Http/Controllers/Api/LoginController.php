@@ -17,12 +17,12 @@ class LoginController extends BaseController
         $this->validate($request,[
             'sdkId'  => 'required',
             'userId' => 'required',
-            'sign'   => 'required'
+            //'sign'   => 'required'
         ]);
 
-        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.env('GAMEKEY')))){
-            return ['code' => -1,'msg' => '验证失败'];
-        }
+//        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.env('GAMEKEY')))){
+//            return ['code' => -1,'msg' => '验证失败'];
+//        }
 
         $gc = GoodsCategory::orderBy(DB::raw('RAND()'))->take(1)->get(['id'])[0];
         $res = $this->addUser($request);
@@ -32,12 +32,13 @@ class LoginController extends BaseController
         if($res['code'] == -1){
             return $res;
         }
+        $this->setUserId($request->sdkId);
         $data = $this->selectDollMachine($gc->id);
-        return array_merge($res,['data'=>$data]);
+        return array_merge($res,['data' => $data]);
     }
 
     //添加用户
-    protected function addUser($request)
+    protected function addUser(Request $request)
     {
         if( empty($request) ) return false;
         $data = Player::where('user_id',$request->userId)->first();
@@ -112,5 +113,14 @@ class LoginController extends BaseController
             return ['code' => -1,'msg' => $e->getMessage()];
         }
         return ['code' => 1,'coin' => $coin,'lucky' => $lucky,'data' => $data];
+    }
+
+    // 刷新 token
+    public function refreshToken()
+    {
+        $old_token = JWTAuth::getToken();
+        $token = JWTAuth::refresh($old_token);
+        JWTAuth::invalidate($old_token);
+        return $token;
     }
 }

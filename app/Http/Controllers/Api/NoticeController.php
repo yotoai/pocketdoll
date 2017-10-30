@@ -11,7 +11,14 @@ class NoticeController extends BaseController
     public function qnotice()
     {
         try{
-            $list = Notice::where('status','<>','-1')->get();
+            $list = Notice::where('status','<>','-1')
+                ->orderBy('id','desc')
+                ->get([
+                    'id',
+                    'title',
+                    'contents',
+                    'pic'
+                ]);
             foreach ($list as $notic){
                 $notic->pic = env('APP_URL').'/uploads/'. ($notic->pic);
             }
