@@ -30,7 +30,7 @@ $api->version('v1',function($api){
 
     });
 
-    $api->group(['middleware' => ['api.auth','refreshToken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
+    $api->group(['middleware' => ['api.cpy'],'namespace' => 'App\Http\Controllers\Api'],function($api){
 //    $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 公告
         $api->get('notice','NoticeController@qnotice');
@@ -43,6 +43,7 @@ $api->version('v1',function($api){
         $api->get('rechargeamount','RechargeAmountController@rechargeAmount');
         // 支付
         $api->get('pay/{id}','PayController@doPay');
+        $api->post('notify','PayController@pay_notify');
 
         // 抓娃娃
         $api->get('selectdm/{id}','CatchDollController@selectDollMachine'); // 选择了一个娃娃机

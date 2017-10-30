@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\ConfirmBox;
 use App\Model\Goods;
 
 use App\Model\GoodsCategory;
@@ -73,10 +74,13 @@ class GoodsController extends Controller
     protected function grid()
     {
         return Admin::grid(Goods::class, function (Grid $grid) {
+            // 添加默认查询条件
+            $grid->model()->where('status', '=', 1);
+
             $grid->id('ID')->sortable();
             $grid->actions(function ($actions) {
                 $actions->disableDelete();
-
+                $actions->append(new ConfirmBox('确认删除吗？','goods/updateStatus','-1','fa-trash','float-right'));
             });
 
             $grid->name('商品名称');
@@ -119,5 +123,12 @@ class GoodsController extends Controller
                 //保存之前的操作
             });
         });
+    }
+
+    // 自定义 软删除方法
+    public function updateStatus()
+    {
+        $res = Goods::where('id', request('id'))->update(['status' => request('action')]);
+        return $res ? ['status' => true,'message' => '操作成功'] : ['status' => false,'message' => '操作失败！'];
     }
 }

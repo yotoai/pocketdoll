@@ -43,13 +43,12 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
-            'refreshToken'
         ],
-        'api:auth' => [
-            'auth:api',
-            'api.auth',
-            'refreshToken'
-        ]
+//        'api:auth' => [
+//            'auth:api',
+//            'api.auth',
+//            'refreshToken'
+//        ]
     ];
 
     /**
@@ -69,6 +68,6 @@ class Kernel extends HttpKernel
 
         // 微信授权
         'wechat.oauth'=>\Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
-        'refreshToken' => RefreshToken::class
+        'api.cpy' => RefreshToken::class
     ];
 }

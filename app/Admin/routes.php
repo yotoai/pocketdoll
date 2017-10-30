@@ -39,4 +39,5 @@ Route::group([
     $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
     $router->post('gainlog/updateStatus', 'GainLogController@updateStatus')->name('admin.gainlog.updateStatus');
     $router->post('machine/updateStatus', 'CategoryController@updateStatus')->name('admin.machine.updateStatus');
+    $router->post('goods/updateStatus', 'GoodsController@updateStatus')->name('admin.goods.updateStatus');
 });

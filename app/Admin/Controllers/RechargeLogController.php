@@ -76,9 +76,11 @@ class RechargeLogController extends Controller
     {
         return Admin::grid(RechargeLog::class, function (Grid $grid) {
 
-            $grid->actions(function ($actions) {
-                $actions->disableEdit();
-            });
+//            $grid->actions(function ($actions) {
+//                $actions->disableDelete();
+//                $actions->disableEdit();
+//            });
+            $grid->disableActions();
             $grid->disableCreation();
 
             $grid->id('ID')->sortable();
@@ -94,6 +96,8 @@ class RechargeLogController extends Controller
             $grid->status('充值状态')->display(function ($status){
                return  $status == 1 ? "<span class='label label-success'>支付成功</span>" : $status == -1 ? "<span class='label label-default'>未支付</span>" : "<span class='label label-danger'>充值失败</span>";
             });
+            $grid->status_des('状态描述');
+
             $grid->column('time','充值时间');
 
             $grid->created_at('创建时间');

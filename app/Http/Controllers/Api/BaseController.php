@@ -13,6 +13,7 @@ class BaseController extends Controller
     protected $uid;
     public function __construct()
     {
+
     }
 
     //

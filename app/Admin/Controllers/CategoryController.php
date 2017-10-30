@@ -74,7 +74,6 @@ class CategoryController extends Controller
     protected function grid()
     {
         return Admin::grid(GoodsCategory::class, function (Grid $grid) {
-
             $grid->id('ID')->sortable();
 
             $grid->cate_name('娃娃机名称');

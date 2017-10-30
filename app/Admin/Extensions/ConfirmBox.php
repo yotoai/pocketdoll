@@ -13,13 +13,15 @@ class ConfirmBox extends AbstractTool
     protected $url;
     protected $ac;
     protected $tb;
+    protected $style;
 
-    public function __construct($title,$url,$ac,$tb='fa-check')
+    public function __construct($title,$url,$ac,$tb='fa-check',$style='float: left;')
     {
         $this->title = $title;
         $this->url = $url;
         $this->ac = $ac;
         $this->tb = $tb;
+        $this->style = $style;
     }
 
     protected function script()
@@ -27,7 +29,7 @@ class ConfirmBox extends AbstractTool
         return <<<EOT
     $('.upstatus').unbind('click').on('click',function()
     {
-         var id = $(this).parents('tr').find('.grid-row-delete').attr('data-id');
+         var id = $(this).parents('tr').find('.grid-row-checkbox').attr('data-id');
          var title = $(this).attr('msg');
          var status = $(this).attr('data-state');
          swal({
@@ -78,7 +80,7 @@ EOT;
 
         return <<<EOT
 
-        <a style="float: left;margin-right: 5px;" class="upstatus" msg="{$this->title}" data-state="{$this->ac}" href="javascript:;"><i class="fa {$this->tb}"></i></a>   
+        <a style="{$this->style}margin-right: 5px;" class="upstatus" msg="{$this->title}" data-state="{$this->ac}" href="javascript:;"><i class="fa {$this->tb}"></i></a>   
     
 
 EOT;
