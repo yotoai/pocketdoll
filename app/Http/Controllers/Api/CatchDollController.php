@@ -99,25 +99,28 @@ class CatchDollController extends BaseController
 
         $lucky = $this->getLuckyRedis($id);
 
-        if($request->iscatch == false || intval($gid) == 0){
+        if($request->iscatch == 'false' || intval($gid) == 0){
             $this->setCatchNum(1);
             $this->finishMission('catch');
             Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
-            $add_lucky = $this->reLucky($lucky);
-            $this->setLuckyRedis($id,$add_lucky);
+            if($lucky >= 100){
+                $add_lucky = 0;
+            }else{
+                $add_lucky = $this->reLucky($lucky);
+                $this->setLuckyRedis($id,$add_lucky);
+            }
             return ['code' => 1,'data' => 'lost','lucky' => $add_lucky];
         }
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
 
-        $arr = ['get' => $rate + $lucky,'lost'=>1000];
+        $arr = ['get' => $rate,'lost'=>1000];
 
-        if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == true)
+        if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == 'true' && $rate > 0)
         {
-            $this->setLuckyRedis($id,0);
             try{
-                DB::transaction(function () use ($uid,$gid,$gcoin,$ucoin){
-                    $res = UserRucksack::where('user_id',$uid)->where('goods_id',$gid)->first();
-                    if($res->goods_id == $gid) {
+                $res = UserRucksack::where('user_id',$uid)->where('goods_id',$gid)->first();
+                DB::transaction(function () use ($uid,$gid,$gcoin,$ucoin,$res){
+                    if(!empty($res) && $res->goods_id == $gid) {
                         UserRucksack::where('user_id',$uid)->where('goods_id',$gid)->update([
                             'num' => $res->num + 1
                         ]);
@@ -135,6 +138,7 @@ class CatchDollController extends BaseController
                     ]);
                     Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
                 });
+                $this->setLuckyRedis($id,0);
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }

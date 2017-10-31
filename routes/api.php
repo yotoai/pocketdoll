@@ -53,6 +53,7 @@ $api->version('v1',function($api){
         $api->get('rucksack','UserRucksackController@rucksack');
         $api->post('withdrawdoll','UserRucksackController@withdrawDoll');
         $api->post('withdrawlog','UserRucksackController@withdrawLog');
+        $api->get('address','UserRucksackController@getAddress');
         // 任务
         $api->get('mission','MissionController@dayMission');
         $api->get('invite','MissionController@inviteMission');

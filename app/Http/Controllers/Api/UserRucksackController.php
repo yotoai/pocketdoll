@@ -59,59 +59,124 @@ class UserRucksackController extends BaseController
     // 提现记录 中的 每个娃娃的提现数量 根据 添加记录中 status = 1的 记录计算数量
     public function withdrawDoll(Request $request)
     {
-
+        // 提现一个
         $rules = [
-            'address_id' => 'required|integer',
-            'data' => 'required',
-            'data.*.rucksack_id' => 'required|integer',
-            'data.*.goods_id' => 'required|integer',
-            'data.*.num' => 'required|integer',
+            'rucksack_id' => 'required|integer',
+            'goods_id'    => 'required|integer',
+            'name'        => 'required|max:255',
+            'phone'       => 'required|regex:/^1[34578][0-9]{9}$/',
+            'address'     => 'required|max:500'
         ];
-        $this->validate($request,$rules);
-        try{
-            $data = $request->data;
-            foreach($data as $key=>$val) {
-                $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
-                if ($num < $val['num']) return ['code' => -1, 'msg' => '娃娃数量不足！'];
-            }
-            DB::transaction(function () use ($data,$request){
-                $goods_id = '';
-                $count = '';
-                foreach($data as $key=>$val) {
-                    $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
-                    if($num - $val['num'] == 0){
-                        UserRucksack::where('id',$val['rucksack_id'])->delete();
-                    }else{
-                        UserRucksack::where('id',$val['rucksack_id'])->update([
-                            'num' => $num - $val['num'],
-                        ]);
-                    }
-                    $res_id =  catchLog::where([
-                        ['user_id','=',$this->getUserid()],
-                        ['goods_id','=',$val['goods_id']],
-                        ['status','<>','1']
-                    ])->orderBy('id')->take($val['num'])->get(['id'])->pluck('id');
-                    catchLog::whereIn('id',$res_id)->update([
-                        'status' => '1'
-                    ]);
-                    $goods_id .= $val['goods_id'] . ',';
-                    $count .= $val['num'].',';
-                }
 
-                $dz = Address::where('id',$request->address_id)->first();
-                $address_info = $dz->name.','.$dz->phone.','.$dz->area_info.','.$dz->address.','.$dz->post_code;
+        $this->validate($request,$rules);
+
+        try{
+            $num = UserRucksack::where('id',$request->rucksack_id)->value('num');
+            if ($num < 1) return ['code' => -1, 'msg' => '娃娃数量不足！'];
+
+            DB::transaction(function () use ($request,$num){
+                $goods = '';
+                $count = '';
+
+                if($num - 1 == 0){
+                    UserRucksack::where('id',$request->rucksack_id)->delete();
+                }else{
+                    UserRucksack::where('id',$request->rucksack_id)->update([
+                        'num' => $num - 1
+                    ]);
+                }
+                $res_id =  catchLog::where([
+                    ['user_id','=',$this->getUserid()],
+                    ['goods_id','=',$request->goods_id],
+                    ['status','<>','1']
+                ])->orderBy('id')->take(1)->get(['id'])->pluck('id');
+                catchLog::whereIn('id',$res_id)->update([
+                    'status' => '1'
+                ]);
+                $goods .= $request->goods_id . ',';
+                $count .= 1 . ',';
+
+                $address_info = $request->name.','.$request->phone.','.$request->address;
                 GainLog::create([
                     'user_id'    => $this->getUserid(),
-                    'goods_id'   => rtrim($goods_id,','),
+                    'goods_id'   => rtrim($goods,','),
                     'num'        => rtrim($count,','),
                     'address_info' => $address_info
                 ]);
-            },3);
+                $address = Address::where('user_id',$this->getUserid())->first();
+                if(empty($address)){
+                    Address::create([
+                        'user_id'   => $this->getUserid(),
+                        'name'      => $request->name,
+                        'phone'     => $request->phone,
+                        'address'   => $request->address
+                    ]);
+                }else{
+                    Address::where('user_id',$this->getUserid())->update([
+                        'name'      => $request->name,
+                        'phone'     => $request->phone,
+                        'address'   => $request->address
+                    ]);
+                }
 
+            },3);
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
         return ['code' => 1,'msg' => '提现成功！'];
+
+        // 提现多个
+//        $rules = [
+//            'address_id' => 'required|integer',
+//            'data' => 'required',
+//            'data.*.rucksack_id' => 'required|integer',
+//            'data.*.goods_id' => 'required|integer',
+//            'data.*.num' => 'required|integer',
+//        ];
+//        try{
+//            $data = $request->data;
+//            foreach($data as $key=>$val) {
+//                $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
+//                if ($num < $val['num']) return ['code' => -1, 'msg' => '娃娃数量不足！'];
+//            }
+//            DB::transaction(function () use ($data,$request){
+//                $goods_id = '';
+//                $count = '';
+//                foreach($data as $key=>$val) {
+//                    $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
+//                    if($num - $val['num'] == 0){
+//                        UserRucksack::where('id',$val['rucksack_id'])->delete();
+//                    }else{
+//                        UserRucksack::where('id',$val['rucksack_id'])->update([
+//                            'num' => $num - $val['num'],
+//                        ]);
+//                    }
+//                    $res_id =  catchLog::where([
+//                        ['user_id','=',$this->getUserid()],
+//                        ['goods_id','=',$val['goods_id']],
+//                        ['status','<>','1']
+//                    ])->orderBy('id')->take($val['num'])->get(['id'])->pluck('id');
+//                    catchLog::whereIn('id',$res_id)->update([
+//                        'status' => '1'
+//                    ]);
+//                    $goods_id .= $val['goods_id'] . ',';
+//                    $count .= $val['num'].',';
+//                }
+//
+//                $dz = Address::where('id',$request->address_id)->first();
+//                $address_info = $dz->name.','.$dz->phone.','.$dz->area_info.','.$dz->address.','.$dz->post_code;
+//                GainLog::create([
+//                    'user_id'    => $this->getUserid(),
+//                    'goods_id'   => rtrim($goods_id,','),
+//                    'num'        => rtrim($count,','),
+//                    'address_info' => $address_info
+//                ]);
+//            },3);
+//
+//        }catch (\Exception $e){
+//            return ['code' => -1,'msg' => $e->getMessage()];
+//        }
+//        return ['code' => 1,'msg' => '提现成功！'];
     }
 
     // 提取记录
@@ -154,26 +219,16 @@ class UserRucksackController extends BaseController
     }
     
     // 添加收货地址
-    public function storeAddress(Request $request)
+    public function getAddress()
     {
-        $rules = [
-            'name'  => 'required|max:255',
-            'phone' => 'required|regex:/^1[34578][0-9]{9}$/',
-            'area_info' => 'required',
-            'address'   => 'required'
-        ];
-        $this->validate($request,$rules);
         try{
-            Address::create([
-                'user_id'   => $this->getUserid(),
-                'name'      => $request->name,
-                'phone'     => $request->phone,
-                'area_info' => $request->area,
-                'address'   => $request->address
-            ]);
+            $address = Address::where('user_id',$this->getUserid())->first(['name','phone','address']);
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'msg' => '添加成功！'];
+        return ['code' => 1,'msg' => '查询成功！','data' => $address];
     }
+
+
+
 }
