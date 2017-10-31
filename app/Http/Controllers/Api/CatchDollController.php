@@ -8,7 +8,6 @@ use App\Model\GoodsCategory;
 use App\Model\Mission;
 use App\Model\Player;
 use App\Model\UserRucksack;
-use App\Model\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;

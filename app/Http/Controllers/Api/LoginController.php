@@ -18,12 +18,12 @@ class LoginController extends BaseController
             'sdkId'  => 'required',
             'userId' => 'required',
             'timestamp' => 'required',
-            'sign'   => 'required'
+           // 'sign'   => 'required'
         ]);
 
-        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.$request->timestamp.env('GAMEKEY')))){
-            return ['code' => -1,'msg' => '验证失败'];
-        }
+//        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.$request->timestamp.env('GAMEKEY')))){
+//            return ['code' => -1,'msg' => '验证失败'];
+//        }
 
         $gc = GoodsCategory::orderBy(DB::raw('RAND()'))->take(1)->get(['id'])[0];
         $res = $this->addUser($request);
