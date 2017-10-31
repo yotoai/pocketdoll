@@ -53,12 +53,12 @@ class CatchDollController extends BaseController
      */
     public function getRandDollMachine()
     {
-        Redis::del('doll_machine');
         $key = 'doll_machine';
         if(Redis::scard($key) > 0){
             return $this->randDollMachine($key);
         }else {
             $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                ->where('goods_category.status','<>','-1')
                 ->get([
                     'goods_category.id as id',
                     'goods_category.cate_name as name',
@@ -99,7 +99,7 @@ class CatchDollController extends BaseController
 
         $lucky = $this->getLuckyRedis($id);
 
-        if($request->iscatch == false && $gid == 0){
+        if($request->iscatch == false || intval($gid) == 0){
             $this->setCatchNum(1);
             $this->finishMission('catch');
             Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
@@ -184,6 +184,7 @@ class CatchDollController extends BaseController
         if( $lucky >= 95 && $lucky <=100) return 1;
     }
 
+    // 完成 抓取 抓到 任务
     protected function finishMission($action)
     {
         if($action == 'catch'){

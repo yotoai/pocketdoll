@@ -79,9 +79,13 @@ class UserRucksackController extends BaseController
                 $count = '';
                 foreach($data as $key=>$val) {
                     $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
-                    UserRucksack::where('id',$val['rucksack_id'])->update([
-                        'num' => $num - $val['num'],
-                    ]);
+                    if($num - $val['num'] == 0){
+                        UserRucksack::where('id',$val['rucksack_id'])->delete();
+                    }else{
+                        UserRucksack::where('id',$val['rucksack_id'])->update([
+                            'num' => $num - $val['num'],
+                        ]);
+                    }
                     $res_id =  catchLog::where([
                         ['user_id','=',$this->getUserid()],
                         ['goods_id','=',$val['goods_id']],

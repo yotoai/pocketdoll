@@ -15,7 +15,7 @@ class CreateUserShowTable extends Migration
     {
         Schema::create('user_show', function (Blueprint $table) {
             $table->increments('id')->comment('记录id');
-            $table->integer('user_id')->comment('用户id');
+            $table->string('user_id')->comment('用户id');
             $table->string('contents',500)->comment('用户发言');
             $table->string('pic',255)->comment('用户美照');
             $table->enum('status',['0','1'])->default('0')->comment('审核状态');

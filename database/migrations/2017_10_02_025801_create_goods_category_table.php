@@ -21,6 +21,7 @@ class CreateGoodsCategoryTable extends Migration
             $table->integer('tag_id')->comment('娃娃标签（新品、人气等）');
             $table->integer('spec')->comment('娃娃规格');
             $table->integer('coin')->comment('所需金币');
+            $table->enum('status',['-1','1'])->default('-1')->comment('娃娃机上下架状态');
             $table->timestamps();
         });
     }

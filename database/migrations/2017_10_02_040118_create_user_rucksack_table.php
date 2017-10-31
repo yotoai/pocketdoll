@@ -15,7 +15,7 @@ class CreateUserRucksackTable extends Migration
     {
         Schema::create('user_rucksack', function (Blueprint $table) {
             $table->increments('id')->comment('背包id');
-            $table->integer('user_id')->comment('用户id');
+            $table->string('user_id')->comment('用户id');
             $table->integer('goods_id')->comment('娃娃id');
             $table->integer('num')->comment('娃娃数量');
             $table->enum('status',['0','1'])->default('0')->comment('提取状态');

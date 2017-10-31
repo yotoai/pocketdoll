@@ -15,7 +15,7 @@ class CreateGainLogTable extends Migration
     {
         Schema::create('gain_log', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->comment('用户id');
+            $table->string('user_id')->comment('用户id');
             $table->string('goods_id')->comment('商品id');
             $table->string('num')->comment('提取的娃娃数量');
             $table->string('address_info')->comment('收货地址信息');
