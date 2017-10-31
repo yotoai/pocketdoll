@@ -33,7 +33,7 @@ class LoginController extends BaseController
         if($res['code'] == -1){
             return $res;
         }
-        $this->setUserId($request->sdkId);
+        $this->setUserId($request->userId);
         $data = $this->selectDollMachine($gc->id);
         return array_merge($res,['data' => $data]);
     }
@@ -95,7 +95,7 @@ class LoginController extends BaseController
                 $this->setLuckyRedis($id,0);
                 $lucky = $this->getLuckyRedis($id);
             }
-            $data = Goods::where('goods_cate_id',intval($id))->get([
+            $data = Goods::where('goods_cate_id',intval($id))->where('status','<>','-1')->get([
                 'id',
                 'goods_cate_id',
                 'name',

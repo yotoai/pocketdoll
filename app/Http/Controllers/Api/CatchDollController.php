@@ -25,6 +25,7 @@ class CatchDollController extends BaseController
                 $lucky = $this->getLuckyRedis($id);
             }
             $data = Goods::where('goods_cate_id',intval($id))
+                ->where('status','<>','-1')
                 ->get([
                     'id',
                     'goods_cate_id',
