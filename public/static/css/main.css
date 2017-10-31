@@ -1,0 +1,124 @@
+.wawaji {
+	position: absolute;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #f26fa5;
+}
+
+.wawaji_top {
+	width: 100%;
+	height: 430px;
+	position: relative;
+}
+
+.wawaji_subTop {
+	position: absolute;
+	z-index: 3;
+	top: 0;
+	width: 100%;
+	height: 40px;
+	background-image: url('../img/bg/cover.png');
+	background-repeat: repeat;
+	background-position: bottom;
+	background-size: cover;
+}
+
+.wawaji_subLeft {
+	position: absolute;
+	z-index: 2;
+	left: 0;
+	width: 28px;
+	height: 100%;
+	background-image: url('../img/bg/box-left.png');
+	background-repeat: repeat;
+	background-position: left;
+	background-size: cover;
+}
+
+.wawaji_subRight {
+	position: absolute;
+	z-index: 2;
+	right: 0;
+	width: 28px;
+	height: 100%;
+	background-image: url('../img/bg/box-right.png');
+	background-repeat: repeat;
+	background-position: right;
+	background-size: cover;
+}
+
+.wawaji_top_light {
+	width: 40px;
+	height: 90%;
+	margin-left: -6px;
+}
+
+.wawaji_subBottom {
+	position: absolute;
+	z-index: 1;
+	bottom: 10px;
+	width: 100%;
+	height: 45px;
+	background-image: url('../img/bg/box-bottom.png');
+	background-repeat: repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.wawaji_top_main {
+	position: absolute;
+	top: 25px;
+	left: 28px;
+	right: 28px;
+	bottom: 25px;
+	background-color: #34ccdd;
+	background-image: url('../img/bg/house.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.rod {
+	position: relative;
+	left: 80px;
+}
+
+.rod_handle {
+	width: 5px;
+	height: 1px;
+	background-image: url('../img/rod/hooktu01.jpg');
+	background-position: center;
+	background-size: contain;
+}
+
+.rod_lid_img {
+	width: 45px;
+	height: 35px;
+	margin-left: -21px;	
+}
+
+.rod_paws {
+	width: 75px;
+	height: 300px;
+	margin-left: -36px;
+	overflow: hidden;
+}
+
+.rod_paw_l {
+	float: left;
+}
+
+.rod_paw_r {
+	float: right;
+}
+
+.rod_paw_l_img {
+	width: 24px;
+	height: 46px;
+}
+
+.rod_paw_r_img {
+	width: 24px;
+	height: 46px;
+}
