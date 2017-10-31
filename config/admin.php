@@ -5,12 +5,12 @@ return [
     /*
      * Laravel-admin name.
      */
-    'name'      => 'PocketDoll-后台管理',
+    'name'      => '在线娃娃机-后台管理',
 
     /*
      * Logo in admin panel header.
      */
-    'logo'      => '<b>PocketDoll</b> admin',
+    'logo'      => '<b>在线娃娃机</b> 后台管理',
 
     /*
      * Mini-logo in admin panel header.
@@ -37,7 +37,7 @@ return [
     /*
      * Laravel-admin html title.
      */
-    'title'  => 'PocketDoll 后台管理',
+    'title'  => '在线娃娃机 后台管理',
 
     /*
      * Use `https`.
