@@ -90,7 +90,7 @@ class LoginController extends BaseController
     {
         try{
             $lucky = $this->getLuckyRedis($id);
-            if($lucky < 0 )
+            if(intval($lucky) <= 0 )
             {
                 $this->setLuckyRedis($id,0);
                 $lucky = $this->getLuckyRedis($id);
