@@ -40,10 +40,11 @@ class CatchDollController extends BaseController
                 $d->pic = env('APP_URL').'/uploads/'.$d->pic;
                 $d->sc_pic = env('APP_URL').'/uploads/'.$d->sc_pic;
             }
+            $coin = GoodsCategory::where('id',$id)->value('coin');
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'msg' => '查询成功','lucky' => $lucky,'data' => $data];
+        return ['code' => 1,'msg' => '查询成功','coin' => $coin,'lucky' => $lucky,'data' => $data];
     }
 
     /**

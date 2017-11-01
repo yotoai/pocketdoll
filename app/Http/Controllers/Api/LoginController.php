@@ -24,8 +24,6 @@ class LoginController extends BaseController
 //        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.$request->timestamp.env('GAMEKEY')))){
 //            return ['code' => -1,'msg' => '验证失败'];
 //        }
-
-        $gc = GoodsCategory::where('status','<>','-1')->orderBy(DB::raw('RAND()'))->take(1)->get(['id'])[0];
         $res = $this->addUser($request);
         if(!$res){
             return ['code' => -1,'msg' => '获取数据异常...'];
@@ -34,7 +32,9 @@ class LoginController extends BaseController
             return $res;
         }
         $this->setUserId($request->userId);
-        $data = $this->selectDollMachine($gc->id);
+        $goods_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id')->toArray();
+//        return $goods_id;
+        $data = $this->selectDollMachine(array_rand($goods_id));
         return array_merge($res,['data' => $data]);
     }
 
