@@ -57,7 +57,9 @@ class CatchDollController extends BaseController
         if(Redis::scard($key) > 0){
             return $this->randDollMachine($key);
         }else {
+            $cate_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
             $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                ->whereIn('goods_category.id',$cate_id)
                 ->where('goods_category.status','<>','-1')
                 ->get([
                     'goods_category.id as id',
@@ -79,7 +81,7 @@ class CatchDollController extends BaseController
     }
 
     // 返回 $num 个随机 娃娃机
-    protected function randDollMachine($key,$num = 6)
+    protected function randDollMachine($key,$num = 4)
     {
         return ['code' => 1,'msg' => '查询成功','data' => json_decode('['.implode(',',Redis::srandmember($key, $num)).']',true)];
     }
@@ -90,8 +92,12 @@ class CatchDollController extends BaseController
      * @param $gid       @娃娃id
      * @return array
      */
-    public function catchDoll(Request $request,$id,$gid)
+    public function catchDoll($id,$gid,Request $request)
     {
+        $rules = [
+            'iscatch' => 'required'
+        ];
+        $this->validate($request,$rules);
         $uid = $this->getUserid();
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
         $ucoin = Player::where('user_id',$uid)->value('coin');
@@ -114,7 +120,6 @@ class CatchDollController extends BaseController
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
 
         $arr = ['get' => $rate,'lost'=>1000];
-
         if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == 'true' && $rate > 0)
         {
             try{
@@ -150,8 +155,12 @@ class CatchDollController extends BaseController
                 $this->setCatchNum(1);
                 $this->finishMission('catch');
                 Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
-                $add_lucky = $this->reLucky($lucky);
-                $this->setLuckyRedis($id,$add_lucky);
+                if($lucky >= 100){
+                    $add_lucky = 0;
+                }else{
+                    $add_lucky = $this->reLucky($lucky);
+                    $this->setLuckyRedis($id,$add_lucky);
+                }
                 return ['code' => 1,'data' => $res,'lucky' => $add_lucky];
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];

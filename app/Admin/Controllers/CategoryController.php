@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Extensions\ConfirmBox;
+use App\Model\Goods;
 use App\Model\GoodsCategory;
 
 use App\Model\Tags;
@@ -136,7 +137,9 @@ class CategoryController extends Controller
         if($res){
             Redis::del('doll_machine');
             $key = 'doll_machine';
+            $cate_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
             $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                ->whereIn('goods_category.id',$cate_id)
                 ->where('goods_category.status','<>','-1')
                 ->get([
                     'goods_category.id as id',
