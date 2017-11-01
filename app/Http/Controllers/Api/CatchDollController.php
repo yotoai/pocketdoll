@@ -38,7 +38,7 @@ class CatchDollController extends BaseController
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
             foreach ($data as $d) {
                 $d->pic = env('APP_URL').'/uploads/'.$d->pic;
-                $d->sc_pic = env('APP_URL').'/uploads/'.$d->pic;
+                $d->sc_pic = env('APP_URL').'/uploads/'.$d->sc_pic;
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
@@ -66,7 +66,7 @@ class CatchDollController extends BaseController
                     'goods_category.cate_name as name',
                     'goods_category.spec as spec',
                     'goods_category.coin as coin',
-                    'goods_category..pic as pic',
+                    'goods_category.pic as pic',
                     'goods_tags_cate.tag_icon as tag_icon'
                 ]);
             foreach ($data as $d){

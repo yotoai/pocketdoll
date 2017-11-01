@@ -146,7 +146,7 @@ class CategoryController extends Controller
                     'goods_category.cate_name as name',
                     'goods_category.spec as spec',
                     'goods_category.coin as coin',
-                    'goods_category..pic as pic',
+                    'goods_category.pic as pic',
                     'goods_tags_cate.tag_icon as tag_icon'
                 ]);
             foreach ($data as $d){

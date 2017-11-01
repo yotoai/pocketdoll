@@ -25,7 +25,7 @@ class LoginController extends BaseController
 //            return ['code' => -1,'msg' => '验证失败'];
 //        }
 
-        $gc = GoodsCategory::orderBy(DB::raw('RAND()'))->take(1)->get(['id'])[0];
+        $gc = GoodsCategory::where('status','<>','-1')->orderBy(DB::raw('RAND()'))->take(1)->get(['id'])[0];
         $res = $this->addUser($request);
         if(!$res){
             return ['code' => -1,'msg' => '获取数据异常...'];
