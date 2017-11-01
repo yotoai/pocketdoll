@@ -32,9 +32,9 @@ class LoginController extends BaseController
             return $res;
         }
         $this->setUserId($request->userId);
-        $goods_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id')->toArray();
-//        return $goods_id;
-        $data = $this->selectDollMachine(array_rand($goods_id));
+        $goods_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
+        $cid = GoodsCategory::whereIn('id',$goods_id)->where('status','<>','-1')->get(['id'])->pluck('id')->toArray();
+        $data = $this->selectDollMachine($cid[array_rand($cid)]);
         return array_merge($res,['data' => $data]);
     }
 

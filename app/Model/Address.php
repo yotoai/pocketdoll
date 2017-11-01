@@ -10,5 +10,5 @@ class Address extends Model
     protected $table = 'address';
 
     // 指定字段
-    protected $fillable = ['name','phone','area_info','address','post_code'];
+    protected $fillable = ['user_id','name','phone','address'];
 }

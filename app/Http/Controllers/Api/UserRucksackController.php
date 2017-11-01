@@ -73,7 +73,6 @@ class UserRucksackController extends BaseController
         try{
             $num = UserRucksack::where('id',$request->rucksack_id)->value('num');
             if ($num < 1) return ['code' => -1, 'msg' => '娃娃数量不足！'];
-
             DB::transaction(function () use ($request,$num){
                 $goods = '';
                 $count = '';
