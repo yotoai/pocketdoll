@@ -19,24 +19,8 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1',function($api){
+    // 测试 代码放置处
     $api->get('test',function (){
-        $data = \App\Model\Users::all();
-        foreach ($data as $v){
-            \Illuminate\Support\Facades\Redis::del($v->openid . '_catch');
-            \Illuminate\Support\Facades\Redis::del($v->openid . '_catched');
-            \Illuminate\Support\Facades\Redis::del($v->openid . '_point');
-            \Illuminate\Support\Facades\Redis::del($v->openid . '_charge');
-            \Illuminate\Support\Facades\Redis::del($v->openid . '_mission');
-            $keys = \Illuminate\Support\Facades\Redis::keys($v->openid . '_*_lucky');
-            foreach ($keys as $s){
-                \Illuminate\Support\Facades\Redis::del($s);
-            }
-            $keyss = \Illuminate\Support\Facades\Redis::keys($v->openid . '_*_mission');
-            foreach ($keyss as $ss){
-                \Illuminate\Support\Facades\Redis::del($ss);
-            }
-        }
-        return ['d' => 1];
 
     });
     $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
