@@ -89,9 +89,10 @@ class RechargeLogController extends Controller
             });
             $grid->order('订单号');
             $grid->pay('支付金额');
-            $grid->coin('充值数量')->display(function ($aid){
-               $res = RechargeAmount::find($aid);
-               return $res->coin_num . ' ' . ($res->award_num ? '(奖励 '. $res->award_num .')' : '');
+            $grid->coin('充值数量')->display(function ($coin){
+               //$res = RechargeAmount::find($aid);
+               //return $res->coin_num . ' ' . ($res->award_num ? '(奖励 '. $res->award_num .')' : '');
+                return '充值'.$coin .'金币';
             });
             $grid->status('充值状态')->display(function ($status){
                return  $status == 1 ? "<span class='label label-success'>支付成功</span>" : $status == -1 ? "<span class='label label-default'>未支付</span>" : "<span class='label label-danger'>充值失败</span>";

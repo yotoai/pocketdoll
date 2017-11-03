@@ -10,5 +10,5 @@ class RechargeLog extends Model
     protected $table = 'recharge_log';
 
     // 指定可修改字段
-    protected $fillable = ['order','user_id','coin_id','time'];
+    protected $fillable = ['order','user_id','coin','time','pay','porder_num','status_des','status'];
 }

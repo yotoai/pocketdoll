@@ -43,7 +43,7 @@ $api->version('v1',function($api){
         // 充值额度
         $api->get('rechargeamount','RechargeAmountController@rechargeAmount');
         // 支付
-        $api->get('pay/{id}','PayController@doPay');
+        $api->post('pay','PayController@doPay');
         $api->post('notify','PayController@pay_notify');
 
         // 抓娃娃

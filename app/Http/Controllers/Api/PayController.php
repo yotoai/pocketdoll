@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Model\Player;
 use App\Model\RechargeAmount;
 use App\Model\RechargeLog;
 use GuzzleHttp\Client;
@@ -13,20 +12,23 @@ use App\Http\Controllers\Controller;
 class PayController extends BaseController
 {
     //
-    public function doPay($gid)
+    public function doPay(Request $request)
     {
         try {
             $user = $this->getUser();
-            $data = RechargeAmount::find($gid);
-            $order = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
-            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
+//            $data = RechargeAmount::find($gid);
+            $order = $this->createOrder();
+//            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
+            $sign = strtolower(md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
             $client = new Client();
             $params=[
                 'sdkId' => $user->sdk_id,
                 'userId' => $user->user_id,
-                'goodsName' => $data->title,
+                'goodsName' => '充值'.$request->coin .'金币',
+//                'goodsName' => $data->title,
                 'orderNo' => $order,
-                'fee' => $data->price * 100,
+                'fee' => $request->price * 100,
+//                'fee' => $data->price * 100,
                 'extra' => 'dopay',
                 'sign' => $sign
             ];
@@ -40,7 +42,8 @@ class PayController extends BaseController
             if($res['resultCode'] != 0000){
                 return json_decode($response->getBody(),true);
             }
-            $r = $this->storeOrder($user->user_id,$data->price,$order,$gid);
+//            $r = $this->storeOrder($user->user_id,$data->price,$order,$gid);
+            $r = $this->storeOrder($user->user_id,$request->price,$order,$request->coin);
             if($r['code'] == 1){
                 return ['code' => 1,'msg' => '支付成功'];
             }else{
@@ -54,14 +57,14 @@ class PayController extends BaseController
         }
     }
 
-    protected function storeOrder($uid,$fee,$order,$gid)
+    protected function storeOrder($uid,$fee,$order,$coin)
     {
         try {
             RechargeLog::create([
                 'user_id' => $uid,
                 'pay'     => $fee,
                 'order'   => $order,
-                'coin'    => $gid
+                'coin'    => $coin
             ]);
             return ['code' => 1,'msg' => '保存成功'];
         }catch (\Exception $e){
@@ -99,6 +102,16 @@ class PayController extends BaseController
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
+        }
+    }
+
+    private function createOrder()
+    {
+        $order = date('YmdHis').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+        if(empty(RechargeLog::where('order',$order)->first())){
+            return $order;
+        }else{
+            $this->createOrder();
         }
     }
 }
