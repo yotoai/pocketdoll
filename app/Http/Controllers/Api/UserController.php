@@ -95,7 +95,7 @@ class UserController extends BaseController
 
         $js = $app->js;
 
-        return $js->config(['onMenuShareQQ', 'onMenuShareWeibo'],true);
+        return $js->config(['onMenuShareQQ', 'onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ'],true);
     }
 
     // 刷新 token

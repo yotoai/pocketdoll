@@ -228,6 +228,4 @@ class UserRucksackController extends BaseController
         return ['code' => 1,'msg' => '查询成功！','data' => $address];
     }
 
-
-
 }

@@ -125,8 +125,8 @@ class CategoryController extends Controller
             $form->number('win_rate','概率：')->rules('required');
             $form->image('pic','图片：')->rules('required');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('created_at', '添加时间');
+            $form->display('updated_at', '修改时间');
         });
     }
 

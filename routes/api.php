@@ -60,6 +60,9 @@ $api->version('v1',function($api){
         $api->get('invite','MissionController@inviteMission');
         $api->get('daymission','MissionController@loginInMission');
         $api->post('finishmission/{id}','MissionController@finishMission');
+
+        // 分享
+        $api->get('getshare/{id}','CatchDollController@getShare');
     });
 
 //
