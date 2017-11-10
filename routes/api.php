@@ -61,8 +61,10 @@ $api->version('v1',function($api){
         $api->get('daymission','MissionController@loginInMission');
         $api->post('finishmission/{id}','MissionController@finishMission');
 
-        // 分享
+        // 分享所需信息
         $api->get('getshare/{id}','CatchDollController@getShare');
+        // 分享
+        $api->get('jssdk','UserController@getJsConfig');
     });
 
 //
