@@ -224,7 +224,7 @@ class CatchDollController extends BaseController
     public function getShare($id)
     {
         $goods = Goods::find($id);
-        $user = Player::orderBy(DB::raw('RAND()'))->take(3)->get(['user_name'])->pluck('user_name')->toArray();
+        $user = Player::orderBy(DB::raw('RAND()'))->take(2)->get(['user_name'])->pluck('user_name')->toArray();
         $catch = $this->getCatchNum();
         $data = [
             'pic' => env('APP_URL').'/'.$goods->pic,
