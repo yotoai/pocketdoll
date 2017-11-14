@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class BaseController extends Controller
@@ -207,5 +208,15 @@ class BaseController extends Controller
     public function returnSuccessOrfail($res)
     {
         return $res ? ['code' => 1,'msg' => '添加成功！'] : ['code' => -1,'msg' => '添加失败！'];
+    }
+
+    // 生成海报二维码
+    public function getQrCode()
+    {
+        if(!file_exists(public_path('qrcode')))
+            mkdir(public_path('qrcode'));
+        $uid = $this->getUserid();
+        QrCode::format('png')->size(200)->generate('http://baby.quxin.cn?uid='.$uid,public_path('qrcode/baby'.$uid.'.png'));
+        return public_path('baby'.$uid.'.png');
     }
 }

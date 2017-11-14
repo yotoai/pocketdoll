@@ -6,6 +6,7 @@ use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Users;
 use EasyWeChat\Foundation\Application;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends BaseController
@@ -106,4 +107,6 @@ class UserController extends BaseController
         JWTAuth::invalidate($old_token);
         return $token;
     }
+
+
 }

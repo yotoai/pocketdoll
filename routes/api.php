@@ -65,6 +65,9 @@ $api->version('v1',function($api){
         $api->get('getshare/{id}','CatchDollController@getShare');
         // 分享
         $api->get('jssdk','UserController@getJsConfig');
+
+        //获取二维码
+        $api->get('qrcode','BaseController@getQrCode');
     });
 
 //

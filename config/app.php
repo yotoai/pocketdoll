@@ -170,6 +170,7 @@ return [
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Overtrue\LaravelWechat\ServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -230,6 +231,8 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         // 微信
         'WeChat' => Overtrue\LaravelWeChat\Facade::class,
+        //二维码
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];
