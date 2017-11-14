@@ -217,6 +217,6 @@ class BaseController extends Controller
             mkdir(public_path('qrcode'));
         $uid = $this->getUserid();
         QrCode::format('png')->size(200)->generate('http://baby.quxin.cn?uid='.$uid,public_path('qrcode/baby'.$uid.'.png'));
-        return public_path('baby'.$uid.'.png');
+        return env('APP_URL').'/qrcode/baby'.$uid.'.png';
     }
 }
