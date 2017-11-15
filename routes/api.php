@@ -31,7 +31,7 @@ $api->version('v1',function($api){
 
     });
 
-    $api->group(['middleware' => ['api.cpy'],'namespace' => 'App\Http\Controllers\Api'],function($api){
+    $api->group(['middleware' => ['api.reftoken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
 //    $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 公告
         $api->get('notice','NoticeController@qnotice');
@@ -71,15 +71,15 @@ $api->version('v1',function($api){
     });
 
 //
-//    $api->group(['middleware' => ['api', 'wechat.oauth'],'namespace' => 'App\Http\Controllers\Api'], function ($api) {
-//        // 用户授权
-//        $api->get('user','UserController@oauthUser');
-//        // 充值
-//        $api->post('wxpay/{id}','WxpayController@Wxpay');
-//        $api->post('wxnotify','WxpayController@wxNotify');
-//        // 分享
-//        $api->get('jssdk','UserController@getJsConfig');
-//        // 刷新token
-//        $api->get('refresh','UserController@refreshToken');
-//    });
+    $api->group(['middleware' => ['api', 'wechat.oauth'],'namespace' => 'App\Http\Controllers\Api'], function ($api) {
+        // 用户授权
+        $api->get('user','UserController@oauthUser');
+        // 充值
+        $api->post('wxpay/{id}','WxpayController@Wxpay');
+        $api->post('wxnotify','WxpayController@wxNotify');
+        // 分享
+        $api->get('jssdk','UserController@getJsConfig');
+        // 刷新token
+        $api->get('refresh','UserController@refreshToken');
+    });
 });

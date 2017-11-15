@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Player;
+use App\Model\Users;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -36,6 +38,37 @@ class LoginController extends BaseController
         $cid = GoodsCategory::whereIn('id',$goods_id)->where('status','<>','-1')->get(['id'])->pluck('id')->toArray();
         $data = $this->selectDollMachine($cid[array_rand($cid)]);
         return array_merge($res,['data' => $data]);
+    }
+
+    public function index(Request $request)
+    {
+        $this->validate($request,[
+            'phone' => 'required',
+            'password' => 'required'
+        ]);
+        try{
+            $user = Users::where('phone',$request->phone)->first();
+            if(empty($user)){
+                return ['code' => -1,'msg' => '账号或者密码错误'];
+            }
+            if(!(new BcryptHasher())->check($request->password,$user->password)){
+                return ['code' => -1,'msg' => '账号或者密码错误！'];
+            }
+            $token = JWTAuth::fromUser(Users::where('phone',$request->phone)->first());
+            $user = [
+                'username' => $user->phone,
+                'icon'     => $user->icon,
+                'coin'     => $user->coin,
+                'token'    => $token
+            ];
+            $this->setUserId($request->userId);
+            $goods_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
+            $cid = GoodsCategory::whereIn('id',$goods_id)->where('status','<>','-1')->get(['id'])->pluck('id')->toArray();
+            $data = $this->selectDollMachine($cid[array_rand($cid)]);
+            return array_merge($user,['data' => $data]);
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
     }
 
     //添加用户

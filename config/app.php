@@ -171,6 +171,7 @@ return [
         Overtrue\LaravelWechat\ServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Mews\Captcha\CaptchaServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -233,6 +234,8 @@ return [
         'WeChat' => Overtrue\LaravelWeChat\Facade::class,
         //二维码
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        // 验证码
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
     ],
 
 ];
