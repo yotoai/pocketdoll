@@ -47,9 +47,9 @@ return [
     'ip' => ':attribute 必须是有效的IP 地址.',
     'json' => ':attribute must be a valid JSON string.',
     'max' => [
-        'numeric' => ':attribute may not be greater than :max.',
+        'numeric' => ':attribute不能大于:max.',
         'file' => ':attribute may not be greater than :max kilobytes.',
-        'string' => ':attribute may not be greater than :max characters.',
+        'string' => ':attribute不能大于:max位',
         'array' => ':attribute may not have more than :max items.',
     ],
     'mimes' => ':attribute 文件类型必须是: :values.',
@@ -217,7 +217,11 @@ return [
         'data.*.num' => '提现数量',
         'sdkId' => '渠道参数',
         'userId' => '用户id',
-        'sign'  => '验证信息'
+        'sign'  => '验证信息',
+        'phone' => '手机号码',
+        'verifycode' => '手机验证码',
+        'captcha' => '图片验证码',
+        'username' => '用户名'
     ],
 
 ];

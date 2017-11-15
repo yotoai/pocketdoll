@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\InviteLog;
 use App\Model\Player;
+use App\Model\Users;
 use App\Model\UserVerifyCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,7 +15,7 @@ class RegisterController extends Controller
     public function addUser(Request $request)
     {
         $this->validate($request,[
-            'phone' => 'required|regex:/^1[34578][0-9]{9}$/|unique:player',
+            'phone' => 'required|regex:/^1[34578][0-9]{9}$/|unique:user',
             'verifycode' => 'required|max:6',
             'password' => 'required|max:36',
             'captcha' => 'required|captcha'
@@ -25,11 +27,18 @@ class RegisterController extends Controller
             if($data->verfiycode != $request->verfiycode || empty($data)){
                 return ['code' => -1,'msg' => '手机验证错误'];
             }
-            $res = Player::create([
+            $res = Users::create([
                 'phone' => $request->phone,
                 'password' => bcrypt($request->password),
             ]);
             if($res){
+                if(!empty($request->uid)){
+                    //Users::
+                    InviteLog::create([
+                        'inviter_id' => $request->uid,
+                        'invitered_id' => $res->id
+                    ]);
+                }
                 return ['code' => 1,'msg' => '注册成功'];
             }else{
                 return ['code' => -1,'msg' => '注册失败'];
@@ -49,7 +58,7 @@ class RegisterController extends Controller
     public function sendCode(Request $request)
     {
         $this->validate($request,[
-            'phone'   => 'required|regex:/^1[34578][0-9]{9}$/|unique:player',
+            'phone'   => 'required|regex:/^1[34578][0-9]{9}$/',
         ]);
         // 生成手机验证吗
         $code = "";

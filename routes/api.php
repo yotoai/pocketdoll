@@ -21,12 +21,22 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1',function($api){
     // 测试 代码放置处
     $api->get('test',function (){
-
+        return ;
     });
     $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
+        // 登录（旧）
         $api->post('login','LoginController@login');
+        // 登录（新）
+        //$api->post('login','LoginController@index');
         // 刷新token
         $api->get('refresh','LoginController@refreshToken');
+
+        // 注册用户
+        $api->post('register','RegisterController@addUser');
+        // 验证码
+        $api->get('verifycode','RegisterController@verifyCode');
+        // 发送短信
+        $api->get('sendcode','RegisterController@sendCode');
 
 
     });
@@ -68,18 +78,23 @@ $api->version('v1',function($api){
 
         //获取二维码
         $api->get('qrcode','BaseController@getQrCode');
+        // 返回虚拟信息
+        $api->get('randdata','BaseController@getfakename');
+        // 返回弹幕
+        $api->get('barrage/{id}','BaseController@getBarrage');
+
     });
 
 //
     $api->group(['middleware' => ['api', 'wechat.oauth'],'namespace' => 'App\Http\Controllers\Api'], function ($api) {
         // 用户授权
-        $api->get('user','UserController@oauthUser');
-        // 充值
-        $api->post('wxpay/{id}','WxpayController@Wxpay');
-        $api->post('wxnotify','WxpayController@wxNotify');
-        // 分享
-        $api->get('jssdk','UserController@getJsConfig');
-        // 刷新token
-        $api->get('refresh','UserController@refreshToken');
+//        $api->get('user','UserController@oauthUser');
+//        // 充值
+//        $api->post('wxpay/{id}','WxpayController@Wxpay');
+//        $api->post('wxnotify','WxpayController@wxNotify');
+//        // 分享
+        $api->get('wxjssdk','UserController@getJsConfig');
+//        // 刷新token
+//        $api->get('refresh','UserController@refreshToken');
     });
 });

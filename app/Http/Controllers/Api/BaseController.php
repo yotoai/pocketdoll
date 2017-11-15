@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\Goods;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -221,7 +223,40 @@ class BaseController extends Controller
         if(file_exists(public_path('baby'.$uid.'.png'))){
             return env('APP_URL').'/qrcode/'.$filename.'.png';
         }
-        QrCode::format('png')->size(200)->generate('http://baby.quwin.cn?uid='.$uid,public_path('qrcode/'.$filename.'.png'));
+        QrCode::format('png')->size(200)->generate(env('APP_URL').'?uid='.$uid,public_path('qrcode/'.$filename.'.png'));
         return env('APP_URL').'/qrcode/'.$filename.'.png';
+    }
+    
+    // 返回 虚拟抓取到的 信息
+    public function getfakename()
+    {
+        $data = trim(substr(file_get_contents(storage_path("app/name/nickname.php")),15));
+        $data = explode('&',$data);
+        $nickname = $data[array_rand($data,1)];
+        $goods_name = Goods::orderBy(DB::raw('RAND()'))->where('status','<>','-1')->take(1)->value('name');
+        return ['code' => 1,'msg' => '查询成功','nickname' => $nickname,'goods_name' => $goods_name];
+    }
+
+    // 弹幕
+    public function getBarrage($cid)
+    {
+        $data = trim(substr(file_get_contents(storage_path("app/name/nickname.php")),15));
+        $data = explode('&',$data);
+        $nickname = $data[array_rand($data,1)];
+        $goods_name = Goods::where('goods_cate_id',$cid)->where('status','<>','-1')->get(['name'])->pluck('name')->toArray();
+        $goods_name = $goods_name[array_rand($goods_name,1)];
+        $barrage = $nickname.'抓了一次'.$goods_name.$this->randWord();
+        return ['code' => 1,'msg' => '查询成功','barrage' => $barrage];
+    }
+    // 随机返回一句话
+    protected function randWord()
+    {
+        $word = [
+            '没抓到，赶紧去捡漏！',
+            '没抓到，下一次是填坑还是捡漏呢？',
+            '没抓到，这台机器离大力一抓又近了一步！',
+            '没抓到，填了一次坑！'
+        ];
+        return $word[array_rand($word,1)];
     }
 }
