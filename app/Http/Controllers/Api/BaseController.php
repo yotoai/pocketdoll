@@ -213,10 +213,15 @@ class BaseController extends Controller
     // 生成海报二维码
     public function getQrCode()
     {
-        if(!file_exists(public_path('qrcode')))
+        if(!file_exists(public_path('qrcode'))){
             mkdir(public_path('qrcode'));
+        }
         $uid = $this->getUserid();
-        QrCode::format('png')->size(200)->generate('http://baby.quxin.cn?uid='.$uid,public_path('qrcode/baby'.$uid.'.png'));
-        return env('APP_URL').'/qrcode/baby'.$uid.'.png';
+        $filename = md5('baby'.$uid);
+        if(file_exists(public_path('baby'.$uid.'.png'))){
+            return env('APP_URL').'/qrcode/'.$filename.'.png';
+        }
+        QrCode::format('png')->size(200)->generate('http://baby.quwin.cn?uid='.$uid,public_path('qrcode/'.$filename.'.png'));
+        return env('APP_URL').'/qrcode/'.$filename.'.png';
     }
 }
