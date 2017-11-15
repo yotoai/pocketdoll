@@ -43,18 +43,30 @@ class LoginController extends BaseController
     public function index(Request $request)
     {
         $this->validate($request,[
-            'phone' => 'required',
+            'username' => 'required',
             'password' => 'required'
         ]);
+
         try{
-            $user = Users::where('phone',$request->phone)->first();
+            $user = Users::where('phone',$request->username)->first();
             if(empty($user)){
                 return ['code' => -1,'msg' => '账号或者密码错误'];
-            }
-            if(!(new BcryptHasher())->check($request->password,$user->password)){
+            } elseif(!(new BcryptHasher())->check($request->password,$user->password)){
                 return ['code' => -1,'msg' => '账号或者密码错误！'];
+            }else{
+                if(date('Y-m-d') != date('Y-m-d',$user->login_time)){
+                    $day = $user->login_day + 1;
+                }else{
+                    $day = $user->login_day;
+                }
+                Users::where('phone',$request->username)
+                    ->update([
+                        'login_day' => $day,
+                        'login_time' => date('Y-m-d H:i:s',time())
+                    ]);
             }
-            $token = JWTAuth::fromUser(Users::where('phone',$request->phone)->first());
+
+            $token = JWTAuth::fromUser(Users::where('phone',$request->username)->first());
             $user = [
                 'username' => $user->phone,
                 'icon'     => $user->icon,
