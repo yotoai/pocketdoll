@@ -34,6 +34,8 @@ Route::group([
 
     // 用户管理
     $router->resource('player',PlayerController::class,['as' =>'admin']);
+    // 帮助中心
+    $router->resource('helpcenter',HelpCenterController::class,['as' => 'admin']);
 
     // 修改 状态
     $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
