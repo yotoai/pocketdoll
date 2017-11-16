@@ -33,10 +33,10 @@ class PayController extends BaseController
                 'sign' => $sign
             ];
             //return $params;
-            $headers=[
-                'Accept'     => 'application/json',
-            ];
-            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params),['headers'=>$headers,'form_params'=>$params]);
+//            $headers=[
+//                'Accept'     => 'application/json',
+//            ];
+            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
 
             $res = json_decode($response->getBody(),true);
             if($res['resultCode'] != 0000){
