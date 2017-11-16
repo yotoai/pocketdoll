@@ -20,7 +20,9 @@ class NoticeController extends BaseController
                     'pic'
                 ]);
             foreach ($list as $notic){
-                $notic->pic = env('APP_URL').'/uploads/'. ($notic->pic);
+                if(!empty($notic->pic)){
+                    $notic->pic = env('APP_URL').'/uploads/'. ($notic->pic);
+                }
             }
         }catch (\Exception $e){
             return ['code' =>-1,'msg' => $e->getMessage()];
