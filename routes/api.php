@@ -82,6 +82,8 @@ $api->version('v1',function($api){
         $api->get('randdata','BaseController@getfakename');
         // 返回弹幕
         $api->get('barrage/{id}','BaseController@getBarrage');
+        // 返回帮助中心信息
+        $api->get('helpinfo','NoticeController@helpinfo');
 
     });
 
