@@ -39,7 +39,7 @@ class RegisterController extends Controller
                         'invitered_id' => $res->id
                     ]);
                 }
-                return ['code' => 1,'msg' => '注册成功'];
+                return ['code' => 1,'msg' => '注册成功']  ;
             }else{
                 return ['code' => -1,'msg' => '注册失败'];
             }

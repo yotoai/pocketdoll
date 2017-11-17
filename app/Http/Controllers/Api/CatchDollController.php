@@ -228,7 +228,7 @@ class CatchDollController extends BaseController
         $catch = $this->getCatchNum();
         $data = [
             'goods_name' => $goods->name,
-            'pic' => env('APP_URL').'/'.$goods->pic,
+            'pic' => env('APP_URL').'/uploads/'.$goods->pic,
             'user_name' => $user,
             'catchnum' => $catch
         ];
