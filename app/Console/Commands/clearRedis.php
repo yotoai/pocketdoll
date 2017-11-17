@@ -47,6 +47,7 @@ class clearRedis extends Command
             Redis::del($v->user_id . '_point');
             Redis::del($v->user_id . '_charge');
             Redis::del($v->user_id . '_mission');
+            Redis::del($v->user_id . '_shareWithWx');
             $keys = Redis::keys($v->user_id . '_*_mission');
             foreach ($keys as $s){
                 Redis::del($s);

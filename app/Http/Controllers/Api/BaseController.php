@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\Goods;
+use App\Model\Player;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -67,7 +68,6 @@ class BaseController extends Controller
             return $user->user_id;
         }
     }
-
 
     public function setUserId($user_id)
     {
@@ -211,6 +211,11 @@ class BaseController extends Controller
         return $res ? ['code' => 1,'msg' => '添加成功！'] : ['code' => -1,'msg' => '添加失败！'];
     }
 
+    public function getLoginMission()
+    {
+        return Redis::smembers($this->getUserid().'_login_mission');
+    }
+
     // 生成海报二维码
     public function getQrCode()
     {
@@ -258,5 +263,27 @@ class BaseController extends Controller
             '没抓到，填了一次坑！'
         ];
         return $word[array_rand($word,1)];
+    }
+
+    // 微信分享回调方法
+    public function shareWithWx()
+    {
+        try{
+            $s = Redis::get($this->getUserid(),'_shareWithWx');
+            if(empty($s)){
+                Redis::set($this->getUserid(),'_shareWithWx',1);
+            }elseif ($s <= 3){
+                Redis::set($this->getUserid(),'_shareWithWx',1 + $s);
+            }else{
+                return ['code' => 1,'msg' => '已领取 3 次'];
+            }
+            $u = Player::where('user_id',$this->getUserid())->first();
+            $u->coin = $u->coin + 5;
+            $u->save();
+            return ['code' => 1,'msg' => '分享成功'];
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+
     }
 }

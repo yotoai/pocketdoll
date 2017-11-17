@@ -17,19 +17,36 @@ class MissionController extends BaseController
     //登录任务
     public function loginInMission()
     {
-        return $this->dayMission([1,2,3,5]);
-//        return Mission::join('awards','mission.award_id','=', 'awards.id')
-//           ->where('type',4)
-//           ->orderBy('sort')
-//           ->get([
-//               'mission.id as mission_id',
-//               'mission.title as mission_title',
-//               'awards.contents as awards_contents',
-//               'mission.status as mission_status',
-//               'mission.icon as mission_icon'
-//           ]);
+        $datas = $this->getLoginMission();
+        $list = [];
+        foreach ($datas as $ds){
+            $list[] = unserialize($ds);
+        }
+
+        $lists = [];
+        foreach ($list as $k=>$li){
+            $temp = Mission::join('awards','mission.award_id','=', 'awards.id')
+                ->where('type',4)
+                ->where('mission.id',$li['id'])
+                ->orderBy('mission.id')
+                ->get([
+                    'mission.id as mission_id',
+                    'mission.type as mission_type',
+                    'mission.title as mission_title',
+                    'awards.contents as awards_contents',
+                    'mission.status as mission_status',
+                    'mission.icon as mission_icon',
+                    'mission.need_num as mission_need_num'
+                ])[0];
+            $temp->mission_status = $li['status'];
+            $temp->mission_icon = env('APP_URL').'/uploads/'.$temp->mission_icon;
+            $lists[] = $temp;
+        }
+        sort($lists);
+        return ['code' => 1,'msg' => '查询成功','data' => $lists];
     }
 
+    // 邀请任务
     public function inviteMission()
     {
         return $this->dayMission([1,2,4,5]);
@@ -97,7 +114,7 @@ class MissionController extends BaseController
         try{
             if($this->getMissionRedis($mid) == 2){
                 return ['code' => -1,'msg' => '该任务已完成！'];
-            }elseif($this->getMissionType($mid) == 3 || $this->getMissionType($mid) == 4){
+            }elseif($this->getMissionType($mid) == 4){
                 $aid = Mission::where('id',$mid)->value('award_id');
 
                 $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
@@ -114,7 +131,43 @@ class MissionController extends BaseController
                         'status'     => '1'
                     ]);
                 });
-                $this->setMissionRedis($mid,2);
+                $datas = $this->getLoginMission();
+                $list = [];
+                foreach ($datas as $ds){
+                    $list[] = unserialize($ds);
+                }
+                sort($list);
+                Redis::del($this->getUserid().'_login_mission');
+                foreach ($list as $da){
+                    if($mid == $da['id']){
+                        $da['status'] = '2';
+                    }
+                    Redis::sadd($this->getUserid().'_login_mission',serialize($da) );
+                    if(!$this->isHaveMission($mid)){
+                        Player::where('user_id',$this->getUserid())->update([
+                            'new_user_mission' => '1'
+                        ]);
+                    }
+                }
+                return ['code' => 1,'msg' => '完成'];
+            }elseif($this->getMissionType($mid) == 4){
+                $aid = Mission::where('id',$mid)->value('award_id');
+
+                $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
+
+                $ures = Player::where('user_id',$this->getUserid())->first(['coin']);
+
+                DB::transaction(function () use ($res,$ures,$mid){
+                    Player::where('user_id',$this->getUserid())->update([
+                        'coin' => $ures->coin + $res->award_coin,
+                    ]);
+                    UserMission::create([
+                        'user_id'    => $this->getUserid(),
+                        'mission_id' => $mid,
+                        'status'     => '1'
+                    ]);
+                });
+
                 return ['code' => 1,'msg' => '完成'];
             }else{
                 $aid = Mission::where('id',$mid)->value('award_id');
@@ -165,7 +218,7 @@ class MissionController extends BaseController
     public function restMisison()
     {
         if(Player::where('user_id',$this->getUserid())->value('new_user_mission') == '1'){
-            $data = Mission::where('parent_id',0)->where('type','<>',3)
+            $data = Mission::where('parent_id',0)->where('type','<>',4)
                 ->orderBy('mission.id')->get(['id','status'])->toArray();
             foreach ($data as $da){
                 Redis::sadd($this->getUserid().'_mission',serialize($da) );
@@ -192,5 +245,12 @@ class MissionController extends BaseController
     protected function getMissionType($mid)
     {
         return Mission::find($mid)->type;
+    }
+    
+    // 判断之后是否有任务
+    protected function isHaveMission($mid)
+    {
+        $c = Mission::where('type',4)->where('id','>',$mid)->count();
+        return $c ? true : false;
     }
 }
