@@ -166,7 +166,6 @@ class BaseController extends Controller
             Redis::set($this->getOpenid().'_catched',$num);
         }else{
             Redis::set($this->getOpenid() .'_catched',$this->getCatchedNum() + $num);
-
         }
     }
 

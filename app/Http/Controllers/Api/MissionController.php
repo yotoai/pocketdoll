@@ -147,11 +147,13 @@ class MissionController extends BaseController
                         'mission.icon as mission_icon',
                         'mission.need_num as mission_need_num',
                         'mission.status as mission_status'
-                    ])->toArray()[0];
-                foreach ($data as $d){
-                    $d['mission_icon'] = env('APP_URL').'/uploads/'.$d['mission_icon'];
+                    ])->toArray();
+                if(!empty($data)){
+                    $data = $data[0];
+                    $data['mission_icon'] = env('APP_URL').'/uploads/'.$data['mission_icon'];
+
+                    $this->addRedisMission($data['mission_id']);
                 }
-                $this->addRedisMission($data['mission_id']);
                 return ['code' => 1,'msg' => '任务完成','point' => $res->award_point,'data' => $data];
             }
         }catch (\Exception $e){
