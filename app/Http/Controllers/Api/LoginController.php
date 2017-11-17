@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\Goods;
 use App\Model\GoodsCategory;
+use App\Model\InviteLog;
 use App\Model\Player;
 use App\Model\Users;
 use Illuminate\Hashing\BcryptHasher;
@@ -13,19 +14,19 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends BaseController
 {
-    // 用户授权
+    // 用户授权 (跳转登录)
     public function login(Request $request)
     {
         $this->validate($request,[
             'sdkId'  => 'required',
             'userId' => 'required',
             'timestamp' => 'required',
-           // 'sign'   => 'required'
+            'sign'   => 'required'
         ]);
 
-//        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.$request->timestamp.env('GAMEKEY')))){
-//            return ['code' => -1,'msg' => '验证失败'];
-//        }
+        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.$request->timestamp.env('GAMEKEY')))){
+            return ['code' => -1,'msg' => '验证失败'];
+        }
         $res = $this->addUser($request);
         if(!$res){
             return ['code' => -1,'msg' => '获取数据异常...'];
@@ -40,6 +41,7 @@ class LoginController extends BaseController
         return array_merge($res,['data' => $data]);
     }
 
+    // 账号登录
     public function index(Request $request)
     {
         $this->validate($request,[
@@ -123,6 +125,12 @@ class LoginController extends BaseController
                     'icon'     => $data->userImg,
                     'coin'     => $data->coin
                 ];
+                if(!empty($request->uid)){
+                    InviteLog::create([
+                        'inviter_id' => $request->uid,
+                        'invitered_id' => $data->id
+                    ]);
+                }
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
