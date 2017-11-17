@@ -269,7 +269,7 @@ class BaseController extends Controller
     public function shareWithWx()
     {
         try{
-            $s = Redis::get($this->getUserid(),'_shareWithWx');
+            $s = Redis::get($this->getUserid().'_shareWithWx');
             if(empty($s)){
                 Redis::set($this->getUserid(),'_shareWithWx',1);
             }elseif ($s <= 3){
