@@ -97,6 +97,7 @@ class LoginController extends BaseController
                     'sdk_id'     => $request->sdkId,
                     'user_name'  => empty($request->userName) ? '' : $request->userName,
                     'user_img'   => empty($request->userImg) ? '' : $request->userImg,
+                    'login_day'  => $data->login_day + 1,
                     'login_time' => date('Y-m-d H:i:s',time())
                 ]);
                 $token = JWTAuth::fromUser(Player::where('user_id',$request->userId)->first());
