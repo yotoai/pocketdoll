@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\InviteLog;
+use App\Model\Mission;
 use App\Model\Player;
 use App\Model\Users;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends BaseController
@@ -27,6 +29,7 @@ class LoginController extends BaseController
 //        if($request->sign != strtolower( md5($request->sdkId.$request->userId.$request->userName.$request->userImg.$request->timestamp.env('GAMEKEY')))){
 //            return ['code' => -1,'msg' => '验证失败'];
 //        }
+        $this->setUserId($request->userId);
         $res = $this->addUser($request);
         if(!$res){
             return ['code' => -1,'msg' => '获取数据异常...'];
@@ -34,7 +37,7 @@ class LoginController extends BaseController
         if($res['code'] == -1){
             return $res;
         }
-        $this->setUserId($request->userId);
+        //$this->setUserId($request->userId);
         $goods_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
         $cid = GoodsCategory::whereIn('id',$goods_id)->where('status','<>','-1')->get(['id'])->pluck('id')->toArray();
         $data = $this->selectDollMachine($cid[array_rand($cid)]);
@@ -93,11 +96,16 @@ class LoginController extends BaseController
         if(!empty($data))
         {
             try{
+                if(strtotime($data->login_time) > strtotime(date('Y-m-d 00:00:00'))){
+                    $day = $data->login_day;
+                }else{
+                    $day = $data->login_day + 1;
+                }
                 Player::where('user_id',$request->userId)->update([
                     'sdk_id'     => $request->sdkId,
                     'user_name'  => empty($request->userName) ? '' : $request->userName,
                     'user_img'   => empty($request->userImg) ? '' : $request->userImg,
-                    'login_day'  => $data->login_day + 1,
+                    'login_day'  => $day,
                     'login_time' => date('Y-m-d H:i:s',time())
                 ]);
                 $token = JWTAuth::fromUser(Player::where('user_id',$request->userId)->first());
@@ -106,6 +114,24 @@ class LoginController extends BaseController
                     'icon'     => $data->user_img,
                     'coin'     => $data->coin
                 ];
+                $datas = $this->getLoginMission();
+                $list = [];
+                foreach ($datas as $ds){
+                    $list[] = unserialize($ds);
+                }
+                sort($list);
+                $c = count($list);
+                Redis::del($request->userId.'_login_mission');
+                for ($i = $c - 1;$i > 0;$i--){
+                    for($j = 0;$j <  $i;$j++){
+                        if($list[$j]['status'] == '2' && $list[$j+1]['status'] != '2'){
+                            $list[$j+1]['status'] ='1';
+                        }
+                    }
+                }
+                foreach ($list as $da){
+                    Redis::sadd($request->userId.'_login_mission',serialize($da) );
+                }
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
@@ -122,8 +148,8 @@ class LoginController extends BaseController
                 ]);
                 $token = JWTAuth::fromUser($data);
                 $user = [
-                    'username' => $data->userName,
-                    'icon'     => $data->userImg,
+                    'username' => $data->user_name,
+                    'icon'     => $data->user_img,
                     'coin'     => $data->coin
                 ];
                 if(!empty($request->uid)){
@@ -131,6 +157,14 @@ class LoginController extends BaseController
                         'inviter_id' => $request->uid,
                         'invitered_id' => $data->id
                     ]);
+                }
+                $day = Mission::where('type',4)
+                    ->orderBy('id','asc')->get(['id','need_num','status'])->toArray();
+                foreach ($day as $da){
+                    if($da['need_num'] == 1){
+                        $da['status'] = '2';
+                    }
+                    Redis::sadd($request->userId.'_login_mission',serialize($da) );
                 }
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
