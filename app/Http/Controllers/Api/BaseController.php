@@ -223,7 +223,8 @@ class BaseController extends Controller
         if(file_exists(public_path('baby'.$uid.'.png'))){
             return env('APP_URL').'/qrcode/'.$filename.'.png';
         }
-        QrCode::format('png')->size(200)->generate(env('APP_URL').'?uid='.$uid,public_path('qrcode/'.$filename.'.png'));
+        $url = 'http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&sign=e4d2be517a26de831f024c5bdbd307ab&loginType=mplogin&uid='.$uid;
+        QrCode::format('png')->size(200)->generate($url,public_path('qrcode/'.$filename.'.png'));
         return env('APP_URL').'/qrcode/'.$filename.'.png';
     }
     

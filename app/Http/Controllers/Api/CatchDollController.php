@@ -227,6 +227,7 @@ class CatchDollController extends BaseController
         $user = Player::orderBy(DB::raw('RAND()'))->take(2)->get(['user_name'])->pluck('user_name')->toArray();
         $catch = $this->getCatchNum();
         $data = [
+            'goods_name' => $goods->name,
             'pic' => env('APP_URL').'/'.$goods->pic,
             'user_name' => $user,
             'catchnum' => $catch
