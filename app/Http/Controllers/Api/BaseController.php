@@ -271,9 +271,9 @@ class BaseController extends Controller
         try{
             $s = Redis::get($this->getUserid().'_shareWithWx');
             if(empty($s)){
-                Redis::set($this->getUserid(),'_shareWithWx',1);
+                Redis::set($this->getUserid().'_shareWithWx',1);
             }elseif ($s <= 3){
-                Redis::set($this->getUserid(),'_shareWithWx',1 + $s);
+                Redis::set($this->getUserid().'_shareWithWx',1 + $s);
             }else{
                 return ['code' => 1,'msg' => '已领取 3 次'];
             }
