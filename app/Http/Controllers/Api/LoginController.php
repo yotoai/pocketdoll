@@ -37,7 +37,7 @@ class LoginController extends BaseController
         if($res['code'] == -1){
             return $res;
         }
-        Redis::set($this->getUserid(),'_shareWithWx',0); // 分享次数 初始化
+        //Redis::set($this->getUserid().'_shareWithWx',0); // 分享次数 初始化
         //$this->setUserId($request->userId);
         $goods_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
         $cid = GoodsCategory::whereIn('id',$goods_id)->where('status','<>','-1')->get(['id'])->pluck('id')->toArray();
