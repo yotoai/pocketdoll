@@ -40,12 +40,12 @@ class PayController extends BaseController
 //                'Accept'     => 'application/json',
 //            ];
             $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
-            Log::info( implode(',',json_decode($response->getBody())));
-            return redirect()->to('http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
-//            $res = json_decode($response->getBody(),true);
-//            if($res['resultCode'] != 0000){
-//                return json_decode($response->getBody(),true);
-//            }
+//            Log::info( implode(',',json_decode($response->getBody())));
+//            return redirect()->to('http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
+            $res = json_decode($response->getBody(),true);
+            if($res['resultCode'] != 0000){
+                return json_decode($response->getBody(),true);
+            }
 //            $r = $this->storeOrder($user->user_id,$data->price,$order,$gid);
             $r = $this->storeOrder($user->user_id,$request->price,$order,$request->coin);
             if($r['code'] == 1){
