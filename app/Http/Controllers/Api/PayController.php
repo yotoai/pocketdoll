@@ -42,7 +42,7 @@ class PayController extends BaseController
             $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
             Log::info($response->getBody());
 //            Log::info( implode(',',json_decode($response->getBody())));
-//            return redirect()->to('http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
+            return redirect()->to('http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
             $res = json_decode($response->getBody(),true);
             if($res['resultCode'] != 0000){
                 return json_decode($response->getBody(),true);
