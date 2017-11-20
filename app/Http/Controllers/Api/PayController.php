@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class PayController extends BaseController
 {
@@ -38,7 +39,8 @@ class PayController extends BaseController
 //            $headers=[
 //                'Accept'     => 'application/json',
 //            ];
-//            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
+            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
+            Log::info($response);
             return redirect()->to('http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
 //            $res = json_decode($response->getBody(),true);
 //            if($res['resultCode'] != 0000){
