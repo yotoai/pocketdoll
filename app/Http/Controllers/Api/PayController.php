@@ -16,10 +16,11 @@ class PayController extends BaseController
     {
         try {
             $user = $this->getUser();
+//            return $user;
 //            $data = RechargeAmount::find($gid);
             $order = $this->createOrder();
 //            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
-            $sign = strtolower(md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
+            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
             $client = new Client();
             $params=[
                 'sdkId' => $user->sdk_id,
@@ -32,6 +33,7 @@ class PayController extends BaseController
                 'extra' => 'dopay',
                 'sign' => $sign
             ];
+           // return 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params);
             //return $params;
 //            $headers=[
 //                'Accept'     => 'application/json',
