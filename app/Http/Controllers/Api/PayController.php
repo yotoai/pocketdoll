@@ -34,7 +34,7 @@ class PayController extends BaseController
                 'extra' => 'dopay',
                 'sign' => $sign
             ];
-//            return 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params);
+            return ['code' => 1,'url' => 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params)];
             //return $params;
 //            $headers=[
 //                'Accept'     => 'application/json',
