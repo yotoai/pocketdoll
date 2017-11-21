@@ -75,9 +75,8 @@ class RucksackController extends Controller
     {
         return Admin::grid(UserRucksack::class, function (Grid $grid) {
 
-            $grid->actions(function ($actions) {
-                $actions->disableEdit();
-            });
+            $grid->model()->orderBy('id', 'desc');
+
             $grid->disableCreation();
 
             $grid->id('ID')->sortable();
@@ -98,6 +97,9 @@ class RucksackController extends Controller
 
             $grid->withdraw_time('提现时间');
             $grid->gain_time('获取时间');
+            $grid->actions(function ($actions) {
+                $actions->disableEdit();
+            });
            //$grid->created_at();
            // $grid->updated_at();
         });

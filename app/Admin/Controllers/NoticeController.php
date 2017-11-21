@@ -73,6 +73,7 @@ class NoticeController extends Controller
     {
         return Admin::grid(Notice::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->title('公告名');

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\Player;
 use App\Model\RechargeAmount;
 use App\Model\RechargeLog;
+use App\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PayController extends BaseController
@@ -84,13 +87,13 @@ class PayController extends BaseController
     public function pay_notify(Request $request)
     {
         $rules = [
-            'orderNo' => 'required',
-            'porderNo' => 'required',
-            'fee'    => 'required',
-            'extra'  => 'required',
+            'orderNo'    => 'required',
+            'porderNo'   => 'required',
+            'fee'        => 'required',
+            'extra'      => 'required',
             'resultCode' => 'required',
             'resultDesc' => 'required',
-            'sign'  => 'required'
+            'sign'       => 'required'
         ];
         $this->validate($request ,$rules);
 
@@ -104,7 +107,15 @@ class PayController extends BaseController
                     'status_des' => $request->resultDesc,
                     'porder_num' => $request->porderNo
                 ]);
-                return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
+                if($res){
+                    $log = RechargeLog::where('order',$request->orderNo)->first();
+                    $play = Player::where('user_id',$log->user_id)->first();
+                    $res  = Player::where('user_id',$log->user_id)->update([
+                        'coin' => $play->coin + $log->coin
+                    ]);
+                    return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
+                }
+                return ['code' => -1,'msg' => '回调失败'];
             }else{
                 $res = RechargeLog::where('order',$request->orderNo)->update([
                     'status' => $request->resultCode,
@@ -113,7 +124,7 @@ class PayController extends BaseController
                 ]);
                 return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
             }
-        }catch (\Exception $e){
+        }catch(\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
     }

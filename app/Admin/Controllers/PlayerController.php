@@ -73,11 +73,12 @@ class PlayerController extends Controller
     {
         return Admin::grid(Player::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->user_name('用户昵称');
             $grid->user_img('用户头像')->display(function ($icon){
-                return '<img src="/uploads/'.$icon.'">';
+                return '<img src="'.$icon.'">';
             });
             $grid->coin('持有金币');
             $grid->login_time('最近登录时间');

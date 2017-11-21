@@ -75,6 +75,7 @@ class MissionController extends Controller
     {
         return Admin::grid(Mission::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->title('任务名称');

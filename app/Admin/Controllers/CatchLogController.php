@@ -76,6 +76,7 @@ class CatchLogController extends Controller
     {
         return Admin::grid(catchLog::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->disableCreation();
