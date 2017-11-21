@@ -78,7 +78,7 @@ class PlayerController extends Controller
 
             $grid->user_name('用户昵称');
             $grid->user_img('用户头像')->display(function ($icon){
-                return '<img src="'.$icon.'">';
+                return '<img width="36" src="'.$icon.'">';
             });
             $grid->coin('持有金币');
             $grid->login_time('最近登录时间');
