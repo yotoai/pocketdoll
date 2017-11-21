@@ -55,7 +55,7 @@ $api->version('v1',function($api){
         $api->get('rechargeamount','RechargeAmountController@rechargeAmount');
         // 支付
         $api->post('pay','PayController@doPay');
-        $api->post('notify','PayController@pay_notify');
+        //$api->post('notify','PayController@pay_notify');
 
         // 抓娃娃
         $api->get('selectdm/{id}','CatchDollController@selectDollMachine'); // 选择了一个娃娃机

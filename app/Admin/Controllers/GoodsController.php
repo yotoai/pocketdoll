@@ -12,6 +12,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Illuminate\Support\Facades\Redis;
 
 class GoodsController extends Controller
 {
@@ -120,7 +121,28 @@ class GoodsController extends Controller
                 //保存之前的操作
             });
             $form->saved(function (Form $form){
-                //保存之前的操作
+                //保存之后的操作
+                    Redis::del('doll_machine');
+                    $key = 'doll_machine';
+                    $cate_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
+                    $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                        ->whereIn('goods_category.id',$cate_id)
+                        ->where('goods_category.status','<>','-1')
+                        ->get([
+                            'goods_category.id as id',
+                            'goods_category.cate_name as name',
+                            'goods_category.spec as spec',
+                            'goods_category.coin as coin',
+                            'goods_category.pic as pic',
+                            'goods_tags_cate.tag_icon as tag_icon'
+                        ]);
+                    foreach ($data as $d){
+                        $d->pic = env('APP_URL').'/uploads/'.$d->pic;
+                        $d->tag_icon = env('APP_URL').'/uploads/'.$d->tag_icon;
+                    }
+                    foreach ($data as $item) {
+                        Redis::sadd($key, $item);
+                    }
             });
         });
     }
@@ -129,6 +151,29 @@ class GoodsController extends Controller
     public function updateStatus()
     {
         $res = Goods::where('id', request('id'))->update(['status' => request('action')]);
+        if($res){
+            Redis::del('doll_machine');
+            $key = 'doll_machine';
+            $cate_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
+            $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                ->whereIn('goods_category.id',$cate_id)
+                ->where('goods_category.status','<>','-1')
+                ->get([
+                    'goods_category.id as id',
+                    'goods_category.cate_name as name',
+                    'goods_category.spec as spec',
+                    'goods_category.coin as coin',
+                    'goods_category.pic as pic',
+                    'goods_tags_cate.tag_icon as tag_icon'
+                ]);
+            foreach ($data as $d){
+                $d->pic = env('APP_URL').'/uploads/'.$d->pic;
+                $d->tag_icon = env('APP_URL').'/uploads/'.$d->tag_icon;
+            }
+            foreach ($data as $item) {
+                Redis::sadd($key, $item);
+            }
+        }
         return $res ? ['status' => true,'message' => '操作成功'] : ['status' => false,'message' => '操作失败！'];
     }
 }
