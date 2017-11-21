@@ -117,10 +117,11 @@ class GainLogController extends Controller
                 }
                 return $pic;
             });
-            $grid->address_info('收货信息')->display(function ($info){
-                $dzs = explode(',',$info);
-                return '收货人：' .$dzs[0].'<br>手机号码：' .$dzs[1].'<br>地区信息：' .$dzs[2].'<br>详细地址：' .$dzs[3].'<br>邮编：'.$dzs[4];
-            });
+            $grid->address_info('收货信息');
+//->display(function ($info){
+//                $dzs = explode(',',$info);
+//                return '收货人：' .$dzs[0].'<br>手机号码：' .$dzs[1].'<br>地区信息：' .$dzs[2].'<br>详细地址：' .$dzs[3].'<br>邮编：'.$dzs[4];
+//            });
 //            $grid->address_id('收货信息')->display(function ($aid){
 //                $res = Address::find($aid);
 //                return '收 货 人：'.$res->name .'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机号码：'.$res->phone .'<br />' .
