@@ -95,10 +95,9 @@ class CatchDollController extends BaseController
      */
     public function catchDoll($id,$gid,Request $request)
     {
-        $rules = [
+        $this->validate($request,[
             'iscatch' => 'required'
-        ];
-        $this->validate($request,$rules);
+        ]);
         $uid = $this->getUserid();
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
         $ucoin = Player::where('user_id',$uid)->value('coin');
