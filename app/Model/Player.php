@@ -11,7 +11,7 @@ class Player extends Authenticatable  implements JWTSubject
     protected $table = 'player';
 
     // 指定字段
-    protected $fillable = ['sdk_id','user_id','user_name','user_img','coin','new_user_mission','login_time'];
+    protected $fillable = ['sdk_id','user_id','user_name','user_img','coin','new_user_mission','login_time','login_day'];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
