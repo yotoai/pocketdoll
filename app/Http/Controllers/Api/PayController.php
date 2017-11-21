@@ -46,21 +46,21 @@ class PayController extends BaseController
 //            $headers=[
 //                'Accept'     => 'application/json',
 //            ];
-            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
-            Log::info($response->getBody());
+//            $response = $client->request('GET', 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
+//            Log::info($response->getBody());
 //            Log::info( implode(',',json_decode($response->getBody())));
-            return redirect()->to('http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
-            $res = json_decode($response->getBody(),true);
-            if($res['resultCode'] != 0000){
-                return json_decode($response->getBody(),true);
-            }
+//            return redirect()->to('http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params));
+//            $res = json_decode($response->getBody(),true);
+//            if($res['resultCode'] != 0000){
+//                return json_decode($response->getBody(),true);
+//            }
 //            $r = $this->storeOrder($user->user_id,$data->price,$order,$gid);
-            $r = $this->storeOrder($user->user_id,$request->price,$order,$request->coin);
-            if($r['code'] == 1){
-                return ['code' => 1,'msg' => '支付成功'];
-            }else{
-                return $r;
-            }
+//            $r = $this->storeOrder($user->user_id,$request->price,$order,$request->coin);
+//            if($r['code'] == 1){
+//                return ['code' => 1,'msg' => '支付成功'];
+//            }else{
+//                return $r;
+//            }
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 return ['code' => -1,'msg' => $e->getResponse()];

@@ -37,8 +37,8 @@ class LoginController extends BaseController
         if($res['code'] == -1){
             return $res;
         }
-        //Redis::set($this->getUserid().'_shareWithWx',0); // 分享次数 初始化
-        //$this->setUserId($request->userId);
+//        Redis::set($this->getUserid().'_shareWithWx',0); // 分享次数 初始化
+//        $this->setUserId($request->userId);
         $goods_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
         $cid = GoodsCategory::whereIn('id',$goods_id)->where('status','<>','-1')->get(['id'])->pluck('id')->toArray();
         $data = $this->selectDollMachine($cid[array_rand($cid)]);
@@ -145,6 +145,7 @@ class LoginController extends BaseController
                     'user_name' => $request->userName,
                     'user_img'  => $request->userImg,
                     'coin'      => 0,
+                    'login_day' => 1,
                     'login_time' => date('Y-m-d H:i:s',time())
                 ]);
                 $token = JWTAuth::fromUser($data);
