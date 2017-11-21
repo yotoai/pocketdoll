@@ -101,13 +101,15 @@ class PayController extends BaseController
             if($request->resultCode == 0){
                 $res = RechargeLog::where('order',$request->orderNo)->update([
                     'status' => 1,
-                    'status_des' => $request->resultDesc
+                    'status_des' => $request->resultDesc,
+                    'porder_num' => $request->porderNo
                 ]);
                 return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
             }else{
                 $res = RechargeLog::where('order',$request->orderNo)->update([
                     'status' => $request->resultCode,
-                    'status_des' => $request->resultDesc
+                    'status_des' => $request->resultDesc,
+                    'porder_num' => $request->porderNo
                 ]);
                 return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
             }
