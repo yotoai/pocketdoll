@@ -38,7 +38,8 @@ $api->version('v1',function($api){
         // 发送短信
         $api->get('sendcode','RegisterController@sendCode');
 
-
+        // 支付回调
+        $api->post('notify','PayController@pay_notify');
     });
 
     $api->group(['middleware' => ['api.reftoken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
