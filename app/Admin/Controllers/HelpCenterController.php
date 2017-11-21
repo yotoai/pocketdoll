@@ -73,6 +73,7 @@ class HelpCenterController extends Controller
     {
         return Admin::grid(HelpCenter::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->problem('问题');

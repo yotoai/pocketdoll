@@ -80,6 +80,7 @@ class RechargeLogController extends Controller
 //                $actions->disableDelete();
 //                $actions->disableEdit();
 //            });
+            $grid->model()->orderBy('id', 'desc');
             $grid->disableActions();
             $grid->disableCreation();
 

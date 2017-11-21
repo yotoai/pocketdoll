@@ -81,7 +81,7 @@ class GainLogController extends Controller
         return Admin::grid(GainLog::class, function (Grid $grid) {
 
             $grid->disableCreation();
-
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->user_id('用户名')->display(function ($uid){

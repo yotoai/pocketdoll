@@ -75,6 +75,7 @@ class MissionLogController extends Controller
     {
         return Admin::grid(UserMission::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->disableCreation();

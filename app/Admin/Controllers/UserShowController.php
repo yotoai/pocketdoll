@@ -77,6 +77,7 @@ class UserShowController extends Controller
     {
         return Admin::grid(UserShow::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->user_id('玩家名称')->display(function ($uid){

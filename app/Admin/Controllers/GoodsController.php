@@ -77,7 +77,7 @@ class GoodsController extends Controller
         return Admin::grid(Goods::class, function (Grid $grid) {
             // 添加默认查询条件
             $grid->model()->where('status', '=', 1);
-
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
             $grid->actions(function ($actions) {
                 $actions->disableDelete();

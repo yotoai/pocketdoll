@@ -73,6 +73,7 @@ class UserController extends Controller
     {
         return Admin::grid(Users::class, function (Grid $grid) {
 
+            $grid->model()->orderBy('id', 'desc');
             $grid->id('ID')->sortable();
 
             $grid->nickname('用户昵称');
