@@ -34,6 +34,10 @@ class PayController extends BaseController
                 'extra' => 'dopay',
                 'sign' => $sign
             ];
+            $r = $this->storeOrder($user->user_id,$request->price,$order,$request->coin);
+            if($r['code'] != 1){
+                return ['code' => -1,'msg' => '订单保存失败'];
+            }
             return ['code' => 1,'url' => 'http://114.215.106.114:8081/sdk_new/tdpay/dopay.do?' . http_build_query($params)];
             //return $params;
 //            $headers=[
