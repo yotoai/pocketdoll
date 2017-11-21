@@ -99,15 +99,17 @@ class PayController extends BaseController
         }
         try{
             if($request->resultCode == 0){
-                RechargeLog::where('order',$request->orderNo)->update([
+                $res = RechargeLog::where('order',$request->orderNo)->update([
                     'status' => 1,
                     'status_des' => $request->resultDesc
                 ]);
+                return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
             }else{
-                RechargeLog::where('order',$request->orderNo)->update([
+                $res = RechargeLog::where('order',$request->orderNo)->update([
                     'status' => $request->resultCode,
                     'status_des' => $request->resultDesc
                 ]);
+                return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
             }
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
