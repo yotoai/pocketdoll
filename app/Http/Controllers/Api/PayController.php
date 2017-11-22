@@ -24,7 +24,8 @@ class PayController extends BaseController
 //            $data = RechargeAmount::find($gid);
             $order = $this->createOrder();
 //            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
-            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
+//            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
+            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.(1).'dopay'.env('GAMEKEY')));
             $client = new Client();
             $params=[
                 'sdkId' => $user->sdk_id,
@@ -32,7 +33,8 @@ class PayController extends BaseController
                 'goodsName' => '充值'.$request->coin .'金币',
 //                'goodsName' => $data->title,
                 'orderNo' => $order,
-                'fee' => $request->price * 100,
+                'fee' => 1,
+//                'fee' => $request->price * 100,
 //                'fee' => $data->price * 100,
                 'extra' => 'dopay',
                 'sign' => $sign
@@ -93,13 +95,13 @@ class PayController extends BaseController
             'extra'      => 'required',
             'resultCode' => 'required',
             'resultDesc' => 'required',
-            'sign'       => 'required'
+           // 'sign'       => 'required'
         ];
         $this->validate($request ,$rules);
 
-        if($request->sign != strtolower(md5($request->orderNo.$request->porderNo.$request->fee.$request->extra.$request->resultCode.env('GAMEKEY')))){
-            return ['code' => -1,'msg' => '验证失败'];
-        }
+//        if($request->sign != strtolower(md5($request->orderNo.$request->porderNo.$request->fee.$request->extra.$request->resultCode.env('GAMEKEY')))){
+//            return ['code' => -1,'msg' => '验证失败'];
+//        }
         try{
             if($request->resultCode == 0){
                 $res = RechargeLog::where('order',$request->orderNo)->update([
