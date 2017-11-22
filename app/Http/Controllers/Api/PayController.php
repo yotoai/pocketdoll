@@ -99,9 +99,9 @@ class PayController extends BaseController
         ];
         $this->validate($request ,$rules);
 
-        $res = json_encode($request->toArray());
+       // $res = json_encode($request->toArray());
 
-        Log::info($res);
+        Log::info($request->orderNo.'&'.$request->sign);
 
         if($request->sign != strtolower(md5($request->orderNo.$request->porderNo.$request->fee.$request->extra.$request->resultCode.env('GAMEKEY')))){
             return ['code' => -1,'msg' => '验证失败'];
