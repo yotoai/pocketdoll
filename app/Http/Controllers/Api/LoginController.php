@@ -122,7 +122,18 @@ class LoginController extends BaseController
                 }
                 sort($list);
                 $c = count($list);
-                Redis::del($request->userId.'_login_mission');
+//                $mc = Mission::where('type',4)->count();
+//                if($c < $mc){
+//                    $day = Mission::where('type',4)
+//                        ->orderBy('id','asc')->get(['id','need_num','status'])->toArray();
+//                    foreach ($day as $da){
+//                        if($da['need_num'] == 1){
+//                            $da['status'] = '2';
+//                        }
+//                        Redis::sadd($request->userId.'_login_missions',serialize($da) );
+//                    }
+//                }
+                Redis::del($request->userId.'_login_missions');
                 for ($i = $c - 1;$i > 0;$i--){
                     for($j = 0;$j <  $i;$j++){
                         if($list[$j]['status'] == '2' && $list[$j+1]['status'] != '2'){
@@ -131,7 +142,7 @@ class LoginController extends BaseController
                     }
                 }
                 foreach ($list as $da){
-                    Redis::sadd($request->userId.'_login_mission',serialize($da) );
+                    Redis::sadd($request->userId.'_login_missions',serialize($da) );
                 }
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
@@ -164,9 +175,9 @@ class LoginController extends BaseController
                     ->orderBy('id','asc')->get(['id','need_num','status'])->toArray();
                 foreach ($day as $da){
                     if($da['need_num'] == 1){
-                        $da['status'] = '2';
+                        $da['status'] = '1';
                     }
-                    Redis::sadd($request->userId.'_login_mission',serialize($da) );
+                    Redis::sadd($request->userId.'_login_missions',serialize($da) );
                 }
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];

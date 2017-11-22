@@ -213,7 +213,7 @@ class BaseController extends Controller
 
     public function getLoginMission()
     {
-        return Redis::smembers($this->getUserid().'_login_mission');
+        return Redis::smembers($this->getUserid().'_login_missions');
     }
 
     // 生成海报二维码
@@ -284,6 +284,5 @@ class BaseController extends Controller
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-
     }
 }

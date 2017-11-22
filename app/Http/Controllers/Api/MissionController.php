@@ -137,20 +137,20 @@ class MissionController extends BaseController
                     $list[] = unserialize($ds);
                 }
                 sort($list);
-                Redis::del($this->getUserid().'_login_mission');
+                Redis::del($this->getUserid().'_login_missions');
                 foreach ($list as $da){
                     if($mid == $da['id']){
                         $da['status'] = '2';
                     }
-                    Redis::sadd($this->getUserid().'_login_mission',serialize($da) );
+                    Redis::sadd($this->getUserid().'_login_missions',serialize($da) );
                     if(!$this->isHaveMission($mid)){
                         Player::where('user_id',$this->getUserid())->update([
                             'new_user_mission' => '1'
                         ]);
                     }
                 }
-                return ['code' => 1,'msg' => '完成'];
-            }elseif($this->getMissionType($mid) == 4){
+                return ['code' => 1,'msg' => '完成任务'];
+            }elseif($this->getMissionType($mid) == 3){
                 $aid = Mission::where('id',$mid)->value('award_id');
 
                 $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
@@ -168,7 +168,7 @@ class MissionController extends BaseController
                     ]);
                 });
 
-                return ['code' => 1,'msg' => '完成'];
+                return ['code' => 1,'msg' => '完成任务'];
             }else{
                 $aid = Mission::where('id',$mid)->value('award_id');
 
