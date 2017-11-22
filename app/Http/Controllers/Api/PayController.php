@@ -95,13 +95,17 @@ class PayController extends BaseController
             'extra'      => 'required',
             'resultCode' => 'required',
             'resultDesc' => 'required',
-           // 'sign'       => 'required'
+           'sign'       => 'required'
         ];
         $this->validate($request ,$rules);
 
-//        if($request->sign != strtolower(md5($request->orderNo.$request->porderNo.$request->fee.$request->extra.$request->resultCode.env('GAMEKEY')))){
-//            return ['code' => -1,'msg' => '验证失败'];
-//        }
+        $res = json_encode($request->toArray());
+
+        Log::info($res);
+
+        if($request->sign != strtolower(md5($request->orderNo.$request->porderNo.$request->fee.$request->extra.$request->resultCode.env('GAMEKEY')))){
+            return ['code' => -1,'msg' => '验证失败'];
+        }
         try{
             if($request->resultCode == 0){
                 $res = RechargeLog::where('order',$request->orderNo)->update([
