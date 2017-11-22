@@ -101,7 +101,7 @@ class PayController extends BaseController
 
        // $res = json_encode($request->toArray());
 
-        Log::info($request->orderNo.'&'.$request->sign);
+        Log::info($request->orderNo.'&'.$request->porderNo.'&'.$request->fee.'&'.$request->extra.'&'.$request->resultCode.'&'.$request->resultDesc.'&'.$request->sign);
 
         if($request->sign != strtolower(md5($request->orderNo.$request->porderNo.$request->fee.$request->extra.$request->resultCode.env('GAMEKEY')))){
             return ['code' => -1,'msg' => '验证失败'];
@@ -131,6 +131,7 @@ class PayController extends BaseController
                 return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
             }
         }catch(\Exception $e){
+            Log::info('msg : '.$e->getMessage());
             return ['code' => -1,'msg' => $e->getMessage()];
         }
     }
