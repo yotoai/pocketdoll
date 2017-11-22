@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 class PayController extends BaseController
 {
-    //
+    // 执行支付
     public function doPay(Request $request)
     {
         try {
@@ -25,7 +25,7 @@ class PayController extends BaseController
             $order = $this->createOrder();
 //            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
 //            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
-            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.(1).'dopay'.env('GAMEKEY')));
+            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.(100).'dopay'.env('GAMEKEY')));
             $client = new Client();
             $params=[
                 'sdkId' => $user->sdk_id,
@@ -33,7 +33,7 @@ class PayController extends BaseController
                 'goodsName' => '充值'.$request->coin .'金币',
 //                'goodsName' => $data->title,
                 'orderNo' => $order,
-                'fee' => 1,
+                'fee' => 100,
 //                'fee' => $request->price * 100,
 //                'fee' => $data->price * 100,
                 'extra' => 'dopay',
@@ -71,6 +71,7 @@ class PayController extends BaseController
         }
     }
 
+    // 保存订单
     protected function storeOrder($uid,$fee,$order,$coin)
     {
         try {
@@ -86,6 +87,7 @@ class PayController extends BaseController
         }
     }
 
+    // 支付异步回调
     public function pay_notify(Request $request)
     {
         $rules = [
@@ -99,13 +101,10 @@ class PayController extends BaseController
         ];
         $this->validate($request ,$rules);
 
-       // $res = json_encode($request->toArray());
-
-        Log::info($request->orderNo.'&'.$request->porderNo.'&'.$request->fee.'&'.$request->extra.'&'.$request->resultCode.'&'.$request->resultDesc.'&'.$request->sign);
-
         if($request->sign != strtolower(md5($request->orderNo.$request->porderNo.$request->fee.$request->extra.$request->resultCode.env('GAMEKEY')))){
             return ['code' => -1,'msg' => '验证失败'];
         }
+
         try{
             if($request->resultCode == 0){
                 $res = RechargeLog::where('order',$request->orderNo)->update([
@@ -119,7 +118,7 @@ class PayController extends BaseController
                     $res  = Player::where('user_id',$log->user_id)->update([
                         'coin' => $play->coin + $log->coin
                     ]);
-                    return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
+                    return $res ? ['code' => 1,'state' => 'success','msg' => '回调成功'] : ['code' => -1,'state' => 'fail','msg' => '回调失败'];
                 }
                 return ['code' => -1,'msg' => '回调失败'];
             }else{
@@ -128,7 +127,7 @@ class PayController extends BaseController
                     'status_des' => $request->resultDesc,
                     'porder_num' => $request->porderNo
                 ]);
-                return $res ? ['code' => 1,'msg' => '回调成功'] : ['code' => -1,'msg' => '回调失败'];
+                return $res ? ['code' => 1,'state' => 'success','msg' => '回调成功'] : ['code' => -1,'state' => 'fail','msg' => '回调失败'];
             }
         }catch(\Exception $e){
             Log::info('msg : '.$e->getMessage());
@@ -136,6 +135,7 @@ class PayController extends BaseController
         }
     }
 
+    // 创建订单
     private function createOrder()
     {
         $order = date('YmdHis').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
