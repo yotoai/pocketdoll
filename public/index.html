@@ -2,4 +2,43 @@
 			var html = document.documentElement;
 			var hWidth = html.getBoundingClientRect().width;
 			html.style.fontSize = hWidth / 15 + "px";
-		})();</script><link href=/static/css/app.7870d8994d551f04b32ce3134dbe0c4c.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/lib/jquery-3.2.1.min.js></script><script type=text/javascript src=/static/js/manifest.2ecc9f83e6c045ee9158.js></script><script type=text/javascript src=/static/js/vendor.46ed179010164d1096f5.js></script><script type=text/javascript src=/static/js/app.b821db75d789594c3903.js></script></body></html>
+		})();</script><link href=/static/css/app.deca4a65e0d0b16aae6a6718868668e2.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=http://res.wx.qq.com/open/js/jweixin-1.2.0.js></script><script type=text/javascript src=./static/js/lib/jquery-3.2.1.min.js></script><script type=text/javascript>window.WxConfig = function() {
+			wx.config({
+
+			    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+
+			    appId: '', // 必填，公众号的唯一标识
+
+			    timestamp: '', // 必填，生成签名的时间戳
+
+			    nonceStr: '', // 必填，生成签名的随机串
+
+			    signature: '',// 必填，签名，见附录1
+
+			    jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+
+			});
+
+			wx.ready(function(){
+				console.log('config验证成功');
+			});
+
+			wx.error(function(res){
+				console.log('config验证失败');
+			});
+
+			wx.checkJsApi({
+
+			    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+
+			    success: function(res) {
+
+			        // 以键值对的形式返回，可用的api值true，不可用为false
+
+			        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+					
+					console.log('检测JS接口：' + res);
+			    }
+
+			});
+		}</script><script type=text/javascript src=/static/js/manifest.93bfa69bb7ab673efc54.js></script><script type=text/javascript src=/static/js/vendor.46ed179010164d1096f5.js></script><script type=text/javascript src=/static/js/app.8699b96c53467c28e5b8.js></script></body></html>
