@@ -24,3 +24,7 @@ Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
         dd($user);
     });
 });
+
+Route::get('notify_index',function (){
+    return redirect('http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&sign=e4d2be517a26de831f024c5bdbd307ab&loginType=mplogin');
+});
