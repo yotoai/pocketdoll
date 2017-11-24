@@ -72,12 +72,14 @@ $api->version('v1',function($api){
         $api->get('daymission','MissionController@loginInMission');
         $api->post('finishmission/{id}','MissionController@finishMission');
 
-        // 分享所需信息
+        // 抓取到分享所需信息
         $api->get('getshare/{id}','CatchDollController@getShare');
-        // 分享
+        // 分享的jssdk
         $api->get('jssdk','UserController@getJsConfig');
-        // 分享回调
+        // 分享成功回调
         $api->get('sharewihtwx','BaseController@shareWithWx');
+        // 分享信息
+        $api->get('sharedata','UserController@getShareData');
 
         //获取二维码
         $api->get('qrcode','BaseController@getQrCode');
