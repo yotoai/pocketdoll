@@ -19,7 +19,7 @@ class CreateShareDataTable extends Migration
             $table->string('desc')->comment('分享描述');
             $table->string('links')->comment('分享链接');
             $table->string('img_url')->comment('分享的图标');
-            $table->enum('status',['-1','1'])->commnet('是否启用');
+            $table->enum('status',['-1','1'])->default('-1')->commnet('是否启用');
             $table->timestamps();
         });
     }
