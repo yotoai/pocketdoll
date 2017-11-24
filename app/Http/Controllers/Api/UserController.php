@@ -105,7 +105,9 @@ class UserController extends BaseController
     // 获取分享信息
     public function getShareData()
     {
-        return ShareData::where('status','1')->first();
+        $data = ShareData::where('status','1')->first();
+        $data->img_url = env('APP_URL') . '/uploads/' . $data->img_url;
+        return $data;
     }
 
     // 刷新 token
