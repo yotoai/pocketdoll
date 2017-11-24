@@ -16,30 +16,32 @@ use Illuminate\Support\Facades\Log;
 class PayController extends BaseController
 {
     // 执行支付
-    public function doPay(Request $request)
+    public function doPay($gid)
     {
         try {
             $user = $this->getUser();
 //            return $user;
-//            $data = RechargeAmount::find($gid);
+            $data = RechargeAmount::find($gid);
             $order = $this->createOrder();
-//            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
+            $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
 //            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
-            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.(100).'dopay'.env('GAMEKEY')));
-            $client = new Client();
+//            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.(100).'dopay'.env('GAMEKEY')));
+//            $client = new Client();
             $params=[
                 'sdkId' => $user->sdk_id,
                 'userId' => $user->user_id,
-                'goodsName' => '充值'.$request->coin .'金币',
-//                'goodsName' => $data->title,
+//                'goodsName' => '充值'.$request->coin .'金币',
+                'goodsName' => $data->title,
                 'orderNo' => $order,
-                'fee' => 100,
+//                'fee' => 100,
 //                'fee' => $request->price * 100,
-//                'fee' => $data->price * 100,
+                'fee' => $data->price * 100,
                 'extra' => 'dopay',
                 'sign' => $sign
             ];
-            $r = $this->storeOrder($user->user_id,$request->price,$order,$request->coin);
+//            $r = $this->storeOrder($user->user_id,$request->price,$order,$request->coin);
+
+            $r = $this->storeOrder($user->user_id,$data->price,$order,($data->coin_num + $data->award_num));
             if($r['code'] != 1){
                 return ['code' => -1,'msg' => '订单保存失败'];
             }
@@ -97,7 +99,7 @@ class PayController extends BaseController
             'extra'      => 'required',
             'resultCode' => 'required',
             'resultDesc' => 'required',
-           'sign'       => 'required'
+            'sign'       => 'required'
         ];
         $this->validate($request ,$rules);
 
