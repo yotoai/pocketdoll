@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\Goods;
 use App\Model\GoodsCategory;
+use App\Model\ShareData;
 use App\Model\Users;
 use EasyWeChat\Foundation\Application;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -99,6 +100,12 @@ class UserController extends BaseController
         $js = $app->js;
 
         return $js->config(['onMenuShareQQ', 'onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ'],true);
+    }
+
+    // 获取分享信息
+    public function getShareData()
+    {
+        return ShareData::where('status','1')->find();
     }
 
     // 刷新 token

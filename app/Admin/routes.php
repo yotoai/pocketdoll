@@ -36,10 +36,13 @@ Route::group([
     $router->resource('player',PlayerController::class,['as' =>'admin']);
     // 帮助中心
     $router->resource('helpcenter',HelpCenterController::class,['as' => 'admin']);
+    // 分享设置
+    $router->resource('share',ShareDataController::class,['as' => 'admin']);
 
     // 修改 状态
     $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
     $router->post('gainlog/updateStatus', 'GainLogController@updateStatus')->name('admin.gainlog.updateStatus');
     $router->post('machine/updateStatus', 'CategoryController@updateStatus')->name('admin.machine.updateStatus');
     $router->post('goods/updateStatus', 'GoodsController@updateStatus')->name('admin.goods.updateStatus');
+    $router->post('share/updateStatus', 'ShareDataController@updateStatus')->name('admin.share.updateStatus');
 });
