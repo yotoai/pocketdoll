@@ -78,7 +78,7 @@ $api->version('v1',function($api){
         $api->get('jssdk','UserController@getJsConfig');
         // 分享成功回调
         $api->get('sharewihtwx','BaseController@shareWithWx');
-        // 分享信息
+        // 分享的信息内容
         $api->get('sharedata','UserController@getShareData');
 
         //获取二维码
