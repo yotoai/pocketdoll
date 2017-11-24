@@ -94,6 +94,8 @@ class UserController extends BaseController
     {
         $app = new Application(config('wechat'));
 
+        $app->js->signature('http://baby.quwin.cn/index.html');
+
         $js = $app->js;
 
         return $js->config(['onMenuShareQQ', 'onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ'],true);
