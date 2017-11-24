@@ -94,7 +94,7 @@ class UserController extends BaseController
     {
         $app = new Application(config('wechat'));
 
-        $app->js->signature('http://baby.quwin.cn/index.html');
+        $app->js->setUrl('http://baby.quwin.cn/index.html');
 
         $js = $app->js;
 
