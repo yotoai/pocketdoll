@@ -105,7 +105,7 @@ class UserController extends BaseController
     // 获取分享信息
     public function getShareData()
     {
-        return ShareData::where('status','1')->find();
+        return ShareData::where('status','1')->first();
     }
 
     // 刷新 token
