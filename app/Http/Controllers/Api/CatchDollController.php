@@ -29,6 +29,7 @@ class CatchDollController extends BaseController
                 ->get([
                     'id',
                     'goods_cate_id',
+                    'add_num',
                     'name',
                     'pic',
                     'sc_pic',
@@ -36,15 +37,25 @@ class CatchDollController extends BaseController
                     'height',
                 ]);
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
+            $list = [];
             foreach ($data as $d) {
-                $d->pic = env('APP_URL').'/uploads/'.$d->pic;
-                $d->sc_pic = env('APP_URL').'/uploads/'.$d->sc_pic;
+                for ($i = $d->add_num;$i > 0 ;$i-- ){
+                    $list[] = [
+                        'id' => $d->id,
+                        'goods_cate_id' => $d->goods_cate_id,
+                        'name' => $d->name,
+                        'pic' => env('APP_URL').'/uploads/'.$d->pic,
+                        'sc_pic' => env('APP_URL').'/uploads/'.$d->sc_pic,
+                        'width' => $d->width,
+                        'height' => $d->height,
+                    ];
+                }
             }
             $coin = GoodsCategory::where('id',$id)->value('coin');
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'msg' => '查询成功','coin' => $coin,'lucky' => $lucky,'data' => $data];
+        return ['code' => 1,'msg' => '查询成功','coin' => $coin,'lucky' => $lucky,'data' => $list];
     }
 
     /**

@@ -16,6 +16,7 @@ class CreateGoodsTable extends Migration
         Schema::create('goods', function (Blueprint $table) {
             $table->increments('id')->comment('娃娃id');
             $table->integer('goods_cate_id')->comment('娃娃种类');
+            $table->integer('add_num')->default(1)->comment('添加到娃娃机的数量');
             $table->string('name',255)->comment('娃娃名称');
             $table->string('pic',255)->comment('娃娃图片');
             $table->string('sc_pic')->comment('素材图片');

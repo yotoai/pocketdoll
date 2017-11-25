@@ -20,11 +20,11 @@ class PayController extends BaseController
     {
         try {
             $user = $this->getUser();
+//            return $user;
             $data = RechargeAmount::find($gid);
             $order = $this->createOrder();
             $sign = strtolower(md5($user->sdk_id.$user->user_id.$data->title.$order.($data->price * 100).'dopay'.env('GAMEKEY')));
 //            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.($request->price * 100).'dopay'.env('GAMEKEY')));
-//            $sign = (md5($user->sdk_id.$user->user_id.'充值'.$request->coin .'金币'.$order.(100).'dopay'.env('GAMEKEY')));
 //            $client = new Client();
             $params=[
                 'sdkId' => $user->sdk_id,
