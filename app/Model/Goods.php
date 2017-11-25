@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Goods extends Model
 {
     //
-    protected $fillable = ['name','goods_cate_id','pic','coin','spec','tag_id','addtime'];
+    protected $table = 'goods';
+
+    protected $fillable = [
+        'name','goods_cate_id','add_num','pic','sc_pic','bq_pic','width','height','status'
+    ];
 }

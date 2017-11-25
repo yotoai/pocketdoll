@@ -107,16 +107,17 @@ class GoodsController extends Controller
     protected function form()
     {
         return Admin::form(Goods::class, function (Form $form) {
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
             $form->text('name','商品名称：')->rules('required|max:255');
             $cate = GoodsCategory::all(['id','cate_name'])->pluck('cate_name','id')->toArray();
             $form->select('goods_cate_id','娃娃机：')->options($cate);
-            $form->number('width','娃娃宽度：')->rules('required');
-            $form->number('height','娃娃高度：')->rules('required');
-            $form->image('pic','展示图片：');
+            $form->number('add_num','向娃娃机添加的个数：')->default(1)->rules('min:1|max:6|numeric');
+            $form->number('width','娃娃宽度：')->rules('required|min:1');
+            $form->number('height','娃娃高度：')->rules('required|min:1');
+            $form->image('pic','展示图片：')->rules('required');
             $form->image('sc_pic','素材图片：')->rules('required');
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('created_at', '添加时间：');
+            $form->display('updated_at', '修改时间：');
             $form->saving(function (Form $form){
                 //保存之前的操作
             });
