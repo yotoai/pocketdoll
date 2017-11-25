@@ -119,7 +119,7 @@ class GoodsController extends Controller
             $form->display('created_at', '添加时间：');
             $form->display('updated_at', '修改时间：');
             $form->saving(function (Form $form){
-                //保存之前的操作
+                //保存之前的操
             });
             $form->saved(function (Form $form){
                 //保存之后的操作
