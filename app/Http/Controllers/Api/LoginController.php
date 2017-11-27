@@ -200,21 +200,32 @@ class LoginController extends BaseController
                 'id',
                 'goods_cate_id',
                 'name',
+                'add_num',
                 'pic',
                 'sc_pic',
                 'width',
                 'height'
             ]);
             if(empty($data->toArray())) return ['code' => -1,'msg' => '该娃娃机没有放入娃娃...'];
+            $list = [];
             foreach ($data as $d) {
-                $d->pic = env('APP_URL') .'/uploads/'.$d->pic;
-                $d->sc_pic = env('APP_URL') .'/uploads/'.$d->sc_pic;
+                for ($i = $d->add_num;$i > 0 ;$i-- ){
+                    $list[] = [
+                        'id' => $d->id,
+                        'goods_cate_id' => $d->goods_cate_id,
+                        'name' => $d->name,
+                        'pic' => env('APP_URL').'/uploads/'.$d->pic,
+                        'sc_pic' => env('APP_URL').'/uploads/'.$d->sc_pic,
+                        'width' => $d->width,
+                        'height' => $d->height,
+                    ];
+                }
             }
             $coin = GoodsCategory::where('id',$id)->value('coin');
+            return ['code' => 1,'coin' => $coin,'lucky' => $lucky,'data' => $list];
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-        return ['code' => 1,'coin' => $coin,'lucky' => $lucky,'data' => $data];
     }
 
     // 刷新 token
