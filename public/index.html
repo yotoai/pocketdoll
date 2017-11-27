@@ -2,43 +2,19 @@
 			var html = document.documentElement;
 			var hWidth = html.getBoundingClientRect().width;
 			html.style.fontSize = hWidth / 15 + "px";
-		})();</script><link href=/static/css/app.bb8ef3667e8a139fb4413e3df4753922.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=http://res.wx.qq.com/open/js/jweixin-1.2.0.js></script><script type=text/javascript src=./static/js/lib/jquery-3.2.1.min.js></script><script type=text/javascript>window.WxConfig = function() {
-			wx.config({
+		})();</script><link href=/static/css/app.bb8ef3667e8a139fb4413e3df4753922.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=http://res.wx.qq.com/open/js/jweixin-1.2.0.js></script><script type=text/javascript src=./static/js/lib/jquery-3.2.1.min.js></script><script type=text/javascript>// window.onbeforeunload = onbeforeunload_handler;
+			// window.onunload = onunload_handler;
+			// function onbeforeunload_handler() {
+			// 	var warning = "点击收藏，下次也是可以玩";
+			// 	return warning;
+			// }
 
-			    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			// function onunload_handler() {
+			// 	var warning = "点击收藏，下次也是可以玩";
+			// 	alert(warning);
+			// }   
 
-			    appId: '', // 必填，公众号的唯一标识
-
-			    timestamp: '', // 必填，生成签名的时间戳
-
-			    nonceStr: '', // 必填，生成签名的随机串
-
-			    signature: '',// 必填，签名，见附录1
-
-			    jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-
-			});
-
-			wx.ready(function(){
-				console.log('config验证成功');
-			});
-
-			wx.error(function(res){
-				console.log('config验证失败');
-			});
-
-			wx.checkJsApi({
-
-			    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-
-			    success: function(res) {
-
-			        // 以键值对的形式返回，可用的api值true，不可用为false
-
-			        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-					
-					console.log('检测JS接口：' + res);
-			    }
-
-			});
-		}</script><script type=text/javascript src=/static/js/manifest.6252b36b7f27b04c5f5a.js></script><script type=text/javascript src=/static/js/vendor.46ed179010164d1096f5.js></script><script type=text/javascript src=/static/js/app.1899227bd4a7eb23db7a.js></script></body></html>
+			//绑定beforeunload事件
+			$(window).bind('beforeunload',function(){
+				return '点击收藏，下次也是可以玩';
+			});</script><script type=text/javascript src=/static/js/manifest.6252b36b7f27b04c5f5a.js></script><script type=text/javascript src=/static/js/vendor.46ed179010164d1096f5.js></script><script type=text/javascript src=/static/js/app.1899227bd4a7eb23db7a.js></script></body></html>
