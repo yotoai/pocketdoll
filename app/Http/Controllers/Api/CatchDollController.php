@@ -202,9 +202,9 @@ class CatchDollController extends BaseController
     // 返回增加的幸运值
     protected function reLucky($lucky)
     {
-        if( $lucky < 60 && $lucky >=0) return mt_rand(1,6);
-        if( $lucky >= 60  && $lucky < 80) return mt_rand(1,4);
-        if( $lucky >= 80  && $lucky < 95) return  mt_rand(1,2);
+        if( $lucky < 60 && $lucky >=0) return mt_rand(5,10);
+        if( $lucky >= 60  && $lucky < 80) return mt_rand(3,5);
+        if( $lucky >= 80  && $lucky < 95) return  mt_rand(2,3);
         if( $lucky >= 95 && $lucky <=100) return 1;
     }
 
@@ -230,7 +230,7 @@ class CatchDollController extends BaseController
         }
     }
 
-    //
+    // 抓取到后分享
     public function getShare($id)
     {
         $goods = Goods::find($id);
