@@ -32,14 +32,18 @@ $api->version('v1',function($api){
         $api->get('refresh','LoginController@refreshToken');
 
         // 注册用户
-        $api->post('register','RegisterController@addUser');
+//        $api->post('register','RegisterController@addUser');
         // 验证码
-        $api->get('verifycode','RegisterController@verifyCode');
+//        $api->get('verifycode','RegisterController@verifyCode');
         // 发送短信
-        $api->get('sendcode','RegisterController@sendCode');
+//        $api->get('sendcode','RegisterController@sendCode');
 
         // 支付回调
         $api->post('notify','PayController@pay_notify');
+        // 用户信息回调
+        $api->get('unotify','DataNotifyController@userNotify');
+        // 抓取记录回调
+        $api->get('cnotify','DataNotifyController@catchLogNotify');
     });
 
     $api->group(['middleware' => ['api.reftoken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
