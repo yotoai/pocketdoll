@@ -59,6 +59,7 @@ class Handler extends ExceptionHandler
         if(is_array($msg)){
             $msg = $msg[0];
         }
-        return ['code'=> -1,'msg'=>$msg];
+        return response()->json(['code'=> -1,'msg'=>$msg],200);
+//        return ['code'=> -1,'msg'=>$msg];
     }
 }
