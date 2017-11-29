@@ -64,7 +64,7 @@ class UserRucksackController extends BaseController
             'rucksack_id' => 'required|integer',
             'goods_id'    => 'required|integer',
             'name'        => 'required|max:255',
-            'phone'       => 'required|regex:/^1[34578][0-9]{9}$/',
+            'phone'       => ['required','regex:/^1[34578][0-9]{9}$/'],
             'address'     => 'required|max:500'
         ];
 

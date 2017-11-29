@@ -99,7 +99,7 @@ img {
 }
 
 [contenteditable = "true"], input, textarea {
-    -webkit-user- select: auto!important;
+    -webkit-user-select: auto!important;
     -khtml-user-select: auto!important;
     -moz-user-select: auto!important;
     -ms-user-select: auto!important;
