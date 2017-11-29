@@ -7,8 +7,9 @@ use App\Model\catchLog;
 use App\Model\GainLog;
 use App\Model\Goods;
 use App\Model\UserRucksack;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Dingo\Api\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UserRucksackController extends BaseController
