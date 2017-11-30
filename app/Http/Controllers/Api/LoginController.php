@@ -161,11 +161,11 @@ class LoginController extends BaseController
                         'login_day' => 1,
                         'login_time' => date('Y-m-d H:i:s',time())
                     ]);
-                    InviteLog::create([
-                        'inviter_id'   => $request->parent_id,
-                        'invitered_id' => $request->userId,
-                        'level' => $this->getParent($request->parent_id)
-                    ]);
+//                    InviteLog::create([
+//                        'inviter_id'   => $request->parent_id,
+//                        'invitered_id' => $request->userId,
+//                        'level' => $this->getParent($request->parent_id)
+//                    ]);
                 },5);
 
 
