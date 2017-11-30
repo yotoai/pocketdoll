@@ -276,7 +276,7 @@ class MissionController extends BaseController
             'msg' => '查询成功',
             'current_point' => ($point->point >= 100) ? 100 : $point->point,
             'max_point' => 100,
-            'status' => ($point->point >= 100) ? '兑换' : '未完成'
+            'status' => ($point->point >= 100) ? 1 : 0
         ];
     }
 
