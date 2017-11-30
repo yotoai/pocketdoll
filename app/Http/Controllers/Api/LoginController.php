@@ -19,6 +19,7 @@ class LoginController extends BaseController
     // 用户授权 (跳转登录)
     public function login(Request $request)
     {
+	\Log::info($request->all());
         $this->validate($request,[
             'sdkId'  => 'required',
             'userId' => 'required',
