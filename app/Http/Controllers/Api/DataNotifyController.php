@@ -79,5 +79,15 @@ class DataNotifyController extends Controller
         }
     }
 
+    // 返佣增加用户金币
+    public function addRebateCoin(Request $request)
+    {
+        $this->validate($request,[
+            'userId' => 'required',
+        ]);
+        $user = Player::find($request->userId);
+        $user->coin = $user->coin + $request->coin;
+        $user->save();
+    }
 
 }

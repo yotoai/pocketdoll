@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\Awards;
+use App\Model\Goods;
 use App\Model\Mission;
 use App\Model\missionType;
 use App\Model\Player;
 use App\Model\UserMission;
+use App\Model\UserRucksack;
 use App\Model\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -130,6 +132,7 @@ class MissionController extends BaseController
                         'mission_id' => $mid,
                         'status'     => '1'
                     ]);
+                    $this->addPoint($res->award_point);
                 });
                 $datas = $this->getLoginMission();
                 $list = [];
@@ -166,6 +169,7 @@ class MissionController extends BaseController
                         'mission_id' => $mid,
                         'status'     => '1'
                     ]);
+                    $this->addPoint($res->award_point);
                 });
 
                 return ['code' => 1,'msg' => '完成任务'];
@@ -188,6 +192,7 @@ class MissionController extends BaseController
                 });
                 $this->setMissionRedis($mid,2);
                 $this->setPointRedis($res->award_point);
+                $this->addPoint($res->award_point);
                 $data = Mission::join('awards','mission.award_id','=', 'awards.id')
                     ->whereNotIn('type',[3,4])
                     ->where('mission.parent_id',$mid)
@@ -252,5 +257,61 @@ class MissionController extends BaseController
     {
         $c = Mission::where('type',4)->where('id','>',$mid)->count();
         return $c ? true : false;
+    }
+
+    // 增加 积分
+    protected function addPoint($point)
+    {
+        $user = Player::find($this->getUserid());
+        $user->point = $user->point + $point;
+        $user->save();
+    }
+
+    // 获取用户积分
+    public function getUserPoint()
+    {
+        $point = Player::where('user_id',$this->getUserid())->first();
+        return [
+            'code' => 1,
+            'msg' => '查询成功',
+            'current_point' => ($point->point >= 100) ? 100 : $point->point,
+            'max_point' => 100,
+            'status' => ($point->point >= 100) ? '兑换' : '未完成'
+        ];
+    }
+
+    // 兑换娃娃
+    public function exchangeDoll()
+    {
+        $uid = $this->getUserid();
+//        $user = Player::where('user_id',$uid)->first();
+//        if($user->point < 100){
+//            return ['code' => -1,'msg' => '积分不足'];
+//        }
+        try{
+            $goods = Goods::where('status','<>','-1')->orderBy(DB::raw('RAND()'))->take(1)->get(['id as goods_id','name as goods_name','pic as goods_pic'])[0];
+            $res = UserRucksack::where('user_id',$uid)->where('goods_id',$goods->goods_id)->first();
+            if(!empty($res) && $res->goods_id == $goods->goods_id) {
+                $re = UserRucksack::where('user_id',$uid)->where('goods_id',$goods->goods_id)->update([
+                    'num' => $res->num + 1
+                ]);
+            }else {
+                $re = UserRucksack::create([
+                    'user_id'   => $uid,
+                    'goods_id'  => $goods->goods_id,
+                    'num'       => 1,
+                    'gain_time' => date('Y-m-d H:i:s', time())
+                ]);
+            }
+            if($re){
+                $goods->goods_pic = env('APP_URL') . '/uploads/' . $goods->goods_pic;
+                return ['code' => 1,'msg' => '兑换成功','data' => $goods];
+            }else{
+                return ['code' => -1,'msg' => '兑换失败'];
+            }
+
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
     }
 }

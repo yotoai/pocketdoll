@@ -116,15 +116,7 @@ class CatchDollController extends BaseController
         if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
 
 //        $udata = Player::find($uid);
-//        if(!empty($udata->parent_id)){
-//            $pdata = Player::find($udata->parent_id);
-//            if(!empty($pdata->parent_id)){
-//                $ddata = Player::find($pdata->parent_id);
-//                $cc = ChargeConfig::where('identity','rebate_ratio_1v')->first();
-//                $ddata->coin = $ddata->coin + $gcoin * $cc->rebate_rratio;
-//                $ddata->save();
-//            }
-//        }
+//        $this->setRebate($udata,$gcoin); // 返佣
 
         $lucky = $this->getLuckyRedis($id);
 
@@ -255,5 +247,33 @@ class CatchDollController extends BaseController
             'catchnum' => $catch
         ];
         return ['code' => 1,'msg' =>'查询成功','data' => $data];
+    }
+
+    // 返佣
+    protected function setRebate($data,$gcoin,$rate=1)
+    {
+        if(!empty($data->parent_id)){
+            $pdata = Player::find($data->parent_id);
+            $cc = ChargeConfig::where('identity','rebate_ratio_'.$rate.'v')->first();
+            $pdata->coin = $pdata->coin + $gcoin * $cc->rebate_ratio;
+            $pdata->save();
+
+            if(!empty($pdata->parent_id)) {
+                $this->setRebate($pdata,$gcoin,++$rate);
+            }
+//                $ddata = Player::find($pdata->parent_id);
+//                $cc = ChargeConfig::where('identity','rebate_ratio_2v')->first();
+//                $ddata->coin = $ddata->coin + $gcoin * $cc->rebate_ratio;
+//                $ddata->save();
+//                if(!empty($ddata->parent_id)){
+//                    $sdata = Player::find($ddata->parent_id);
+//                    $cc = ChargeConfig::where('identity','rebate_ratio_3v')->first();
+//                    $sdata->coin = $sdata->coin + $gcoin * $cc->rebate_ratio;
+//                    $sdata->save();
+//                }
+//            }
+        }else{
+            return;
+        }
     }
 }

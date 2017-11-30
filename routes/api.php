@@ -21,7 +21,7 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1',function($api){
     // 测试 代码放置处
     $api->get('test',function (){
-        return ;
+       // return md5(1);
     });
     $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 登录（旧）
@@ -44,6 +44,7 @@ $api->version('v1',function($api){
         $api->get('unotify','DataNotifyController@userNotify');
         // 抓取记录回调
         $api->get('cnotify','DataNotifyController@catchLogNotify');
+
     });
 
     $api->group(['middleware' => ['api.reftoken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
@@ -75,7 +76,10 @@ $api->version('v1',function($api){
         $api->get('invite','MissionController@inviteMission');
         $api->get('daymission','MissionController@loginInMission');
         $api->post('finishmission/{id}','MissionController@finishMission');
-
+        // 返回积分
+        $api->get('getpoint','MissionController@getUserPoint');
+        // 兑换娃娃
+        $api->get('exchange','MissionController@exchangeDoll');
         // 抓取到分享所需信息
         $api->get('getshare/{id}','CatchDollController@getShare');
         // 分享的jssdk

@@ -10,5 +10,5 @@ class InviteLog extends Model
     protected $table = 'invite_log';
 
     // 指定字段
-    protected $fillable = ['inviter_id','invitered_id'];
+    protected $fillable = ['inviter_id','invitered_id','level'];
 }
