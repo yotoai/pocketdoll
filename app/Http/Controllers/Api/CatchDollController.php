@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\catchLog;
+use App\Model\ChargeConfig;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Mission;
@@ -113,6 +114,17 @@ class CatchDollController extends BaseController
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
         $ucoin = Player::where('user_id',$uid)->value('coin');
         if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
+
+//        $udata = Player::find($uid);
+//        if(!empty($udata->parent_id)){
+//            $pdata = Player::find($udata->parent_id);
+//            if(!empty($pdata->parent_id)){
+//                $ddata = Player::find($pdata->parent_id);
+//                $cc = ChargeConfig::where('identity','rebate_ratio_1v')->first();
+//                $ddata->coin = $ddata->coin + $gcoin * $cc->rebate_rratio;
+//                $ddata->save();
+//            }
+//        }
 
         $lucky = $this->getLuckyRedis($id);
 
