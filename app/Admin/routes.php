@@ -38,7 +38,8 @@ Route::group([
     $router->resource('helpcenter',HelpCenterController::class,['as' => 'admin']);
     // 分享设置
     $router->resource('share',ShareDataController::class,['as' => 'admin']);
-
+    // 佣金配置
+    $router->resource('config',ChargeConfigController::class,['as' => 'admin']);
     // 修改 状态
     $router->post('usershow/updateStatus', 'UserShowController@updateStatus')->name('admin.usershow.updateStatus');
     $router->post('gainlog/updateStatus', 'GainLogController@updateStatus')->name('admin.gainlog.updateStatus');
