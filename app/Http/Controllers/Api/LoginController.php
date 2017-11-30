@@ -150,27 +150,31 @@ class LoginController extends BaseController
             return ['code' => 1,'token' => $token,'user' => $user];
         }else{
             try{
-                $data = Player::create([
-                    'sdk_id'    => $request->sdkId,
-                    'user_id'   => $request->userId,
-                    'user_name' => $request->userName,
-                    'user_img'  => $request->userImg,
-                    'coin'      => 0,
-                    'login_day' => 1,
-                    'login_time' => date('Y-m-d H:i:s',time())
-                ]);
-                $token = JWTAuth::fromUser($data);
+                DB::transaction(function () use ($request){
+                    $data = Player::create([
+                        'sdk_id'    => $request->sdkId,
+                        'user_id'   => $request->userId,
+                        'user_name' => $request->userName,
+                        'user_img'  => $request->userImg,
+                        'parent_id' => empty($request->parent_id) ? 0 : $request->parent_id,
+                        'coin'      => 0,
+                        'login_day' => 1,
+                        'login_time' => date('Y-m-d H:i:s',time())
+                    ]);
+                    InviteLog::create([
+                        'inviter_id'   => $request->parent_id,
+                        'invitered_id' => $request->userId,
+                        'level' => $this->getParent($request->parent_id)
+                    ]);
+                },5);
+
+
+                $token = JWTAuth::fromUser(Player::where($request->userId));
                 $user = [
                     'username' => $data->user_name,
                     'icon'     => $data->user_img,
                     'coin'     => $data->coin
                 ];
-                if(!empty($request->uid)){
-                    InviteLog::create([
-                        'inviter_id' => $request->uid,
-                        'invitered_id' => $data->id
-                    ]);
-                }
                 $day = Mission::where('type',4)
                     ->orderBy('id','asc')->get(['id','need_num','status'])->toArray();
                 foreach ($day as $da){
@@ -235,5 +239,16 @@ class LoginController extends BaseController
         $token = JWTAuth::refresh($old_token);
         JWTAuth::invalidate($old_token);
         return $token;
+    }
+
+    // 查询上级
+    protected function getParent($parent_id,$level=1)
+    {
+        $pdata = Player::find($parent_id);
+        if(!empty($pdata->parent_id)) {
+            $this->getParent($pdata,++$level);
+        }else{
+            return $level;
+        }
     }
 }
