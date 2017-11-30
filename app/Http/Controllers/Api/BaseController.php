@@ -228,7 +228,7 @@ class BaseController extends Controller
             return env('APP_URL').'/qrcode/'.$filename.'.png';
         }
 
-        //        http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&userId=xxx&loginType=shareLogin&sign=xxx
+        // http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&userId=xxx&loginType=shareLogin&sign=xxx
         //sign 顺序 sdkId+userId+loginType+key
         $sign = strtolower(md5(2098 . $uid . 'shareLogin' . env('GAMEKEY')));
         $url = 'http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&userId='.$uid.'&loginType=shareLogin&sign='.$sign;

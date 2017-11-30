@@ -107,6 +107,7 @@ class UserController extends BaseController
     {
         $data = ShareData::where('status','1')->first();
         $data->img_url = env('APP_URL') . '/uploads/' . $data->img_url;
+        $data->links = $data->links.'?user_id='.$this->getUserid();
         return $data;
     }
 

@@ -44,7 +44,10 @@ $api->version('v1',function($api){
         $api->get('unotify','DataNotifyController@userNotify');
         // 抓取记录回调
         $api->get('cnotify','DataNotifyController@catchLogNotify');
-
+        // 完成任务回调
+        $api->get('mnotify','DataNotifyController@missionedNotify');
+        // 返佣增加用户金币
+        $api->post('addrecoin','DataNotifyController@addRebateCoin');
     });
 
     $api->group(['middleware' => ['api.reftoken'],'namespace' => 'App\Http\Controllers\Api'],function($api){
