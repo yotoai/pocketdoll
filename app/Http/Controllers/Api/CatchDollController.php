@@ -133,8 +133,8 @@ class CatchDollController extends BaseController
             }
             return ['code' => 1,'data' => 'lost','lucky' => $add_lucky];
         }
+        $this->setCatchNum(1);
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
-
         $arr = ['get' => $rate,'lost'=>1000];
         if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == 'true' && $rate > 0)
         {
@@ -168,7 +168,6 @@ class CatchDollController extends BaseController
             return ['code' => 1,'data' => 'get','lucky' => 'clear'];
         }else{
             try{
-                $this->setCatchNum(1);
                 $this->finishMission('catch');
                 Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
                 if($lucky >= 100){
