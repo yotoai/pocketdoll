@@ -184,7 +184,7 @@ class LoginController extends BaseController
                     Redis::sadd($request->userId.'_login_missions',serialize($da) );
                 }
             }catch (\Exception $e){
-                return ['code' => -1,'msg' => $e->getMessage()];
+                return ['code' => -1,'msg' => $e->getMessage(),$e->getLine()];
             }
             return ['code' => 1,'token' => $token,'user' => $user];
         }
