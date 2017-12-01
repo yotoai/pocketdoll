@@ -57,7 +57,7 @@ class CatchDollController extends BaseController
             }
             $coin = GoodsCategory::where('id',$id)->value('coin');
         }catch (\Exception $e){
-            return ['code' => -1,'msg' => $e->getMessage()];
+            return ['code' => -1,'msg' => $e->getMessage(),'ss'=>$e->getLine()];
         }
         return ['code' => 1,'msg' => '查询成功','coin' => $coin,'lucky' => $lucky,'data' => $list];
     }
