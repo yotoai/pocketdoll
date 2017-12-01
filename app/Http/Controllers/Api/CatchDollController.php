@@ -63,9 +63,6 @@ class CatchDollController extends BaseController
     }
 
 
-
-
-
     /**
      * 随机返回娃娃机
      *  notice ：要开redis

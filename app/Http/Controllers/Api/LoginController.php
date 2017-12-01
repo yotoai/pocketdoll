@@ -136,7 +136,7 @@ class LoginController extends BaseController
                 Redis::del($request->userId.'_login_missions');
                 for ($i = $c - 1;$i > 0;$i--){
                     for($j = 0;$j <  $i;$j++){
-                        if($list[$j]['status'] == '2' && $list[$j+1]['status'] != '2'){
+                        if($list[$j]['status'] == '2' && $list[$j+1]['status'] != '2' && $day >= $list[$j+1]['need_num']){
                             $list[$j+1]['status'] ='1';
                         }
                     }
