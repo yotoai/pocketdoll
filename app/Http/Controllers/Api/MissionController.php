@@ -215,7 +215,7 @@ class MissionController extends BaseController
                 return ['code' => 1,'msg' => '任务完成','point' => $res->award_point,'data' => $data];
             }
         }catch (\Exception $e){
-            return ['code' => -1,'msg' => $e->getMessage()];
+            return ['code' => -1,'msg' => $e->getMessage(),'ss' => $e->getLine()];
         }
     }
     
@@ -262,7 +262,7 @@ class MissionController extends BaseController
     // 增加 积分
     protected function addPoint($point)
     {
-        $user = Player::find($this->getUserid());
+        $user = Player::where('user_id',$this->getUserid())->first();
         $user->point = $user->point + $point;
         $user->save();
     }
