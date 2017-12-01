@@ -174,23 +174,24 @@ class MissionController extends BaseController
 
                 return ['code' => 1,'msg' => '完成任务'];
             }else{
-                $aid = Mission::where('id',$mid)->value('award_id');
+                $aid = Mission::where('id',$mid)->value('award_id');// 从任务表中获取奖励id
 
-                $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
+                $res = Awards::where('id',$aid)->first(['award_coin','award_point']); // 从奖励表获取 奖励的金币和积分
 
-                $ures = Player::where('user_id',$this->getUserid())->first(['coin']);
+                $ures = Player::where('user_id',$this->getUserid())->first(['coin']);// 从用户表获取用户金币
 
                 DB::transaction(function () use ($res,$ures,$mid){
                     Player::where('user_id',$this->getUserid())->update([
                         'coin' => $ures->coin + $res->award_coin,
-                    ]);
+                    ]); // 添加金币
                     UserMission::create([
                         'user_id'    => $this->getUserid(),
                         'mission_id' => $mid,
                         'status'     => '1'
-                    ]);
+                    ]); // 创建任务日志
                 });
                 $this->setMissionRedis($mid,2);
+
                 $this->setPointRedis($res->award_point);
                 $this->addPoint($res->award_point);
                 $data = Mission::join('awards','mission.award_id','=', 'awards.id')
@@ -208,9 +209,29 @@ class MissionController extends BaseController
                     ])->toArray();
                 if(!empty($data)){
                     $data = $data[0];
+                    if($this->getMissionType($mid) == 2){
+                        if($this->getCatchNum() >= $data['mission_need_num']){
+                            $data['mission_status'] = 1;
+                            $this->addRedisMission($data['mission_id'],1);
+                        }else{
+                            $this->addRedisMission($data['mission_id']);
+                        }
+                    }elseif($this->getMissionType($mid) == 5){
+                        if($this->getCatchedNum() >= $data['mission_need_num']){
+                            $data['mission_status'] = 1;
+                            $this->addRedisMission($data['mission_id'],1);
+                        }else{
+                            $this->addRedisMission($data['mission_id']);
+                        }
+                    }elseif ($this->getMissionType($mid) == 1){
+                        if($this->getChargeNum() >= $data['mission_need_num']){
+                            $data['mission_status'] = 1;
+                            $this->addRedisMission($data['mission_id'],1);
+                        }else{
+                            $this->addRedisMission($data['mission_id']);
+                        }
+                    }
                     $data['mission_icon'] = env('APP_URL').'/uploads/'.$data['mission_icon'];
-
-                    $this->addRedisMission($data['mission_id']);
                 }
                 return ['code' => 1,'msg' => '任务完成','point' => $res->award_point,'data' => $data];
             }
@@ -238,11 +259,11 @@ class MissionController extends BaseController
     }
 
     // 向任务列表添加任务
-    public function addRedisMission($mid)
+    public function addRedisMission($mid,$status=0)
     {
         Redis::sadd($this->getUserid().'_mission',serialize([
             'id'     => $mid,
-            'status' => '0'
+            'status' => $status
         ]));
     }
 
