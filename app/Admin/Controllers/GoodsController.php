@@ -114,6 +114,7 @@ class GoodsController extends Controller
             $form->number('add_num','向娃娃机添加的个数：')->default(1)->rules('min:1|max:6|numeric');
             $form->number('width','娃娃宽度：')->rules('required|min:1');
             $form->number('height','娃娃高度：')->rules('required|min:1');
+            $form->number('xdheight','娃娃相对高度')->rules('required')->help('抓取位置与娃娃高度的相对位置');
             $form->image('pic','展示图片：')->rules('required');
             $form->image('sc_pic','素材图片：')->rules('required');
             $form->display('created_at', '添加时间：');
