@@ -122,8 +122,8 @@ class CategoryController extends Controller
             $form->select('tag_id','标签：')->options(function(){
                 return Tags::all()->pluck('tag_name','id')->toArray();
             });
-            $form->text('doll_talk','对话：')->help('如有多句，请用英文 , 隔开');
-            $form->multipleImage('small_expression','小表情')->removable()->help('如有多个，请在浏览时选择多张图片');
+//            $form->text('doll_talk','对话：')->help('如有多句，请用英文 , 隔开');
+//            $form->multipleImage('small_expression','小表情')->removable()->help('如有多个，请在浏览时选择多张图片');
 //            $form->multipleSelect('tag_id','标签：')->options(Tags::all()->pluck('tag_name','id'))->rules('required');
             $form->number('win_rate','概率：')->rules('required');
             $form->image('pic','娃娃机图片：')->rules('required');
