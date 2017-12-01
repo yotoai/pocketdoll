@@ -150,7 +150,7 @@ class LoginController extends BaseController
             return ['code' => 1,'token' => $token,'user' => $user];
         }else{
             try{
-                DB::transaction(function () use ($request){
+//                DB::transaction(function () use ($request){
                     $data = Player::create([
                         'sdk_id'    => $request->sdkId,
                         'user_id'   => $request->userId,
@@ -166,7 +166,7 @@ class LoginController extends BaseController
 //                        'invitered_id' => $request->userId,
 //                        'level' => $this->getParent($request->parent_id)
 //                    ]);
-                },5);
+//                },5);
 
 
                 $token = JWTAuth::fromUser(Player::where('user_id',$request->userId)->first());
