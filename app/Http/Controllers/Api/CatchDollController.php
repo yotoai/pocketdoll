@@ -37,7 +37,7 @@ class CatchDollController extends BaseController
                     'sc_pic',
                     'width',
                     'height',
-                    'xdheight'
+//                    'xdheight'
                 ]);
             if(empty($data)) return ['code' => -1,'msg' => '该娃娃机不存在...'];
             $list = [];
