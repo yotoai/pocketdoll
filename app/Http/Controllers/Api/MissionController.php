@@ -192,7 +192,7 @@ class MissionController extends BaseController
                 });
                 $this->setMissionRedis($mid,2);
 
-                $this->setPointRedis($res->award_point);
+//                $this->setPointRedis($res->award_point);
                 $this->addPoint($res->award_point);
                 $data = Mission::join('awards','mission.award_id','=', 'awards.id')
                     ->whereNotIn('type',[3,4])

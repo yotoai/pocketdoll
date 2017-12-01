@@ -165,6 +165,7 @@ class CatchDollController extends BaseController
             }
             $this->setCatchedNum(1);
             $this->finishMission('catched');
+            $this->finishMission('catch');
             return ['code' => 1,'data' => 'get','lucky' => 'clear'];
         }else{
             try{
