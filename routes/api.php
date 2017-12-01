@@ -69,6 +69,8 @@ $api->version('v1',function($api){
         $api->get('selectdm/{id}','CatchDollController@selectDollMachine'); // 选择了一个娃娃机
         $api->get('dollmachine','CatchDollController@getRandDollMachine');
         $api->post('catchdoll/{id}/{gid}','CatchDollController@catchDoll');
+        // 返回娃娃互动信息
+        $api->get('getdollinteraction','CatchDollController@getDollInteraction');
         // 用户背包
         $api->get('rucksack','UserRucksackController@rucksack');
         $api->post('withdrawdoll','UserRucksackController@withdrawDoll');

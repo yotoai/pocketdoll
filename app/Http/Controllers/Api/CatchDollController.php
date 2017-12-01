@@ -8,6 +8,7 @@ use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Mission;
 use App\Model\Player;
+use App\Model\TalkExpression;
 use App\Model\UserRucksack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -249,7 +250,7 @@ class CatchDollController extends BaseController
         return ['code' => 1,'msg' =>'查询成功','data' => $data];
     }
 
-    // 返佣
+    // 返佣 （作废）
     protected function setRebate($data,$gcoin,$rate=1)
     {
         if(!empty($data->parent_id)){
@@ -274,6 +275,40 @@ class CatchDollController extends BaseController
 //            }
         }else{
             return;
+        }
+    }
+
+
+    // 返回 娃娃互动信息
+    public function getDollInteraction(Request $request)
+    {
+        $this->validate($request,[
+            'machine_id' => 'required|integer'
+        ]);
+        if(in_array($request->type,[1,2,3])){
+            $te = TalkExpression::where('dollmachine_id',$request->machine_id)
+                ->where('type',$request->type)
+                ->first();
+            $talk = explode(',',$te->talk_doll);
+
+            $se = $te->small_expression;
+            foreach ($se as $k=>$v){
+                $se[$k] = env('APP_URL') . '/uploads/' . $v;
+            }
+            $ts = array_merge($se,$talk);
+            return ['code' => 1,'msg' => '查询成功','data' => $ts[array_rand($ts)]];
+        }else {
+            $te = TalkExpression::where('dollmachine_id',$request->machine_id)
+                ->where('type',3)
+                ->first();
+            $talk = explode(',',$te->talk_doll);
+
+            $se = $te->small_expression;
+            foreach ($se as $k=>$v){
+                $se[$k] = env('APP_URL') . '/uploads/' . $v;
+            }
+            $ts = array_merge($se,$talk);
+            return ['code' => 1,'msg' => '查询成功','data' => $ts[array_rand($ts)]];
         }
     }
 }

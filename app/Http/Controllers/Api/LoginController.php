@@ -90,7 +90,7 @@ class LoginController extends BaseController
     }
 
     //添加用户
-    protected function addUser(Request $request)
+    protected function addUser($request)
     {
         if( empty($request) ) return false;
         $data = Player::where('user_id',$request->userId)->first();
