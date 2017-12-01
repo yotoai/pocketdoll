@@ -51,7 +51,7 @@ class CatchDollController extends BaseController
                         'sc_pic' => env('APP_URL').'/uploads/'.$d->sc_pic,
                         'width' => $d->width,
                         'height' => $d->height,
-                        'xdheight' => $d->xdheight
+//                        'xdheight' => $d->xdheight
                     ];
                 }
             }
