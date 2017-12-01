@@ -169,7 +169,7 @@ class LoginController extends BaseController
                 },5);
 
 
-                $token = JWTAuth::fromUser(Player::where($request->userId)->first());
+                $token = JWTAuth::fromUser(Player::where('user_id',$request->userId)->first());
                 $user = [
                     'username' => $data->user_name,
                     'icon'     => $data->user_img,
