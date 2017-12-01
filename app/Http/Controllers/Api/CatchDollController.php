@@ -62,6 +62,10 @@ class CatchDollController extends BaseController
         return ['code' => 1,'msg' => '查询成功','coin' => $coin,'lucky' => $lucky,'data' => $list];
     }
 
+
+
+
+
     /**
      * 随机返回娃娃机
      *  notice ：要开redis
