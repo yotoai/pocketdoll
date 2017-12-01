@@ -26,8 +26,12 @@ Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
 });
 
 Route::get('notify_index',function (){
-    $uid = $_GET['user_id'];
-    $sign = strtolower(md5(2098 . $uid . 'shareLogin' . env('GAMEKEY')));
-    $url = 'http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&userId='.$uid.'&loginType=shareLogin&sign='.$sign;
+    $uid = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+    if(empty($uid)){
+        $url = 'http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&sign=e4d2be517a26de831f024c5bdbd307ab&loginType=mplogin';
+    }else{
+        $sign = strtolower(md5(2098 . $uid . 'shareLogin' . env('GAMEKEY')));
+        $url = 'http://114.215.106.114:8081/sdk_new/tdpay/gameLogin.do?sdkId=2098&userId='.$uid.'&loginType=shareLogin&sign='.$sign;
+    }
     return redirect($url);
 });
