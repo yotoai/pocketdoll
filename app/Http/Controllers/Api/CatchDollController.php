@@ -163,8 +163,8 @@ class CatchDollController extends BaseController
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
-            $this->finishMission('catched');
             $this->setCatchedNum(1);
+            $this->finishMission('catched');
             return ['code' => 1,'data' => 'get','lucky' => 'clear'];
         }else{
             try{
