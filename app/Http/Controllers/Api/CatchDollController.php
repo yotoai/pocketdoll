@@ -118,6 +118,7 @@ class CatchDollController extends BaseController
         $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
         $ucoin = Player::where('user_id',$uid)->value('coin');
         if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
+        $this->setCatchNum(1);
 
 //        $udata = Player::find($uid);
 //        $this->setRebate($udata,$gcoin); // 返佣
@@ -125,7 +126,6 @@ class CatchDollController extends BaseController
         $lucky = $this->getLuckyRedis($id);
 
         if($request->iscatch == 'false' || intval($gid) == 0){
-            $this->setCatchNum(1);
             $this->finishMission('catch');
             Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
             if($lucky >= 100){
@@ -138,7 +138,6 @@ class CatchDollController extends BaseController
         }
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
         $arr = ['get' => $rate,'lost'=>1000];
-        $this->setCatchNum(1);
         if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == 'true' && $rate > 0)
         {
             try{

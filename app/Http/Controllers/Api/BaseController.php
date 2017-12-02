@@ -152,16 +152,16 @@ class BaseController extends Controller
             $catchnum = $this->getCatchedNum();
         }
         if($num == 0){
-            Redis::set($this->getOpenid().'_catch', $num);
+            Redis::set($this->getUserid().'_catch', $num);
         }else{
-            Redis::set($this->getOpenid().'_catch',$catchnum + $num);
+            Redis::set($this->getUserid().'_catch',$catchnum + $num);
         }
     }
 
     // 获取用户的抓取次数
     public function getCatchNum()
     {
-        return Redis::get($this->getOpenid().'_catch');
+        return Redis::get($this->getUserid().'_catch');
     }
 
     // 设置 抓到娃娃次数
@@ -173,9 +173,9 @@ class BaseController extends Controller
             $catchnum = $this->getCatchedNum();
         }
         if($num == 0){
-            Redis::set($this->getOpenid().'_catched',$num);
+            Redis::set($this->getUserid().'_catched',$num);
         }else{
-            Redis::set($this->getOpenid() .'_catched',$catchnum + $num);
+            Redis::set($this->getUserid() .'_catched',$catchnum + $num);
         }
     }
 
