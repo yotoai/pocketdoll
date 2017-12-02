@@ -146,7 +146,7 @@ class BaseController extends Controller
     // 设置抓取次数
     public function setCatchNum($num=0)
     {
-        if(!($this->getCatchNum() >= 0)){
+        if(!(intval($this->getCatchNum()) >= 0)){
             $catchnum = 0;
         }else{
             $catchnum = $this->getCatchedNum();
@@ -167,7 +167,7 @@ class BaseController extends Controller
     // 设置 抓到娃娃次数
     public function setCatchedNum($num=0)
     {
-        if(!($this->getCatchedNum() >= 0)){
+        if(!(intval($this->getCatchedNum()) >= 0)){
             $catchnum = 0;
         }else{
             $catchnum = $this->getCatchedNum();
