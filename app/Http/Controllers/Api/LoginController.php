@@ -208,7 +208,8 @@ class LoginController extends BaseController
                 'pic',
                 'sc_pic',
                 'width',
-                'height'
+                'height',
+                'xdheight'
             ]);
             if(empty($data->toArray())) return ['code' => -1,'msg' => '该娃娃机没有放入娃娃...'];
             $list = [];
@@ -222,6 +223,7 @@ class LoginController extends BaseController
                         'sc_pic' => env('APP_URL').'/uploads/'.$d->sc_pic,
                         'width' => $d->width,
                         'height' => $d->height,
+                        'xdheight' => $d->xdheight
                     ];
                 }
             }

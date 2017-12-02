@@ -85,7 +85,9 @@ class UserShowController extends Controller
             });
             $grid->pic('图秀')->image('/uploads/',36,36);
 
-            $grid->contents('内容');
+            $grid->contents('内容')->display(function($text) {
+                return str_limit($text, 60, '...');
+            });
 
             $grid->status('审核状态')->display(function($status){
                 return $status == 1 ?  "<span class='label label-success'>审核通过</span>" : "<span class='label label-default'>未审核</span>";
@@ -112,14 +114,14 @@ class UserShowController extends Controller
     {
         return Admin::form(UserShow::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->text('user_id','玩家名称：');
-            $form->image('pic','图秀');
-            $form->textarea('contents','内容');
+            $form->image('pic','图秀：');
+            $form->textarea('contents','内容：');
 
-            $form->display('created_at', '添加时间');
-            $form->display('updated_at', '修改时间');
+            $form->display('created_at', '添加时间：');
+            $form->display('updated_at', '修改时间：');
         });
     }
 

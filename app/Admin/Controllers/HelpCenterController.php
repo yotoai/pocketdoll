@@ -93,13 +93,13 @@ class HelpCenterController extends Controller
     {
         return Admin::form(HelpCenter::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->text('problem','问题：');
             $form->text('answer','答案：');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('created_at', '添加时间：');
+            $form->display('updated_at', '创建时间：');
         });
     }
 }

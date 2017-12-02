@@ -104,13 +104,13 @@ class TalkExpressionController extends Controller
     {
         return Admin::form(TalkExpression::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->select('dollmachine_id','娃娃机：')->options(function (){
                 return GoodsCategory::all(['id','cate_name'])->pluck('cate_name','id')->toArray();
             });
             $form->text('talk_doll','娃娃对话：')->help('如有多句，请用英文 , 隔开');
-            $form->multipleImage('small_expression','小表情')->removable()->help('如有多个，请在浏览时选择多张图片');
+            $form->multipleImage('small_expression','小表情：')->removable()->help('如有多个，请在浏览时选择多张图片');
             $form->select('type','触发情况：')->options([1=>'抓取时触发',2=>'掉落触发',3=>'静止时随机触发']);
             $form->display('created_at', '创建时间：');
             $form->display('updated_at', '修改时间：');

@@ -81,6 +81,7 @@ class PlayerController extends Controller
                 return '<img width="36" src="'.$icon.'">';
             });
             $grid->coin('持有金币');
+            $grid->point('所持积分');
             $grid->login_time('最近登录时间');
 
             $grid->created_at('创建时间');
@@ -100,11 +101,12 @@ class PlayerController extends Controller
     {
         return Admin::form(Player::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->text('user_name','昵称：')->rules('required|max:255');
             $form->number('coin','金币：');
-            $form->image('user_img','头像')->rules('required');
+            $form->number('point','积分：');
+            $form->image('user_img','头像：')->rules('required');
 
             $form->display('created_at', '创建时间：');
             $form->display('updated_at', '更新时间：');

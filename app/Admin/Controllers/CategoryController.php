@@ -114,7 +114,7 @@ class CategoryController extends Controller
     {
         return Admin::form(GoodsCategory::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->text('cate_name','娃娃机名称：')->rules('required');
             $form->number('spec','规格：')->rules('required');
@@ -128,8 +128,8 @@ class CategoryController extends Controller
             $form->number('win_rate','概率：')->rules('required');
             $form->image('pic','娃娃机图片：')->rules('required');
 
-            $form->display('created_at', '添加时间');
-            $form->display('updated_at', '修改时间');
+            $form->display('created_at', '添加时间：');
+            $form->display('updated_at', '修改时间：');
 
             $form->saving(function (Form $form){
 //                dd($form);

@@ -41,8 +41,8 @@ class NoticeController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('编辑');
+            $content->description('编辑公告');
 
             $content->body($this->form()->edit($id));
         });
@@ -94,15 +94,15 @@ class NoticeController extends Controller
     {
         return Admin::form(Notice::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->text('title','公告名称：')->rules('required');
             $form->textarea('contents','公告内容：')->rules('required');
-            $form->image('pic','图片');
+            $form->image('pic','图片：');
 
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('created_at', '添加时间：');
+            $form->display('updated_at', '修改时间：');
         });
     }
 }

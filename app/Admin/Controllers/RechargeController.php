@@ -95,16 +95,16 @@ class RechargeController extends Controller
     {
         return Admin::form(RechargeAmount::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->text('title','充值名称：')->rules('required|max:255');
-            $form->number('coin_num','充值数量：')->rules('required|integer');
-            $form->number('award_num','奖励数量：')->rules('integer');
+            $form->number('coin_num','充值金币数量：')->rules('required|integer');
+            $form->number('award_num','奖励金币数量：')->rules('integer');
             $form->text('price','价格：')->rules('required|numeric');
             $form->image('pic','图标：');
 
-            $form->display('created_at', '创建时间');
-            $form->display('updated_at', '修改时间');
+            $form->display('created_at', '创建时间：');
+            $form->display('updated_at', '修改时间：');
         });
     }
 }
