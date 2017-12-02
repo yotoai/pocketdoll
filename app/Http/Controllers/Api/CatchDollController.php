@@ -136,9 +136,9 @@ class CatchDollController extends BaseController
             }
             return ['code' => 1,'data' => 'lost','lucky' => $add_lucky];
         }
-        $this->setCatchNum(1);
         $rate = GoodsCategory::where('id',intval($id))->value('win_rate');
         $arr = ['get' => $rate,'lost'=>1000];
+        $this->setCatchNum(1);
         if((($res = $this->getRand($arr)) == 'get' || $lucky == 100) && $request->iscatch == 'true' && $rate > 0)
         {
             try{
@@ -242,7 +242,7 @@ class CatchDollController extends BaseController
     public function getShare($id)
     {
         $goods = Goods::find($id);
-        $user = Player::orderBy(DB::raw('RAND()'))->take(2)->get(['user_name'])->pluck('user_name')->toArray();
+        $user = Player::where('user_id','<>',$this->getUserid())->orderBy(DB::raw('RAND()'))->take(2)->get(['user_name'])->pluck('user_name')->toArray();
         $catch = $this->getCatchNum();
         $data = [
             'goods_name' => $goods->name,
