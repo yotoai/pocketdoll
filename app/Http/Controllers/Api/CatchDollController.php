@@ -114,11 +114,15 @@ class CatchDollController extends BaseController
         $this->validate($request,[
             'iscatch' => 'required'
         ]);
-        $uid = $this->getUserid();
-        $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
-        $ucoin = Player::where('user_id',$uid)->value('coin');
-        if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
-        $this->setCatchNum(1);
+        try{
+            $uid = $this->getUserid();
+            $gcoin = GoodsCategory::where('id',intval($id))->value('coin');
+            $ucoin = Player::where('user_id',$uid)->value('coin');
+            if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
+            $this->setCatchNum(1);
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
 
 //        $udata = Player::find($uid);
 //        $this->setRebate($udata,$gcoin); // 返佣
@@ -162,13 +166,13 @@ class CatchDollController extends BaseController
                     Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
                 });
                 $this->setLuckyRedis($id,0);
+                $this->setCatchedNum(1);
+                $this->finishMission('catched');
+                $this->finishMission('catch');
+                return ['code' => 1,'data' => 'get','lucky' => 'clear'];
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
-            $this->setCatchedNum(1);
-            $this->finishMission('catched');
-            $this->finishMission('catch');
-            return ['code' => 1,'data' => 'get','lucky' => 'clear'];
         }else{
             try{
                 $this->finishMission('catch');
