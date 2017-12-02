@@ -149,7 +149,7 @@ class BaseController extends Controller
         if(!(intval($this->getCatchNum()) >= 0)){
             $catchnum = 0;
         }else{
-            $catchnum = $this->getCatchedNum();
+            $catchnum = $this->getCatchNum();
         }
         if($num == 0){
             Redis::set($this->getUserid().'_catch', $num);
