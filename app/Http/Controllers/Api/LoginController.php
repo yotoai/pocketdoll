@@ -109,40 +109,32 @@ class LoginController extends BaseController
                     'login_day'  => $day,
                     'login_time' => date('Y-m-d H:i:s',time())
                 ]);
-                $token = JWTAuth::fromUser(Player::where('user_id',$request->userId)->first());
+                $User = Player::where('user_id',$request->userId)->first();
+                $token = JWTAuth::fromUser($User);
                 $user = [
                     'username' => $data->user_name,
                     'icon'     => $data->user_img,
                     'coin'     => $data->coin
                 ];
-                $datas = $this->getLoginMission();
-                $list = [];
-                foreach ($datas as $ds){
-                    $list[] = unserialize($ds);
-                }
-                sort($list);
-                $c = count($list);
-//                $mc = Mission::where('type',4)->count();
-//                if($c < $mc){
-//                    $day = Mission::where('type',4)
-//                        ->orderBy('id','asc')->get(['id','need_num','status'])->toArray();
-//                    foreach ($day as $da){
-//                        if($da['need_num'] == 1){
-//                            $da['status'] = '2';
-//                        }
-//                        Redis::sadd($request->userId.'_login_missions',serialize($da) );
-//                    }
-//                }
-                Redis::del($request->userId.'_login_missions');
-                for ($i = $c - 1;$i > 0;$i--){
-                    for($j = 0;$j <  $i;$j++){
-                        if($list[$j]['status'] == '2' && $list[$j+1]['status'] != '2' && $day >= $list[$j+1]['need_num']){
-                            $list[$j+1]['status'] ='1';
+                if($User->new_user_mission == '-1'){
+                    $datas = $this->getLoginMission();
+                    $list = [];
+                    foreach ($datas as $ds){
+                        $list[] = unserialize($ds);
+                    }
+                    sort($list);
+                    $c = count($list);
+                    Redis::del($request->userId.'_login_missions');
+                    for ($i = $c - 1;$i > 0;$i--){
+                        for($j = 0;$j <  $i;$j++){
+                            if($list[$j]['status'] == '2' && $list[$j+1]['status'] != '2' && $day >= $list[$j+1]['need_num']){
+                                $list[$j+1]['status'] ='1';
+                            }
                         }
                     }
-                }
-                foreach ($list as $da){
-                    Redis::sadd($request->userId.'_login_missions',serialize($da) );
+                    foreach ($list as $da){
+                        Redis::sadd($request->userId.'_login_missions',serialize($da) );
+                    }
                 }
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];

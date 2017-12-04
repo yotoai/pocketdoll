@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Model\Player;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
 class clearRedis extends Command
@@ -40,18 +41,23 @@ class clearRedis extends Command
     public function handle()
     {
         //
-        $data = Player::all();
-        foreach ($data as $v){
-            Redis::del($v->user_id . '_catch');
-            Redis::del($v->user_id . '_catched');
-            Redis::del($v->user_id . '_point');
-            Redis::del($v->user_id . '_charge');
-            Redis::del($v->user_id . '_mission');
-            Redis::del($v->user_id . '_shareWithWx');
-            $keys = Redis::keys($v->user_id . '_*_mission');
-            foreach ($keys as $s){
-                Redis::del($s);
+        try{
+            $data = Player::all();
+            foreach ($data as $v){
+                Redis::del($v->user_id . '_catch');
+                Redis::del($v->user_id . '_catched');
+                Redis::del($v->user_id . '_point');
+                Redis::del($v->user_id . '_charge');
+                Redis::del($v->user_id . '_mission');
+                Redis::del($v->user_id . '_shareWithWx');
+                $keys = Redis::keys($v->user_id . '_*_mission');
+                foreach ($keys as $s){
+                    Redis::del($s);
+                }
             }
+        }catch (\Exception $e){
+            Log::info('error place：clearRedis，error msg：'.$e->getMessage());
         }
+
     }
 }
