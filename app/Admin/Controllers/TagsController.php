@@ -94,13 +94,13 @@ class TagsController extends Controller
         return Admin::form(Tags::class, function (Form $form) {
 
 
-            $form->display('id', 'ID');
+            $form->display('id', 'ID：');
 
             $form->text('tag_name','标签名称：')->rules('required');
             $form->image('tag_icon','图片：')->rules('required');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('created_at', '创建时间：');
+            $form->display('updated_at', '修改时间：');
         });
     }
 }
