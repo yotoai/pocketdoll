@@ -243,7 +243,7 @@ class MissionController extends BaseController
     // 初始化 每日任务
     public function restMisison()
     {
-        if(Player::where('user_id',$this->getUserid())->value('new_user_mission') == '1'){
+        if(Player::where('user_id',$this->getUserid())->value('new_user_mission') != '1'){
             $data = Mission::where('parent_id',0)->where('type','<>',4)
                 ->orderBy('mission.id')->get(['id','status'])->toArray();
             foreach ($data as $da){

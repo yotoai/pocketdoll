@@ -21,7 +21,7 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1',function($api){
     // 测试 代码放置处
     $api->get('test',function (){
-       // return md5(1);
+       return strtolower(md5('UserGet' . env('GAMEKEY')));
     });
     $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 登录（旧）
