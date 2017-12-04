@@ -22,12 +22,14 @@ class DataNotifyController extends Controller
             return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
         }
         try{
-            $data = Player::whereBetween('created_at',$this->yesterday())
-                ->get([
+            $data = Player::
+//            whereBetween('created_at',$this->yesterday())
+                get([
                     'user_id',
                     'user_name',
                     'user_img',
                     'coin',
+                    'point',
                     'login_time',
                     'created_at as create_time'
                 ])->toArray();
