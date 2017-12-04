@@ -311,7 +311,12 @@ class CatchDollController extends BaseController
             }
 
             $ts = array_merge($se,$talk);
-            return ['code' => 1,'msg' => '查询成功','data' => $ts[array_rand($ts)]];
+            if(empty($ts)){
+                $data = [];
+            }else{
+                $data = $ts[array_rand($ts)];
+            }
+            return ['code' => 1,'msg' => '查询成功','data' => $data];
         }else {
             $te = TalkExpression::where('dollmachine_id',$request->machine_id)
                 ->where('type',3)
