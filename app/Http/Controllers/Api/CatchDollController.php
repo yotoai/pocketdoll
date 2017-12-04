@@ -295,12 +295,21 @@ class CatchDollController extends BaseController
             $te = TalkExpression::where('dollmachine_id',$request->machine_id)
                 ->where('type',$request->type)
                 ->first();
-            $talk = explode(',',$te->talk_doll);
-
-            $se = $te->small_expression;
-            foreach ($se as $k=>$v){
-                $se[$k] = env('APP_URL') . '/uploads/' . $v;
+            if(!empty($te->talk_doll)){
+                $talk = explode(',',$te->talk_doll);
+            }else{
+                $talk = [];
             }
+
+            if(!empty($te->small_expression)){
+                $se = $te->small_expression;
+                foreach ($se as $k=>$v){
+                    $se[$k] = env('APP_URL') . '/uploads/' . $v;
+                }
+            }else {
+                $se = [];
+            }
+
             $ts = array_merge($se,$talk);
             return ['code' => 1,'msg' => '查询成功','data' => $ts[array_rand($ts)]];
         }else {
