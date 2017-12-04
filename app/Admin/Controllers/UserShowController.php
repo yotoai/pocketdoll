@@ -129,8 +129,12 @@ class UserShowController extends Controller
     public function updateStatus()
     {
         $res = UserShow::where('id', request('id'))->update(['status' => request('action')]);
+        if($res){
+            $usershow = UserShow::find(request('id'));
+            $user = Player::where('user_id',$usershow->user_id)->first();
+            $user->coin = $user->coin + 100;
+            $user->save();
+        }
         return $res ? ['status' => true,'message' => '已通过...'] : ['status' => false,'message' => '审核通过失败！'];
     }
-
-
 }

@@ -81,7 +81,7 @@ return [
     'string' => ':attribute必须为字符串',
     'timezone' => ':attribute must be a valid zone.',
     'unique' => ':attribute已经被使用',
-    'uploaded' => ':attribute failed to upload.',
+    'uploaded' => '该:attribute过大',
     'url' => ':attribute format is invalid.',
     'sms_code' => "手机验证码不正确",
     'old_sms_code' => "原手机验证码不正确",
