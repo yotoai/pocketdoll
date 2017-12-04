@@ -243,19 +243,19 @@ class MissionController extends BaseController
     // 初始化 每日任务
     public function restMisison()
     {
-        if(Player::where('user_id',$this->getUserid())->value('new_user_mission') != '1'){
-            $data = Mission::where('parent_id',0)->where('type','<>',4)
-                ->orderBy('mission.id')->get(['id','status'])->toArray();
-            foreach ($data as $da){
-                Redis::sadd($this->getUserid().'_mission',serialize($da) );
-            }
-        }else{
+//        if(Player::where('user_id',$this->getUserid())->value('new_user_mission') != '1'){
+//            $data = Mission::where('parent_id',0)->where('type','<>',4)
+//                ->orderBy('mission.id')->get(['id','status'])->toArray();
+//            foreach ($data as $da){
+//                Redis::sadd($this->getUserid().'_mission',serialize($da) );
+//            }
+//        }else{
             $data = Mission::where('parent_id',0)
                 ->orderBy('mission.id')->get(['id','status'])->toArray();
             foreach ($data as $da){
                 Redis::sadd($this->getUserid().'_mission',serialize($da) );
             }
-        }
+//        }
     }
 
     // 向任务列表添加任务
