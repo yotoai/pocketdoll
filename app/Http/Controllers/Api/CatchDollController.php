@@ -297,8 +297,9 @@ class CatchDollController extends BaseController
                 ->first();
             if(!empty($te->talk_doll)){
                 $talk = explode(',',$te->talk_doll);
+                $talk = $talk[array_rand($talk)];
             }else{
-                $talk = [];
+                $talk = '';
             }
 
             if(!empty($te->small_expression)){
@@ -306,29 +307,33 @@ class CatchDollController extends BaseController
                 foreach ($se as $k=>$v){
                     $se[$k] = env('APP_URL') . '/uploads/' . $v;
                 }
+                $expression = $se[array_rand($se)];
             }else {
-                $se = [];
+                $expression = '';
             }
-
-            $ts = array_merge($se,$talk);
-            if(empty($ts)){
-                $data = [];
-            }else{
-                $data = $ts[array_rand($ts)];
-            }
-            return ['code' => 1,'msg' => '查询成功','data' => $data];
+            return ['code' => 1,'msg' => '查询成功','talk' => $talk,'expression' => $expression];
         }else {
             $te = TalkExpression::where('dollmachine_id',$request->machine_id)
                 ->where('type',3)
                 ->first();
-            $talk = explode(',',$te->talk_doll);
 
-            $se = $te->small_expression;
-            foreach ($se as $k=>$v){
-                $se[$k] = env('APP_URL') . '/uploads/' . $v;
+            if(!empty($te->talk_doll)){
+                $talk = explode(',',$te->talk_doll);
+                $talk = $talk[array_rand($talk)];
+            }else{
+                $talk = '';
             }
-            $ts = array_merge($se,$talk);
-            return ['code' => 1,'msg' => '查询成功','data' => $ts[array_rand($ts)]];
+
+            if(!empty($te->small_expression)){
+                $se = $te->small_expression;
+                foreach ($se as $k=>$v){
+                    $se[$k] = env('APP_URL') . '/uploads/' . $v;
+                }
+                $expression = $se[array_rand($se)];
+            }else {
+                $expression = '';
+            }
+            return ['code' => 1,'msg' => '查询成功','talk' => $talk,'expression' => $expression];
         }
     }
 }
