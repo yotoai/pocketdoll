@@ -2,6 +2,8 @@
 
 namespace App\Admin\Controllers;
 
+use App\Model\Goods;
+use App\Model\GoodsCategory;
 use App\Model\Tags;
 
 use Encore\Admin\Form;
@@ -12,6 +14,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use Encore\Admin\Layout\Row;
+use Illuminate\Support\Facades\Redis;
 
 class TagsController extends Controller
 {
@@ -101,6 +104,30 @@ class TagsController extends Controller
 
             $form->display('created_at', '创建时间：');
             $form->display('updated_at', '修改时间：');
+
+            $form->saved(function (Form $form){
+                $key = 'doll_machine';
+                Redis::del('doll_machine');
+                $cate_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
+                $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                    ->whereIn('goods_category.id',$cate_id)
+                    ->where('goods_category.status','<>','-1')
+                    ->get([
+                        'goods_category.id as id',
+                        'goods_category.cate_name as name',
+                        'goods_category.spec as spec',
+                        'goods_category.coin as coin',
+                        'goods_category.pic as pic',
+                        'goods_tags_cate.tag_icon as tag_icon'
+                    ]);
+                foreach ($data as $d){
+                    $d->pic = env('APP_URL').'/uploads/'.$d->pic;
+                    $d->tag_icon = env('APP_URL').'/uploads/'.$d->tag_icon;
+                }
+                foreach ($data as $item) {
+                    Redis::sadd($key, $item);
+                }
+            });
         });
     }
 }
