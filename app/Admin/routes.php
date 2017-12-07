@@ -34,6 +34,8 @@ Route::group([
 
     // 用户管理
     $router->resource('player',PlayerController::class,['as' =>'admin']);
+    // 金币管理
+    $router->resource('coinlog',CoinLogController::class,['as' => 'admin']);
     // 帮助中心
     $router->resource('helpcenter',HelpCenterController::class,['as' => 'admin']);
     // 分享设置

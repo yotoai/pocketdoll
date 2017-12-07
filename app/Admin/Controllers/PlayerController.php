@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Model\CoinLog;
 use App\Model\Player;
 
 use Encore\Admin\Form;
@@ -10,6 +11,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Illuminate\Support\Facades\DB;
 
 class PlayerController extends Controller
 {
@@ -99,15 +101,28 @@ class PlayerController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Player::class, function (Form $form) {
+        return Admin::form(Player::class, function (Form $form){
 
             $form->display('id', 'ID：');
 
+            $form->hidden('user_id');
             $form->text('user_name','昵称：')->rules('required|max:255');
             $form->number('coin','金币：');
             $form->number('point','积分：');
             $form->image('user_img','头像：')->rules('required');
 
+            $form->saving(function (Form $form){
+                $curr = DB::table('admin_users')->where('id',Admin::user()->id)->first();
+                $player = Player::where('user_id',$form->user_id)->first();
+                CoinLog::create([
+                    'user_id' => $player->id,
+                    'user_name' => $player->user_name,
+                    'sender_id' => $curr->id,
+                    'sender' => $curr->name,
+                    'send_contents' => $curr->name . '赠送了' . ($form->coin - $player->coin) .'个金币给' .$player->user_name,
+                    'status' => 1
+                ]);
+            });
             $form->display('created_at', '创建时间：');
             $form->display('updated_at', '更新时间：');
         });
