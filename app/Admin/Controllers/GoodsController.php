@@ -87,7 +87,11 @@ class GoodsController extends Controller
             $grid->name('商品名称');
             $grid->pic('图片')->image('/uploads/',36,36);
             $grid->goods_cate_id('所属娃娃机')->display(function($category){
-                return GoodsCategory::find($category)->cate_name;
+                $cate = GoodsCategory::find($category);
+                if(empty($cate)){
+                    return '未添加娃娃机';
+                }
+                return $cate->cate_name;
             });
             $grid->created_at('创建时间');
             $grid->updated_at('更新时间');
