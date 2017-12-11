@@ -110,7 +110,7 @@ class MissionController extends Controller
                 return Awards::all()->pluck('contents','id')->toArray();
             });
             $form->number('need_num','所需完成次数/天数：')->rules('required|integer');
-            $form->image('icon','任务图标：');
+            $form->image('icon','任务图标：')->rules('required');
 
 
             $form->display('created_at', '创建时间：');

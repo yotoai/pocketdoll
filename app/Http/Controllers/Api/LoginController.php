@@ -31,6 +31,7 @@ class LoginController extends BaseController
 //        }
         $this->setUserId($request->userId);
         $res = $this->addUser($request);
+//        return $res;
         if(!$res){
             return ['code' => -1,'msg' => '获取数据异常...'];
         }
@@ -122,17 +123,31 @@ class LoginController extends BaseController
                     foreach ($datas as $ds){
                         $list[] = unserialize($ds);
                     }
+//                    return $list;
                     sort($list);
-                    $c = count($list);
-                    Redis::del($request->userId.'_login_missions');
-                    for ($i = $c - 1;$i > 0;$i--){
-                        for($j = 0;$j <  $i;$j++){
-                            if($list[$j]['status'] == '2' && $list[$j+1]['status'] != '2' && $day >= $list[$j+1]['need_num']){
-                                $list[$j+1]['status'] ='1';
+                    $dayss = Mission::where('type',4)
+                        ->orderBy('id','asc')
+                        ->get(['id','need_num','status'])
+                        ->toArray();
+//                    return $day;
+                    foreach ($dayss as $key=>$val){
+                        foreach ($list as $k=>$v){
+                            if($val['need_num'] == $v['need_num']){
+                                $dayss[$key]['status'] = $v['status'];
                             }
                         }
                     }
-                    foreach ($list as $da){
+
+                    $c = count($dayss);
+                    Redis::del($request->userId.'_login_missions');
+                    for ($i = $c - 1;$i > 0;$i--){
+                        for($j = 0;$j <  $i;$j++){
+                            if($dayss[$j]['status'] == '2' && $dayss[$j+1]['status'] != '2' && $day >= $dayss[$j+1]['need_num']){
+                                $dayss[$j+1]['status'] ='1';
+                            }
+                        }
+                    }
+                    foreach ($dayss as $da){
                         Redis::sadd($request->userId.'_login_missions',serialize($da) );
                     }
                 }
