@@ -128,7 +128,7 @@ class DataNotifyController extends Controller
             'coin' => 'required',
             'sign' => 'required'
         ]);
-        if(strtolower(md5($request->userId) . $request->coin . env('GAMEKEY')) != $request->sign){
+        if(strtolower(md5($request->userId . $request->coin . env('GAMEKEY'))) != $request->sign){
             return ['code' => -1,'status' => 'fail','errorMsg' => '验证失败'];
         }
         try{

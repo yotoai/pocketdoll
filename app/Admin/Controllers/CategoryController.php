@@ -84,7 +84,12 @@ class CategoryController extends Controller
             $grid->spec('规格/cm');
             $grid->coin('金币');
             $grid->tag_id('标签')->display(function ($tag_id){
-                return Tags::find($tag_id)->tag_name;
+                $data = Tags::find($tag_id);
+                if(empty($data->tag_name)){
+                    return '没有选择标签';
+                }else{
+                    return $data->tag_name;
+                }
             });
             $grid->win_rate('概率');
 

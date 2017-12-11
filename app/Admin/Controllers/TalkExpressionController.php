@@ -78,7 +78,7 @@ class TalkExpressionController extends Controller
 
             $grid->dollmachine_id('娃娃机')->display(function ($dmid){
                 $data = GoodsCategory::find($dmid);
-                if(empty($data)){
+                if(empty($data->cate_num)){
                     return '没有选择娃娃机';
                 }else{
                     return $data->cate_name;
