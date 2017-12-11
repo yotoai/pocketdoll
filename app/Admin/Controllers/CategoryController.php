@@ -126,7 +126,7 @@ class CategoryController extends Controller
 //            $form->multipleImage('small_expression','小表情')->removable()->help('如有多个，请在浏览时选择多张图片');
 //            $form->multipleSelect('tag_id','标签：')->options(Tags::all()->pluck('tag_name','id'))->rules('required');
             $form->number('win_rate','概率：')->rules('required');
-            $form->image('pic','娃娃机图片：')->rules('required');
+            $form->image('pic','娃娃机图片：')->uniqueName()->rules('required');
 
             $form->display('created_at', '添加时间：');
             $form->display('updated_at', '修改时间：');

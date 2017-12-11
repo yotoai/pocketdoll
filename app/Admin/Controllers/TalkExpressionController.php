@@ -77,7 +77,12 @@ class TalkExpressionController extends Controller
             $grid->id('ID')->sortable();
 
             $grid->dollmachine_id('娃娃机')->display(function ($dmid){
-                return GoodsCategory::find($dmid)->cate_name;
+                $data = GoodsCategory::find($dmid);
+                if(empty($data)){
+                    return '没有选择娃娃机';
+                }else{
+                    return $data->cate_name;
+                }
             });
             $grid->talk_doll('互动');
             $grid->small_expression('表情')->display(function ($se){
