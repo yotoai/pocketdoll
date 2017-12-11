@@ -183,7 +183,7 @@ class UserRucksackController extends BaseController
     public function withdrawLog()
     {
         try{
-            $res = GainLog::where('user_id',$this->getUserid())->get(['id','goods_id','num','status']);
+            $res = GainLog::where('user_id',$this->getUserid())->get(['id','goods_id','num','status','track']);
             $list = [];
             foreach ($res as $key=>$val){
                 $gids = explode(',',$val['goods_id']);
@@ -196,6 +196,7 @@ class UserRucksackController extends BaseController
                             $list[] = [
                                 'name'   => $v->name,
                                 'pic'    => env('APP_URL') . '/uploads/' . $v->pic,
+                                'track'  => empty($val->track) ? '' : $val->track,
                                 'status' => $this->toStatusName($val->status)
                             ];
                         }
@@ -204,7 +205,7 @@ class UserRucksackController extends BaseController
                 //$res[$key]['data'] = $data;
             }
         }catch (\Exception $e){
-            return ['code' => -1,'msg' => $e->getMessage()];
+            return ['code' => -1,'msg' => $e->getMessage(),'line' => $e->getLine()];
         }
         return ['code' => 1,'msg' => '查询成功','data' => $list];
         // return $res;
