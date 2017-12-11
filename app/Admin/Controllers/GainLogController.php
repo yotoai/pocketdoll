@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Extensions\ConfirmBox;
+use App\Admin\Extensions\InputBox;
 use App\Model\Address;
 use App\Model\GainLog;
 
@@ -137,7 +138,7 @@ class GainLogController extends Controller
 
                 $status = GainLog::find($actions->getKey())->status;
                 if($status == -1){
-                    $actions->append(new ConfirmBox('确认发货吗？','gainlog/updateStatus',1));
+                    $actions->append(new InputBox('确认发货吗？','gainlog/updateStatus',1));
                 }
             });
 
@@ -165,7 +166,11 @@ class GainLogController extends Controller
     // 自定义 发货方法
     public function updateStatus()
     {
-        $res = GainLog::where('id', request('id'))->update(['status' => request('action')]);
+        $res = GainLog::where('id', request('id'))
+            ->update([
+                'status' => request('action'),
+                'track' => request('track')
+            ]);
         return $res ? ['status' => true,'message' => '已发货...'] : ['status' => false,'message' => '发货失败！'];
     }
 }
