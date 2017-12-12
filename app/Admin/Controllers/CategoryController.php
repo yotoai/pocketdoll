@@ -139,6 +139,30 @@ class CategoryController extends Controller
             $form->saving(function (Form $form){
 //                dd($form);
             });
+
+            $form->saved(function (){
+                Redis::del('doll_machine');
+                $key = 'doll_machine';
+                $cate_id = Goods::where('status','<>','-1')->distinct()->get(['goods_cate_id'])->pluck('goods_cate_id');
+                $data = GoodsCategory::join('goods_tags_cate','goods_tags_cate.id','=','goods_category.tag_id')
+                    ->whereIn('goods_category.id',$cate_id)
+                    ->where('goods_category.status','<>','-1')
+                    ->get([
+                        'goods_category.id as id',
+                        'goods_category.cate_name as name',
+                        'goods_category.spec as spec',
+                        'goods_category.coin as coin',
+                        'goods_category.pic as pic',
+                        'goods_tags_cate.tag_icon as tag_icon'
+                    ]);
+                foreach ($data as $d){
+                    $d->pic = env('APP_URL').'/uploads/'.$d->pic;
+                    $d->tag_icon = env('APP_URL').'/uploads/'.$d->tag_icon;
+                }
+                foreach ($data as $item) {
+                    Redis::sadd($key, $item);
+                }
+            });
         });
     }
 
