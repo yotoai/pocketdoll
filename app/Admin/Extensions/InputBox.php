@@ -38,10 +38,12 @@ class InputBox extends AbstractTool
               type: "input", 
               showCancelButton: true, 
               closeOnConfirm: false, 
+              confirmButtonText: "确认",
+              cancelButtonText: "取消",
               animation: "slide-from-top"
             },
             function(inputValue){ 
-                if (inputValue === false) returnfalse; 
+                if (inputValue === false) return false; 
               
                 if (inputValue === "") { 
                     swal.showInputError("你需要输入快递单号！");

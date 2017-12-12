@@ -86,7 +86,12 @@ class GainLogController extends Controller
             $grid->id('ID')->sortable();
 
             $grid->user_id('用户名')->display(function ($uid){
-                return Player::where('user_id',$uid)->first()->user_name;
+                $user = Player::where('user_id',$uid)->first();
+                if(empty($user)){
+                    return '未知用户';
+                }else{
+                    return $user->user_name;
+                }
             });
             $grid->goods_id('娃娃名称')->display(function ($gid){
                 $ids = explode(',',$gid);
@@ -134,7 +139,7 @@ class GainLogController extends Controller
             });
 
             $grid->actions(function ($actions){
-                $actions->disableEdit();
+//                $actions->disableEdit();
 
                 $status = GainLog::find($actions->getKey())->status;
                 if($status == -1){
@@ -156,10 +161,13 @@ class GainLogController extends Controller
     {
         return Admin::form(GainLog::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->display('id', '#');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->textarea('address_info','收货信息：');
+            $form->text('track','快递单号：');
+
+            $form->display('created_at', '提现时间：');
+//            $form->display('updated_at', 'Updated At');
         });
     }
 
