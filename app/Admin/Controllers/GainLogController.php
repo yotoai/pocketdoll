@@ -145,11 +145,13 @@ class GainLogController extends Controller
             });
 
             $grid->actions(function ($actions){
-//                $actions->disableEdit();
 
                 $status = GainLog::find($actions->getKey())->status;
                 if($status == -1){
                     $actions->append(new InputBox('确认发货吗？','gainlog/updateStatus',1));
+                    $actions->disableEdit();
+                }else{
+
                 }
             });
 
