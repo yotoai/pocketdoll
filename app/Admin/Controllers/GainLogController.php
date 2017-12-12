@@ -49,8 +49,8 @@ class GainLogController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('编辑');
+            $content->description('编辑收件信息及单号');
 
             $content->body($this->form()->edit($id));
         });
@@ -98,7 +98,12 @@ class GainLogController extends Controller
                 $name = '';
                 $nums = explode(',',$this->num);
                 foreach ($ids as $key=>$id){
-                    $name .= Goods::find($id)->name .'<br />';
+                    $goods = Goods::find($id);
+                    if(empty($goods)){
+                        $name .= '';
+                    }else{
+                        $name .= $goods->name .'<br />';
+                    }
                 }
                 return trim($name,'<br />');
             });
@@ -114,10 +119,11 @@ class GainLogController extends Controller
                 $ids = explode(',',$this->goods_id);
                 $pic = '';
                 foreach ($ids as $k=>$id){
+                    $goods = Goods::find($id);
                     if($k % 2 != 0){
-                        $pic .= '<img src="/uploads/' . Goods::find($id)->pic . '" width="36">&nbsp;&nbsp;<br/>';
+                        $pic .= '<img src="/uploads/' . (!empty($goods) ? $goods->pic : '') . '" width="36">&nbsp;&nbsp;<br/>';
                     }else{
-                        $pic .= '<img src="/uploads/' . Goods::find($id)->pic . '" width="36">&nbsp;&nbsp;';
+                        $pic .= '<img src="/uploads/' . (!empty($goods) ? $goods->pic : '') . '" width="36">&nbsp;&nbsp;';
 
                     }
                 }
@@ -161,7 +167,7 @@ class GainLogController extends Controller
     {
         return Admin::form(GainLog::class, function (Form $form) {
 
-            $form->display('id', '#');
+            $form->display('id', '#：');
 
             $form->textarea('address_info','收货信息：');
             $form->text('track','快递单号：');
