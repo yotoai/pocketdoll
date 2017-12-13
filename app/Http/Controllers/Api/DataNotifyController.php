@@ -59,6 +59,7 @@ class DataNotifyController extends Controller
                 ->join('goods','goods.id','=','catchdoll_log.goods_id')
                 ->whereBetween('catchdoll_log.created_at',$this->yesterday())
                 ->get([
+                    'player.user_id as user_id',
                     'player.user_name as user_name',
                     'goods.name as doll_name',
                     'catchdoll_log.status as status',
