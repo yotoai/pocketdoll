@@ -21,7 +21,7 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1',function($api){
     // 测试 代码放置处
     $api->get('test',function (){
-       return strtolower(md5('UserGet' . env('GAMEKEY')));
+       return strtolower(md5('RechargeLog' . env('GAMEKEY')));
     });
     $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 登录（旧）
@@ -46,6 +46,8 @@ $api->version('v1',function($api){
         $api->get('cnotify','DataNotifyController@catchLogNotify');
         // 完成任务回调
         $api->get('mnotify','DataNotifyController@missionedNotify');
+        // 获取充值记录
+        $api->get('rnotify','DataNotifyController@rechargeLogNotify');
         // 返佣增加用户金币
         $api->post('addrecoin','DataNotifyController@addRebateCoin');
     });
