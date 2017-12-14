@@ -96,14 +96,13 @@ class DataNotifyController extends Controller
         }
         try{
             $data = RechargeLog::join('player','player.user_id','=','recharge_log.user_id')
-                ->join('recharge_amount','recharge_amount.id','=','recharge_log.coin')
                 ->whereBetween('recharge_log.created_at',$this->yesterday())
                 ->get([
                     'player.user_id as user_id',
                     'player.user_name as user_name',
                     'recharge_log.order as order_num',
                     'recharge_log.pay as pay',
-                    'recharge_amount.coin_num as coin_num',
+                    'recharge_log.coin as coin_num',
                     'recharge_log.status as status',
                     'recharge_log.status_des as status_des',
                     'recharge_log.time as pay_time',
