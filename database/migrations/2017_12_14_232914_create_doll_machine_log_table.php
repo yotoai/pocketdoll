@@ -18,9 +18,9 @@ class CreateDollMachineLogTable extends Migration
             $table->string('sdk_id',50)->comment('渠道id');
             $table->integer('doll_machine_id')->comment('娃娃机id');
             $table->string('doll_machine_name')->comment('娃娃机名称');
-            $table->integer('catch_num')->comment('抓取次数');
-            $table->integer('catched_num')->comment('抓到次数');
-            $table->integer('lucky_model_catch_num')->comment('幸运模式抓取次数');
+            $table->integer('catch_num')->default(0)->comment('抓取次数');
+            $table->integer('catched_num')->default(0)->comment('抓到次数');
+            $table->integer('lucky_model_catch_num')->default(0)->comment('幸运模式抓取次数');
             $table->timestamps();
         });
     }

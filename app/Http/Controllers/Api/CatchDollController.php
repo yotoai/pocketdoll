@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\catchLog;
 use App\Model\ChargeConfig;
+use App\Model\DollMachineLog;
 use App\Model\Goods;
 use App\Model\GoodsCategory;
 use App\Model\Mission;
@@ -120,6 +121,7 @@ class CatchDollController extends BaseController
             $ucoin = Player::where('user_id',$uid)->value('coin');
             if($ucoin < $gcoin) {return ['code' => -1,'msg' => '金币不足！'];}
             $this->setCatchNum(1);
+            $this->machineLog($id,'catch');
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
@@ -169,6 +171,8 @@ class CatchDollController extends BaseController
                 $this->setCatchedNum(1);
                 $this->finishMission('catched');
                 $this->finishMission('catch');
+                $this->machineLog($id,'catch');
+                $this->machineLog($id,'catched');
                 return ['code' => 1,'data' => 'get','lucky' => 'clear'];
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
@@ -337,10 +341,58 @@ class CatchDollController extends BaseController
         }
     }
 
-    protected function machineLog()
+    protected function machineLog($mid,$ac)
     {
         try{
-
+            $dml = DollMachineLog::where('doll_machine_id',$mid)->first();
+            $gc = GoodsCategory::where('id',$mid)->first();
+            if(empty($dml)){
+                $uid = $this->getUserid();
+                $user = Player::where('user_id',$uid)->first();
+                if($ac == 'catch'){
+                    DollMachineLog::create([
+                        'sdk_id' => $user->sdk_id,
+                        'doll_machine_id' => $mid,
+                        'doll_machine_name' => $gc->cate_name,
+                        'catch_num' => 1,
+                    ]);
+                }elseif($ac == 'catched'){
+                    DollMachineLog::create([
+                        'sdk_id' => $user->sdk_id,
+                        'doll_machine_id' => $mid,
+                        'doll_machine_name' => $gc->cate_name,
+                        'catched_num' => 1,
+                    ]);
+                }elseif ($ac == 'lucky_model'){
+                    DollMachineLog::create([
+                        'sdk_id' => $user->sdk_id,
+                        'doll_machine_id' => $mid,
+                        'doll_machine_name' => $gc->cate_name,
+                        'lucky_model_catch_num' => 1,
+                    ]);
+                }else{
+                    DollMachineLog::create([
+                        'sdk_id' => $user->sdk_id,
+                        'doll_machine_id' => $mid,
+                        'doll_machine_name' => $gc->cate_name,
+                        'catch_num' => 1,
+                    ]);
+                }
+            }else{
+                if($ac == 'catch'){
+                    $dml->catch_num = $dml->catch_num + 1;
+                    $dml->save();
+                }elseif ($ac == 'catched'){
+                    $dml->catched_num = $dml->catched_num + 1;
+                    $dml->save();
+                }elseif($ac == 'lucky_model'){
+                    $dml->lucky_model_catch_num = $dml->lucky_model_catch_num + 1;
+                    $dml->save();
+                }else{
+                    $dml->catch_num = $dml->catch_num + 1;
+                    $dml->save();
+                }
+            }
 
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];

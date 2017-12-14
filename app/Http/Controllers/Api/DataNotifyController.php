@@ -86,7 +86,7 @@ class DataNotifyController extends Controller
         }
     }
 
-    // 抓取回调
+    // 充值记录回调
     public function rechargeLogNotify(Request $request)
     {
         $this->validate($request,[
@@ -100,6 +100,7 @@ class DataNotifyController extends Controller
             $data = RechargeLog::join('player','player.user_id','=','recharge_log.user_id')
                 ->whereBetween('recharge_log.created_at',$this->yesterday())
                 ->get([
+                    'player.sdk_id as sdk_id',
                     'player.user_id as user_id',
                     'player.user_name as user_name',
                     'recharge_log.order as order_num',
