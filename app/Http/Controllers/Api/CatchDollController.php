@@ -336,4 +336,14 @@ class CatchDollController extends BaseController
             return ['code' => 1,'msg' => '查询成功','talk' => $talk,'expression' => $expression];
         }
     }
+
+    protected function machineLog()
+    {
+        try{
+
+
+        }catch (\Exception $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+    }
 }

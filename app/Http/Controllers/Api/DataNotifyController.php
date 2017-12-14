@@ -25,6 +25,7 @@ class DataNotifyController extends Controller
             $data = Player::
 //            whereBetween('created_at',$this->yesterday())
                 get([
+                    'sdk_id',
                     'user_id',
                     'user_name',
                     'user_img',
@@ -59,6 +60,7 @@ class DataNotifyController extends Controller
                 ->join('goods','goods.id','=','catchdoll_log.goods_id')
                 ->whereBetween('catchdoll_log.created_at',$this->yesterday())
                 ->get([
+                    'player.sdk_id as sdk_id',
                     'player.user_id as user_id',
                     'player.user_name as user_name',
                     'goods.name as doll_name',
@@ -98,6 +100,7 @@ class DataNotifyController extends Controller
                 ->join('mission','mission.id','=','user_mission.goods_id')
                 ->whereBetween('user_mission.created_at',$this->yesterday())
                 ->get([
+                    'player.sdk_id as sdk_id',
                     'player.user_name as user_name',
                     'mission.title as mission_name',
                     'user_mission.status as status',
