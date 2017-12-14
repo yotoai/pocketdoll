@@ -80,10 +80,20 @@ class MissionLogController extends Controller
 
             $grid->disableCreation();
             $grid->user_id('用户名')->display(function ($uid){
-               return Player::where('user_id',$uid)->first()->user_name;
+                $u = Player::where('user_id',$uid)->first();
+                if(empty($u)){
+                    return '未知用户';
+                }else{
+                    return $u->user_name;
+                }
             });
             $grid->mission_id('任务名称')->display(function ($mid){
-               return Mission::find($mid)->title;
+                $m = Mission::find($mid);
+                if(empty($m->title)){
+                    return '未知任务';
+                }else{
+                    return $m->title;
+                }
             });
             $grid->status('是否完成？')->display(function ($st){
                 return $st == 1 ? '<sapn class="label label-success">是</sapn>' : '<span class="label label-default"> 否</span>';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\catchLog;
 use App\Model\Player;
+use App\Model\RechargeLog;
 use App\Model\UserMission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -73,6 +74,48 @@ class DataNotifyController extends Controller
                         $data[$key]['status'] = '已提现';
                     }else{
                         $data[$key]['status'] = '未提现';
+                    }
+                }
+                return ['code' => 1,'status' => 'success','data' => $data];
+            }else{
+                return ['code' => 1,'status' => 'success','data' => ''];
+            }
+        }catch (\Exception $e){
+            Log::info('action:userNotify , error:'.$e->getMessage());
+            return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
+        }
+    }
+
+    // 抓取回调
+    public function rechargeLogNotify(Request $request)
+    {
+        $this->validate($request,[
+            'identification' => 'required',
+            'sign' => 'required'
+        ]);
+        if(strtolower(md5('RechargeLog' . env('GAMEKEY'))) != $request->sign){
+            return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
+        }
+        try{
+            $data = RechargeLog::join('player','player.user_id','=','recharge_log.user_id')
+                ->whereBetween('recharge_log.created_at',$this->yesterday())
+                ->get([
+                    'player.user_id as user_id',
+                    'player.user_name as user_name',
+                    'recharge_log.order as order_num',
+                    'recharge_log.pay as pay',
+                    'recharge_log.coin as coin_num',
+                    'recharge_log.status as status',
+                    'recharge_log.status_des as status_des',
+                    'recharge_log.time as pay_time',
+                    'recharge_log.created_at as create_time'
+                ])->toArray();
+            if(!empty($data)){
+                foreach ($data as $key=>$d){
+                    if($d['status'] == '1'){
+                        $data[$key]['status'] = '支付成功';
+                    }else{
+                        $data[$key]['status'] = '支付失败';
                     }
                 }
                 return ['code' => 1,'status' => 'success','data' => $data];

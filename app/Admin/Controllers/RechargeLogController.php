@@ -86,7 +86,12 @@ class RechargeLogController extends Controller
 
             $grid->id('ID')->sortable();
             $grid->user_id('用户名')->display(function ($uid){
-               return Player::where('user_id',$uid)->first()->user_name;
+                $u = Player::where('user_id',$uid)->first();
+                if(empty($u)){
+                    return '未知用户';
+                }else{
+                    return $u->user_name;
+                }
             });
             $grid->order('订单号');
             $grid->pay('支付金额');
