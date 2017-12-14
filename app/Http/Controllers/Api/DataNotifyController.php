@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\catchLog;
+use App\Model\DollMachineLog;
 use App\Model\Player;
 use App\Model\RechargeLog;
 use App\Model\UserMission;
@@ -86,6 +87,33 @@ class DataNotifyController extends Controller
         }
     }
 
+    // 抓取回调
+    public function DollMachineLogNotify(Request $request)
+    {
+        $this->validate($request,[
+            'identification' => 'required',
+            'sign' => 'required'
+        ]);
+        if(strtolower(md5('DollMachineLog' . env('GAMEKEY'))) != $request->sign){
+            return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
+        }
+        try{
+            $data = DollMachineLog::get([
+                    'sdk_id',
+                    'doll_machine_id',
+                    'doll_machine_name',
+                    'catch_num',
+                    'catched_num',
+                    'lucky_model_catch_num',
+                    'created_time as create_time'
+                ])->toArray();
+            return ['code' => 1,'status' => 'success','data' => $data];
+        }catch (\Exception $e){
+            Log::info('action:DollMachineLogNotify , error:'.$e->getMessage());
+            return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
+        }
+    }
+
     // 充值记录回调
     public function rechargeLogNotify(Request $request)
     {
@@ -124,7 +152,7 @@ class DataNotifyController extends Controller
                 return ['code' => 1,'status' => 'success','data' => ''];
             }
         }catch (\Exception $e){
-            Log::info('action:userNotify , error:'.$e->getMessage());
+            Log::info('action:rechargeLogNotify , error:'.$e->getMessage());
             return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
         }
     }

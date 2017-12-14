@@ -44,6 +44,8 @@ $api->version('v1',function($api){
         $api->get('unotify','DataNotifyController@userNotify');
         // 抓取记录回调
         $api->get('cnotify','DataNotifyController@catchLogNotify');
+        // 娃娃机记录
+        $api->get('dnotify','DataNotifyController@DollMachineLogNotify');
         // 完成任务回调
         $api->get('mnotify','DataNotifyController@missionedNotify');
         // 获取充值记录
