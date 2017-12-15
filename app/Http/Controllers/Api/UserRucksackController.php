@@ -41,6 +41,7 @@ class UserRucksackController extends BaseController
                         $list[] = [
                             'rucksack_id' => $d->rucksack_id,
                             'goods_id' => $d->goods_id,
+                            'num' => $num,
                             'name' => $d->name,
                             'pic' => $d->pic
                         ];
