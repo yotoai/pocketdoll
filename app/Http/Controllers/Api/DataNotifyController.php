@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Model\catchLog;
 use App\Model\DollMachineLog;
 use App\Model\Player;
+use App\Model\PointLog;
 use App\Model\RechargeLog;
+use App\Model\ShareLog;
 use App\Model\UserMission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -110,6 +112,58 @@ class DataNotifyController extends Controller
             return ['code' => 1,'status' => 'success','data' => $data];
         }catch (\Exception $e){
             Log::info('action:DollMachineLogNotify , error:'.$e->getMessage());
+            return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
+        }
+    }
+
+    // 积分记录回调
+    public function PointLogNotify(Request $request)
+    {
+        $this->validate($request,[
+            'identification' => 'required',
+            'sign' => 'required'
+        ]);
+        if(strtolower(md5('PointLog' . env('GAMEKEY'))) != $request->sign){
+            return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
+        }
+        try{
+            $data = PointLog::get([
+                'sdk_id',
+                'user_id',
+                'user_name',
+                'point_num',
+                'get_way',
+                'created_at as get_time'
+            ])->toArray();
+            return ['code' => 1,'status' => 'success','data' => $data];
+        }catch (\Exception $e){
+            Log::info('action:PointLogNotify , error:'.$e->getMessage());
+            return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
+        }
+    }
+
+    // 分享记录回调
+    public function ShareLogNotify(Request $request)
+    {
+        $this->validate($request,[
+            'identification' => 'required',
+            'sign' => 'required'
+        ]);
+        if(strtolower(md5('ShareLog' . env('GAMEKEY'))) != $request->sign){
+            return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
+        }
+        try{
+            $data = ShareLog::get([
+                'sdk_id',
+                'user_id',
+                'user_name',
+                'share_num',
+                'share_type',
+                'created_at as first_share_time'
+            ])->toArray();
+            return ['code' => 1,'status' => 'success','data' => $data];
+        }catch (\Exception $e){
+            Log::info('action:ShareLogNotify , error:'.$e->getMessage());
             return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
         }
     }

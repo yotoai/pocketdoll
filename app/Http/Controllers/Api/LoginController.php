@@ -140,9 +140,10 @@ class LoginController extends BaseController
 
                     $c = count($dayss);
                     Redis::del($request->userId.'_login_missions');
+                    $isdraw = Redis::get($this->getUserid().'_isdraw');
                     for ($i = $c - 1;$i > 0;$i--){
                         for($j = 0;$j <  $i;$j++){
-                            if($dayss[$j]['status'] == '2' && $dayss[$j+1]['status'] != '2' && $day >= $dayss[$j+1]['need_num']){
+                            if($dayss[$j]['status'] == '2' && $dayss[$j+1]['status'] != '2' && $day >= $dayss[$j+1]['need_num'] && intval($isdraw) != 1){
                                 $dayss[$j+1]['status'] ='1';
                             }
                         }

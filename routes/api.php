@@ -21,7 +21,7 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1',function($api){
     // 测试 代码放置处
     $api->get('test',function (){
-       return strtolower(md5('DollMachineLog' . env('GAMEKEY')));
+       return strtolower(md5('ShareLog' . env('GAMEKEY')));
     });
     $api->group(['namespace' => 'App\Http\Controllers\Api'],function($api){
         // 登录（旧）
@@ -46,6 +46,10 @@ $api->version('v1',function($api){
         $api->get('cnotify','DataNotifyController@catchLogNotify');
         // 娃娃机记录
         $api->get('dnotify','DataNotifyController@DollMachineLogNotify');
+        // 分享记录
+        $api->get('snotify','DataNotifyController@ShareLogNotify');
+        // 积分记录
+        $api->get('pnotify','DataNotifyController@PointLogNotify');
         // 完成任务回调
         $api->get('mnotify','DataNotifyController@missionedNotify');
         // 获取充值记录

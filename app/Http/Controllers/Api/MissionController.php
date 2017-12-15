@@ -154,6 +154,7 @@ class MissionController extends BaseController
                         ]);
                     }
                 }
+                Redis::set($this->getUserid().'_isdraw',1);
                 return ['code' => 1,'msg' => '完成任务'];
             }elseif($this->getMissionType($mid) == 3){
                 $aid = Mission::where('id',$mid)->value('award_id');
@@ -288,7 +289,7 @@ class MissionController extends BaseController
         $user = Player::where('user_id',$this->getUserid())->first();
         $user->point = $user->point + $point;
         $user->save();
-        $this->addPointLog('任务通道',$point);
+        $this->addPointLog('任务通道',$point); //增加记录
     }
 
     // 增加积分记录
@@ -346,7 +347,7 @@ class MissionController extends BaseController
             }
             if($re){
                 $user->point = $user->point - 100;
-                $user->save();
+                $user->save();  // 减少积分
                 $goods->goods_pic = env('APP_URL') . '/uploads/' . $goods->goods_pic;
                 return ['code' => 1,'msg' => '兑换成功','data' => $goods];
             }else{
