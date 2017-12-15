@@ -6,6 +6,7 @@ use App\Model\Address;
 use App\Model\catchLog;
 use App\Model\GainLog;
 use App\Model\Goods;
+use App\Model\Player;
 use App\Model\UserRucksack;
 //use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -138,11 +139,13 @@ class UserRucksackController extends BaseController
          $this->validate($request,$rules);
         try{
             $data = $request->data;
+            $goods_num = 0;
             foreach($data as $key=>$val) {
+                $goods_num = $key + 1;
                 $num = UserRucksack::where('id', $val['rucksack_id'])->value('num');
                 if ($num < $val['num']) return ['code' => -1, 'msg' => '娃娃数量不足！'];
             }
-            DB::transaction(function () use ($data,$request){
+            DB::transaction(function () use ($data,$request,$goods_num){
                 $goods_id = '';
                 $count = '';
                 foreach($data as $key=>$val) {
@@ -187,6 +190,11 @@ class UserRucksackController extends BaseController
                     'num'        => rtrim($count,','),
                     'address_info' => $address_info
                 ]);
+                if($goods_num <= 1){
+                    $p = Player::where('user_id',$this->getUserid())->first();
+                    $p->coin = $p->coin - 99;
+                    $p->save();
+                }
             },3);
 
         }catch (\Exception $e){
