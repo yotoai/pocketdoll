@@ -7,11 +7,13 @@ use App\Model\Goods;
 use App\Model\Mission;
 use App\Model\missionType;
 use App\Model\Player;
+use App\Model\PointLog;
 use App\Model\UserMission;
 use App\Model\UserRucksack;
 use App\Model\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
 class MissionController extends BaseController
@@ -286,6 +288,24 @@ class MissionController extends BaseController
         $user = Player::where('user_id',$this->getUserid())->first();
         $user->point = $user->point + $point;
         $user->save();
+        $this->addPointLog('任务通道',$point);
+    }
+
+    // 增加积分记录
+    protected function addPointLog($way,$point)
+    {
+        try{
+            $user = Player::where('user_id',$this->getUserid())->first();
+            PointLog::create([
+                'sdk_id' => $user->sdk_id,
+                'user_id' => $user->user_id,
+                'user_name' => $user->user_name,
+                'point_num' => $point,
+                'get_way' => $way
+            ]);
+        }catch (\Exception $e){
+            Log::info('error_place : addPointLog msg : '.$e->getMessage().'  line : '.$e->getLine());
+        }
     }
 
     // 获取用户积分

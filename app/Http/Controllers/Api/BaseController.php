@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\Goods;
 use App\Model\Player;
+use App\Model\ShareLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -283,17 +284,36 @@ class BaseController extends Controller
     public function shareWithWx()
     {
         try{
-            $s = Redis::get($this->getUserid().'_shareWithWx');
+            $uid = $this->getUserid();
+            $s = Redis::get($uid.'_shareWithWx');
             if(empty($s)){
-                Redis::set($this->getUserid().'_shareWithWx',1);
+                Redis::set($uid.'_shareWithWx',1);
             }elseif ($s <= 3){
-                Redis::set($this->getUserid().'_shareWithWx',1 + $s);
+                Redis::set($uid.'_shareWithWx',1 + $s);
             }else{
                 return ['code' => 1,'msg' => '已领取 3 次'];
             }
-            $u = Player::where('user_id',$this->getUserid())->first();
-            $u->coin = $u->coin + 5;
-            $u->save();
+
+            $share = ShareLog::where('user_id',$uid)
+                ->where('share_type','微信分享')
+                ->whereIn('created_at',[date('Y-m-d 00:00:00'),date('Y-m-d H:i:s',time())])
+                ->first();
+            $player = Player::where('user_id',$uid)->first();
+            if(empty($share)){
+                ShareLog::create([
+                    'sdk_id' => $player->sdk_id,
+                    'user_id' => $uid,
+                    'user_name' => $player->user_name,
+                    'share_num' => 1,
+                    'share_type' => '微信分享'
+                ]);
+            }else{
+                $share->share_num = $share->share_num + 1;
+                $share->save();
+            }
+
+            $player->coin = $player->coin + 5;
+            $player->save();
             return ['code' => 1,'msg' => '分享成功'];
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];
