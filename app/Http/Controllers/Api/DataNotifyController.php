@@ -127,14 +127,15 @@ class DataNotifyController extends Controller
             return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
         }
         try{
-            $data = PointLog::get([
-                'sdk_id',
-                'user_id',
-                'user_name',
-                'point_num',
-                'get_way',
-                'created_at as get_time'
-            ])->toArray();
+            $data = PointLog::whereBetween('created_at',$this->yesterday())
+                ->get([
+                    'sdk_id',
+                    'user_id',
+                    'user_name',
+                    'point_num',
+                    'get_way',
+                    'created_at as get_time'
+                ])->toArray();
             return ['code' => 1,'status' => 'success','data' => $data];
         }catch (\Exception $e){
             Log::info('action:PointLogNotify , error:'.$e->getMessage());
@@ -153,14 +154,15 @@ class DataNotifyController extends Controller
             return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
         }
         try{
-            $data = ShareLog::get([
-                'sdk_id',
-                'user_id',
-                'user_name',
-                'share_num',
-                'share_type',
-                'created_at as first_share_time'
-            ])->toArray();
+            $data = ShareLog::whereBetween('created_at',$this->yesterday())
+                ->get([
+                    'sdk_id',
+                    'user_id',
+                    'user_name',
+                    'share_num',
+                    'share_type',
+                    'created_at as first_share_time'
+                ])->toArray();
             return ['code' => 1,'status' => 'success','data' => $data];
         }catch (\Exception $e){
             Log::info('action:ShareLogNotify , error:'.$e->getMessage());
