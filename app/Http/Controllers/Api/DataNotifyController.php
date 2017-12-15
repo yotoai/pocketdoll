@@ -105,7 +105,7 @@ class DataNotifyController extends Controller
                     'catch_num',
                     'catched_num',
                     'lucky_model_catch_num',
-                    'created_time as create_time'
+                    'created_at as create_time'
                 ])->toArray();
             return ['code' => 1,'status' => 'success','data' => $data];
         }catch (\Exception $e){
