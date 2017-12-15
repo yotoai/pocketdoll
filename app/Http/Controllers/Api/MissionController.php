@@ -304,12 +304,12 @@ class MissionController extends BaseController
     // 兑换娃娃
     public function exchangeDoll()
     {
-        $uid = $this->getUserid();
-//        $user = Player::where('user_id',$uid)->first();
-//        if($user->point < 100){
-//            return ['code' => -1,'msg' => '积分不足'];
-//        }
         try{
+            $uid = $this->getUserid();
+            $user = Player::where('user_id',$uid)->first();
+            if($user->point < 100){
+                return ['code' => -1,'msg' => '积分不足'];
+            }
             $goods = Goods::where('status','<>','-1')->orderBy(DB::raw('RAND()'))->take(1)->get(['id as goods_id','name as goods_name','pic as goods_pic'])[0];
             $res = UserRucksack::where('user_id',$uid)->where('goods_id',$goods->goods_id)->first();
             if(!empty($res) && $res->goods_id == $goods->goods_id) {
@@ -325,6 +325,8 @@ class MissionController extends BaseController
                 ]);
             }
             if($re){
+                $user->point = $user->point - 100;
+                $user->save();
                 $goods->goods_pic = env('APP_URL') . '/uploads/' . $goods->goods_pic;
                 return ['code' => 1,'msg' => '兑换成功','data' => $goods];
             }else{

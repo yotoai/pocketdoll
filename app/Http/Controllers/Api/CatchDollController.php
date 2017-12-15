@@ -13,6 +13,7 @@ use App\Model\TalkExpression;
 use App\Model\UserRucksack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
 class CatchDollController extends BaseController
@@ -171,7 +172,6 @@ class CatchDollController extends BaseController
                 $this->setCatchedNum(1);
                 $this->finishMission('catched');
                 $this->finishMission('catch');
-                $this->machineLog($id,'catch');
                 $this->machineLog($id,'catched');
                 return ['code' => 1,'data' => 'get','lucky' => 'clear'];
             }catch (\Exception $e){
@@ -341,6 +341,7 @@ class CatchDollController extends BaseController
         }
     }
 
+    // 娃娃机抓取日志
     protected function machineLog($mid,$ac)
     {
         try{
@@ -395,7 +396,7 @@ class CatchDollController extends BaseController
             }
 
         }catch (\Exception $e){
-            return ['code' => -1,'msg' => $e->getMessage()];
+            Log::info('error place ; machineLog msg:  ' .$e->getMessage() .' line: ' .$e->getLine());
         }
     }
 }
