@@ -25,8 +25,8 @@ class DataNotifyController extends Controller
         }
         try{
             $data = Player::
-//            whereBetween('created_at',$this->yesterday())
-                get([
+            whereBetween('created_at',$this->yesterday())
+                ->get([
                     'sdk_id',
                     'user_id',
                     'user_name',
@@ -87,7 +87,7 @@ class DataNotifyController extends Controller
         }
     }
 
-    // 抓取回调
+    // 娃娃机抓取记录回调
     public function DollMachineLogNotify(Request $request)
     {
         $this->validate($request,[
