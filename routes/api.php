@@ -44,8 +44,10 @@ $api->version('v1',function($api){
         $api->get('unotify','DataNotifyController@userNotify');
         // 抓取记录回调
         $api->get('cnotify','DataNotifyController@catchLogNotify');
-        // 娃娃机记录
+        // 娃娃机抓取记录
         $api->get('dnotify','DataNotifyController@DollMachineLogNotify');
+        // 娃娃机列表
+        $api->get('lnotify','DataNotifyController@DollMachineNotify');
         // 分享记录
         $api->get('snotify','DataNotifyController@ShareLogNotify');
         // 积分记录

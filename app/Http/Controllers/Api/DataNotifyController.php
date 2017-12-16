@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\catchLog;
 use App\Model\DollMachineLog;
+use App\Model\GoodsCategory;
 use App\Model\Player;
 use App\Model\PointLog;
 use App\Model\RechargeLog;
@@ -112,6 +113,29 @@ class DataNotifyController extends Controller
             return ['code' => 1,'status' => 'success','data' => $data];
         }catch (\Exception $e){
             Log::info('action:DollMachineLogNotify , error:'.$e->getMessage());
+            return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
+        }
+    }
+
+    // 娃娃机列表回调
+    public function DollMachineNotify(Request $request)
+    {
+        $this->validate($request,[
+            'identification' => 'required',
+            'sign' => 'required'
+        ]);
+        if(strtolower(md5('DollMachine' . env('GAMEKEY'))) != $request->sign){
+            return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
+        }
+        try{
+            $data = GoodsCategory::get([
+                'id as doll_machine_id',
+                'cate_name as doll_machine_name',
+                'created_at as create_time'
+            ])->toArray();
+            return ['code' => 1,'status' => 'success','data' => $data];
+        }catch (\Exception $e){
+            Log::info('action:DollMachineNotify , error:'.$e->getMessage());
             return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
         }
     }
