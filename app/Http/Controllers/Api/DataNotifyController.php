@@ -178,8 +178,9 @@ class DataNotifyController extends Controller
             return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
         }
         try{
-            $data = ShareLog::whereBetween('created_at',$this->yesterday())
-                ->get([
+            $data = ShareLog::
+//            whereBetween('created_at',$this->yesterday())
+                get([
                     'sdk_id',
                     'user_id',
                     'user_name',

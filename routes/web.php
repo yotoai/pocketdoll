@@ -17,13 +17,13 @@ Route::get('/', function () {
 
 
 
-Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
+//Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
     Route::get('/user', function () {
         $user = session('wechat.oauth_user'); // 拿到授权用户资料
-
+        return redirect('http://100jiaju.top/test');
         dd($user);
     });
-});
+//});
 
 Route::get('notify_index',function (){
     $uid = isset($_GET['user_id']) ? $_GET['user_id'] : '';
