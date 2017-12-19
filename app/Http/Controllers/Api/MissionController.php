@@ -161,7 +161,7 @@ class MissionController extends BaseController
 
                 $res = Awards::where('id',$aid)->first(['award_coin','award_point']);
 
-                $ures = Player::where('user_id',$this->getUserid())->first(['coin']);
+                $ures = Player::where('user_id',$this->getUserid())->first();
 
                 DB::transaction(function () use ($res,$ures,$mid){
                     Player::where('user_id',$this->getUserid())->update([
@@ -174,7 +174,7 @@ class MissionController extends BaseController
                     ]);
                     $this->addPoint($res->award_point);
                 });
-
+                $this->setMissionRedis($mid,2);
                 return ['code' => 1,'msg' => '完成任务'];
             }else{
                 $aid = Mission::where('id',$mid)->value('award_id');// 从任务表中获取奖励id

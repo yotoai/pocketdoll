@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\Goods;
+use App\Model\Mission;
 use App\Model\Player;
 use App\Model\ShareLog;
 use Illuminate\Http\Request;
@@ -314,6 +315,14 @@ class BaseController extends Controller
 
             $player->coin = $player->coin + 5;
             $player->save();
+
+            $num = Redis::get($uid.'_shareWithWx');
+            $res = Mission::where('type',3)->get(['id','need_num']);
+            foreach ($res as $v){
+                if($v->need_num == $num && $this->getMissionRedis($v->id) != 1){
+                    $this->setMissionRedis($v->id,1);
+                }
+            }
             return ['code' => 1,'msg' => '分享成功'];
         }catch (\Exception $e){
             return ['code' => -1,'msg' => $e->getMessage()];

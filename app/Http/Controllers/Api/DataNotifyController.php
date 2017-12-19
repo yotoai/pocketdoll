@@ -151,9 +151,8 @@ class DataNotifyController extends Controller
             return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
         }
         try{
-            $data = PointLog::
-//            whereBetween('created_at',$this->yesterday())
-                get([
+            $data = PointLog::whereBetween('created_at',$this->yesterday())
+                ->get([
                     'sdk_id',
                     'user_id',
                     'user_name',
@@ -167,6 +166,8 @@ class DataNotifyController extends Controller
             return ['code' => -1,'status' => 'fail','msg' => $e->getMessage()];
         }
     }
+    // get_way后期有 : 分享通道，充值通道，任务通道，邀请通道，活动通道，礼包通道
+
 
     // 分享记录回调
     public function ShareLogNotify(Request $request)
@@ -179,9 +180,8 @@ class DataNotifyController extends Controller
             return ['code' => -1,'status' => 'fail','msg' => '验证失败'];
         }
         try{
-            $data = ShareLog::
-//            whereBetween('created_at',$this->yesterday())
-                get([
+            $data = ShareLog::whereBetween('created_at',$this->yesterday())
+                ->get([
                     'sdk_id',
                     'user_id',
                     'user_name',
