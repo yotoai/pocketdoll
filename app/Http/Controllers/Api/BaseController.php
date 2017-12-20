@@ -199,6 +199,11 @@ class BaseController extends Controller
         return Redis::get($this->getOpenid().'_charge');
     }
 
+    public function getShareNum()
+    {
+        return Redis::get($this->getUserid() .'_shareWithWx');
+    }
+
     // 模糊获取 Redis 的key
     public function getKeys($type)
     {
