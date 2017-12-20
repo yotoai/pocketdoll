@@ -107,6 +107,8 @@ class MissionController extends BaseController
                 $lists[$ks]['finish_num'] = empty($this->getChargeNum()) ? 0 : $this->getChargeNum();
             }elseif($ls->mission_type == 5){
                 $lists[$ks]['finish_num'] = empty($this->getCatchedNum()) ? 0 : $this->getCatchedNum();
+            }elseif($ls->mission_type == 3){
+                $lists[$ks]['finish_num'] = empty($this->getCatchedNum()) ? 0 : $this->getCatchedNum();
             }
         }
         return ['code' => 1,'msg' => '查询成功','data' => $lists];
