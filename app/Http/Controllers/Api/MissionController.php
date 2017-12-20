@@ -111,6 +111,7 @@ class MissionController extends BaseController
                 $lists[$ks]['finish_num'] = empty($this->getShareNum()) ? 0 : $this->getShareNum();
             }
         }
+        Log::info(json_encode($lists));
         return ['code' => 1,'msg' => '查询成功','data' => $lists];
     }
     
