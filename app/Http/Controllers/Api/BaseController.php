@@ -294,15 +294,13 @@ class BaseController extends Controller
             $s = Redis::get($uid.'_shareWithWx');
             if(empty($s)){
                 Redis::set($uid.'_shareWithWx',1);
-            }elseif ($s <= 3){
-                Redis::set($uid.'_shareWithWx',1 + $s);
             }else{
-                return ['code' => 1,'msg' => '已领取 3 次'];
+                Redis::set($uid.'_shareWithWx',1 + $s);
             }
 
             $share = ShareLog::where('user_id',$uid)
                 ->where('share_type','微信分享')
-                ->whereIn('created_at',[date('Y-m-d 00:00:00'),date('Y-m-d H:i:s',time())])
+                ->whereBetween('created_at',[date('Y-m-d 00:00:00'),date('Y-m-d H:i:s',time())])
                 ->first();
             $player = Player::where('user_id',$uid)->first();
             if(empty($share)){
@@ -317,9 +315,6 @@ class BaseController extends Controller
                 $share->share_num = $share->share_num + 1;
                 $share->save();
             }
-
-            $player->coin = $player->coin + 5;
-            $player->save();
 
             $num = Redis::get($uid.'_shareWithWx');
             $res = Mission::where('type',3)->get(['id','need_num']);
