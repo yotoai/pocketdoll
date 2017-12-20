@@ -9,6 +9,7 @@ use App\Model\ShareLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -325,6 +326,7 @@ class BaseController extends Controller
             }
             return ['code' => 1,'msg' => '分享成功'];
         }catch (\Exception $e){
+            Log::inf('错误位置：微信分享回调，错误信息：'.$e->getMessage().' ，错误行数：'. $e->getLine());
             return ['code' => -1,'msg' => $e->getMessage()];
         }
     }
