@@ -63,7 +63,7 @@ class MissionController extends BaseController
      * 点击任务按钮时，返回 Redis::smembers('user_missoon');
      * { 还是待改东西... }
      * */
-    public function dayMission(array $type=[3,4])
+    public function dayMission(array $type=[4])
     {
         $list  = [];
         $lists = [];
