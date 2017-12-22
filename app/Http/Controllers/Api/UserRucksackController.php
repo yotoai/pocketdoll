@@ -194,6 +194,7 @@ class UserRucksackController extends BaseController
                 if($goods_num <= 1){
                     $p = Player::where('user_id',$this->getUserid())->first();
                     $p->coin = $p->coin - 99;
+                    $p->used_coin = $p->used_coin + 99;
                     $p->save();
                 }
             },3);

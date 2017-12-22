@@ -166,7 +166,7 @@ class CatchDollController extends BaseController
                         'user_id'  => $uid,
                         'goods_id' => $gid,
                     ]);
-                    Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
+                    $this->changeUserCoin($gcoin);
                 });
                 $this->setLuckyRedis($id,0);
                 $this->setCatchedNum(1);
@@ -180,7 +180,7 @@ class CatchDollController extends BaseController
         }else{
             try{
                 $this->finishMission('catch');
-                Player::where('user_id',$uid)->update(['coin' => $ucoin - $gcoin]);
+                $this->changeUserCoin($gcoin);
                 if($lucky >= 100){
                     $add_lucky = 0;
                 }else{
@@ -192,6 +192,14 @@ class CatchDollController extends BaseController
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
         }
+    }
+    // 扣除用户金币 ，增加用户总消费
+    protected function changeUserCoin($gcoin)
+    {
+        $user = Player::where('user_id',$this->getUserid())->first();
+        $user->coin = $user->coin - $gcoin;
+        $user->used_coin = $user->used_coin + $gcoin;
+        $user->save();
     }
 
     // 返回随机键

@@ -28,13 +28,14 @@ class DataNotifyController extends Controller
         }
         try{
             $data = Player::
-            whereBetween('created_at',$this->yesterday())
+            whereBetween('login_time',$this->yesterday())
                 ->get([
                     'sdk_id',
                     'user_id',
                     'user_name',
                     'user_img',
                     'coin',
+                    'used_coin',
                     'point',
                     'login_time',
                     'created_at as create_time'
