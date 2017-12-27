@@ -126,7 +126,7 @@ class LoginController extends BaseController
 //                    return $list;
                     sort($list);
                     $dayss = Mission::where('type',4)
-                        ->orderBy('id','asc')
+                        ->orderBy('need_num','asc')
                         ->get(['id','need_num','status'])
                         ->toArray();
 //                    return $day;
