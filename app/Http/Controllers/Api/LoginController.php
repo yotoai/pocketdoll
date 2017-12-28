@@ -133,6 +133,7 @@ class LoginController extends BaseController
                     foreach ($dayss as $key=>$val){
                         foreach ($list as $k=>$v){
                             if($val['need_num'] == $v['need_num']){
+                                $dayss[$key]['id'] = $val['id'];
                                 $dayss[$key]['status'] = $v['status'];
                             }
                         }
