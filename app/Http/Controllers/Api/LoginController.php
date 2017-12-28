@@ -11,6 +11,7 @@ use App\Model\Users;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -130,6 +131,7 @@ class LoginController extends BaseController
                         ->get(['id','need_num','status'])
                         ->toArray();
 //                    return $day;
+                    Log::info($dayss);
                     foreach ($dayss as $key=>$val){
                         foreach ($list as $k=>$v){
                             if($val['need_num'] == $v['need_num']){
@@ -138,6 +140,9 @@ class LoginController extends BaseController
                             }
                         }
                     }
+                    Log::info('dayss------------------------------------------');
+
+                    Log::info($dayss);
 
                     $c = count($dayss);
                     Redis::del($request->userId.'_login_missions');
