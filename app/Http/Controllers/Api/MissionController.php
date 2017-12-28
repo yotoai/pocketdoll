@@ -32,7 +32,7 @@ class MissionController extends BaseController
             $temp = Mission::join('awards','mission.award_id','=', 'awards.id')
                 ->where('type',4)
                 ->where('mission.id',$li['id'])
-                ->orderBy('mission.id')
+                ->orderBy('mission.need_num','asc')
                 ->get([
                     'mission.id as mission_id',
                     'mission.type as mission_type',
