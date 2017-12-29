@@ -348,6 +348,11 @@ class MissionController extends BaseController
                 ]);
             }
             if($re){
+                UserMission::create([
+                    'user_id'    => $this->getUserid(),
+                    'mission_id' => -11, // 特殊任务
+                    'status'     => '1'
+                ]);
                 $user->point = $user->point - 100;
                 $user->save();  // 减少积分
                 $goods->goods_pic = env('APP_URL') . '/uploads/' . $goods->goods_pic;

@@ -88,6 +88,9 @@ class MissionLogController extends Controller
                 }
             });
             $grid->mission_id('任务名称')->display(function ($mid){
+                if($mid == -11){
+                    return '兑换娃娃任务';
+                }
                 $m = Mission::find($mid);
                 if(empty($m->title)){
                     return '未知任务';
