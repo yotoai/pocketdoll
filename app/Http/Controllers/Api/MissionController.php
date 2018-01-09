@@ -21,6 +21,10 @@ class MissionController extends BaseController
     //登录任务
     public function loginInMission()
     {
+//        $user = Player::where('user_id',$this->getUserid())->first();
+//        if($user->new_user_mission == '1'){
+//            return ['code' => 1,'msg' => '查询成功','data' => 'finished'];
+//        }
         $datas = $this->getLoginMission();
         $list = [];
         foreach ($datas as $ds){
@@ -32,7 +36,6 @@ class MissionController extends BaseController
             $temp = Mission::join('awards','mission.award_id','=', 'awards.id')
                 ->where('type',4)
                 ->where('mission.id',$li['id'])
-                ->orderBy('mission.need_num','asc')
                 ->get([
                     'mission.id as mission_id',
                     'mission.type as mission_type',
@@ -46,7 +49,6 @@ class MissionController extends BaseController
             $temp->mission_icon = env('APP_URL').'/uploads/'.$temp->mission_icon;
             $lists[] = $temp;
         }
-        sort($lists);
         return ['code' => 1,'msg' => '查询成功','data' => $lists];
     }
 

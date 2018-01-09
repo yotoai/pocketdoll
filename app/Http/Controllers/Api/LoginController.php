@@ -96,7 +96,7 @@ class LoginController extends BaseController
     {
         if( empty($request) ) return false;
         $data = Player::where('user_id',$request->userId)->first();
-        if(!empty($data))
+        if(!empty($data)) // 如果用户存在
         {
             try{
                 if(strtotime($data->login_time) > strtotime(date('Y-m-d 00:00:00'))){
@@ -111,29 +111,21 @@ class LoginController extends BaseController
                     'login_day'  => $day,
                     'login_time' => date('Y-m-d H:i:s',time())
                 ]);
-                $User = Player::where('user_id',$request->userId)->first();
-                $token = JWTAuth::fromUser($User);
-                $user = [
-                    'username' => $data->user_name,
-                    'icon'     => $data->user_img,
-                    'coin'     => $data->coin
-                ];
-                if($User->new_user_mission == '-1'){
+                $users = Player::where('user_id',$request->userId)->first();
+
+                if($users->new_user_mission == '-1'){  // 如果用户登录任务未完成
                     $datas = $this->getLoginMission();
                     $list = [];
                     foreach ($datas as $ds){
                         $list[] = unserialize($ds);
                     }
-//                    return $list;
-                    sort($list);
                     $dayss = Mission::where('type',4)
                         ->orderBy('need_num','asc')
                         ->get(['id','need_num','status'])
                         ->toArray();
-//                    return $day;
-                    Log::info($dayss);
+//                    Log::info($dayss);
                     $flag = false;
-                    foreach ($dayss as $key=>$val){
+                    foreach ($dayss as $key=>$val){ // 重组每日登录任务，防删
                         foreach ($list as $k=>$v){
                             if($val['need_num'] == $v['need_num']){
                                 $dayss[$key]['id'] = $val['id'];
@@ -144,8 +136,11 @@ class LoginController extends BaseController
                             }
                         }
                     }
-                    if(!$flag){
+
+                    if(!$flag){ //  看该用户是否已经完成所有登录任务
                         Log::info('this user finished the mission：' . $this->getUserid());
+                        $users->new_user_mission = '1';
+                        $users->save();
                     }
 
                     $c = count($dayss);
@@ -162,6 +157,13 @@ class LoginController extends BaseController
                         Redis::sadd($request->userId.'_login_missions',serialize($da) );
                     }
                 }
+
+                $token = JWTAuth::fromUser($users); // 生成token
+                $user = [
+                    'username' => $data->user_name,
+                    'icon'     => $data->user_img,
+                    'coin'     => $data->coin
+                ];  // 返回用户基本信息
             }catch (\Exception $e){
                 return ['code' => -1,'msg' => $e->getMessage()];
             }
@@ -186,23 +188,29 @@ class LoginController extends BaseController
 //                    ]);
 //                },5);
 
+                // 获取每日登录任务
+                $day = Mission::where('type',4)
+                    ->orderBy('need_num','asc')
+                    ->get(['id','need_num','status'])
+                    ->toArray();
+                foreach ($day as $da){
+                    if($da['need_num'] == 1){
+                        $da['status'] = '1'; // 设置第一天为待领取
+                    }
+                    Redis::sadd($request->userId.'_login_missions',serialize($da)); // 把登录任务信息存入redis
+                }
 
+                // 生成token
                 $token = JWTAuth::fromUser(Player::where('user_id',$request->userId)->first());
+
                 $user = [
                     'username' => $data->user_name,
                     'icon'     => $data->user_img,
                     'coin'     => $data->coin
-                ];
-                $day = Mission::where('type',4)
-                    ->orderBy('id','asc')->get(['id','need_num','status'])->toArray();
-                foreach ($day as $da){
-                    if($da['need_num'] == 1){
-                        $da['status'] = '1';
-                    }
-                    Redis::sadd($request->userId.'_login_missions',serialize($da) );
-                }
+                ];   // 返回用户信息
+
             }catch (\Exception $e){
-                return ['code' => -1,'msg' => $e->getMessage(),$e->getLine()];
+                return ['code' => -1,'msg' => $e->getMessage(),'line' => $e->getLine()];
             }
             return ['code' => 1,'token' => $token,'user' => $user];
         }
