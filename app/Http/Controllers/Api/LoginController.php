@@ -132,17 +132,21 @@ class LoginController extends BaseController
                         ->toArray();
 //                    return $day;
                     Log::info($dayss);
+                    $flag = false;
                     foreach ($dayss as $key=>$val){
                         foreach ($list as $k=>$v){
                             if($val['need_num'] == $v['need_num']){
                                 $dayss[$key]['id'] = $val['id'];
                                 $dayss[$key]['status'] = $v['status'];
                             }
+                            if($v['status'] == '1'){
+                                $flag = true;
+                            }
                         }
                     }
-                    Log::info('dayss------------------------------------------');
-
-                    Log::info($dayss);
+                    if(!$flag){
+                        Log::info('这个用户做完了登录任务：' . $this->getUserid());
+                    }
 
                     $c = count($dayss);
                     Redis::del($request->userId.'_login_missions');
