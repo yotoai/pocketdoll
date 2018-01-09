@@ -145,7 +145,7 @@ class LoginController extends BaseController
                         }
                     }
                     if(!$flag){
-                        Log::info('这个用户做完了登录任务：' . $this->getUserid());
+                        Log::info('this user finished the mission：' . $this->getUserid());
                     }
 
                     $c = count($dayss);
