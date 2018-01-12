@@ -21,10 +21,10 @@ class MissionController extends BaseController
     //登录任务
     public function loginInMission()
     {
-//        $user = Player::where('user_id',$this->getUserid())->first();
-//        if($user->new_user_mission == '1'){
-//            return ['code' => 1,'msg' => '查询成功','data' => 'finished'];
-//        }
+        $user = Player::where('user_id',$this->getUserid())->first();
+        if($user->new_user_mission == '1'){
+            return ['code' => 1,'msg' => '查询成功','data' => 'finished'];
+        }
         $datas = $this->getLoginMission();
         $list = [];
         foreach ($datas as $ds){
@@ -113,6 +113,16 @@ class MissionController extends BaseController
                 $lists[$ks]['finish_num'] = empty($this->getShareNum()) ? 0 : $this->getShareNum();
             }
         }
+        $f_arr = [];
+        $w_arr = [];
+        foreach ($lists as $k=>$v){
+            if($v['mission_status'] == 2){
+                $f_arr[] = $v;
+            }else{
+                $w_arr[] = $v;
+            }
+        }
+        $lists = array_merge($f_arr,$w_arr);
         return ['code' => 1,'msg' => '查询成功','data' => $lists];
     }
     
