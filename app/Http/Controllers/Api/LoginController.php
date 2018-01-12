@@ -177,7 +177,7 @@ class LoginController extends BaseController
                         'user_name' => $request->userName,
                         'user_img'  => $request->userImg,
                         'parent_id' => empty($request->parent_id) ? 0 : $request->parent_id,
-                        'coin'      => 0,
+                        'coin'      => 20, // 默认赠送20
                         'login_day' => 1,
                         'login_time' => date('Y-m-d H:i:s',time())
                     ]);
