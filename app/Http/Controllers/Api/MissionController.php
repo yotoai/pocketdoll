@@ -114,15 +114,18 @@ class MissionController extends BaseController
             }
         }
         $f_arr = [];
+        $y_arr = [];
         $w_arr = [];
         foreach ($lists as $k=>$v){
             if($v['mission_status'] == 1){
                 $f_arr[] = $v;
+            }elseif($v['mission_status'] == 0){
+                $y_arr[] = $v;
             }else{
                 $w_arr[] = $v;
             }
         }
-        $lists = array_merge($f_arr,$w_arr);
+        $lists = array_merge($f_arr,$y_arr,$w_arr);
         return ['code' => 1,'msg' => '查询成功','data' => $lists];
     }
     
