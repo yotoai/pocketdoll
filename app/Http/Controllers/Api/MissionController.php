@@ -116,7 +116,7 @@ class MissionController extends BaseController
         $f_arr = [];
         $w_arr = [];
         foreach ($lists as $k=>$v){
-            if($v['mission_status'] == 2){
+            if($v['mission_status'] == 1){
                 $f_arr[] = $v;
             }else{
                 $w_arr[] = $v;
